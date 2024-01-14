@@ -1,3 +1,118 @@
+:root {
+  /* --fuchsia-color: #d2417f; */
+  --fuchsia: rgba(210, 65, 127, 1);
+  --yellow: 251, 255, 0;
+  --blue: rgba(0, 0, 51, 1);
+  --white: rgba(255, 255, 255, 1);
+  border: 1px solid var(--fuchsia);
+}
+
+button {
+  padding: 0.5rem;
+  border: 1px solid;
+  /* border: 1px solid var(--fuchsia); */
+  background-color: rgba(255, 255, 255, 0.1);
+  /* background-color: var(--fuchsia); */
+  color: white;
+}
 .App {
-  text-align: center;
+  text-align: center; 
+  color: var(--white);
+}
+.container {
+  margin: auto;
+  height: 100vh;
+  background-color: var(--blue);
+  display: flex;
+  flex-direction: column;
+  max-width: 425px;
+  position: relative;
+
+  /* padding: 0 1rem; */
+  /* gap: 1rem; */
+}
+.header {
+  /* height: 5%; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid;
+  padding: 1rem;
+}
+.main {
+  height: 100%;
+  max-height: calc(100% - 4rem);
+  overflow-y: auto;
+  padding: 1rem;
+}
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  position: static;
+  bottom: 0;
+  /* left: 0; */
+  width: 100%;
+  max-width: 425px;
+  background-color: var(--blue);
+}
+.order {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 0.5rem;
+}
+.order_title {
+  margin-bottom: 0.5rem;
+  position: sticky;
+  display: block;
+}
+.order_cafe-select {
+  margin-bottom: 0.5rem;
+}
+.order_cafe-option {
+}
+.order_button {
+}
+.product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  /* background-color: rgba(210, 65, 127, 0.1); */
+  background-color: rgba(255, 255, 255, 0.1); /* Прозорий білий колір фону */
+  backdrop-filter: blur(2px); /* Розмиття фону */
+  border: 1px solid rgba(255, 255, 255, 1); 
+  /* border: 1px solid var(--fuchsia); */
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.5); /* Тінь для ефекту глибини */
+}
+.product_image {
+  height: 5rem;
+  width: 5rem;
+  border: 1px solid;
+}
+.product_image-placeholder {
+  width: 7rem;
+  height: 7rem;
+  /* border-radius: 1rem; */
+}
+.product_detail {
+  height: 100%;
+  width: 100%;
+  align-self: flex-start;
+  text-align: left;
+}
+.count {
+  display: flex;
+  flex-direction: column;
+}
+.count__amount {
+  padding: 0.5rem;
+}
+.count__plus,
+.count__minus {
+  width: 2rem;
+  height: 2rem;
 }
