@@ -1,11 +1,6 @@
 const Product = () => {
   return (
     <div className="product">
-      {/* <img
-        className="product_image"
-        src="../img/photo-camera-svgrepo-com.svg"
-        alt="Супер сырный"
-      /> */}
       <svg
         className="product_image-placeholder"
         fill="currentColor"
@@ -19,7 +14,7 @@ const Product = () => {
         </g>
       </svg>
       <div className="product_detail">
-        <h4 className="product_title">Фільтр кава (0,250 кг)</h4>
+        <p className="product_title">Фільтр кава (0,250 кг)</p>
         <p className="product_unit">шт.</p>
       </div>
       <div className="product_count count">

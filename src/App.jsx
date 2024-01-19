@@ -1,16 +1,20 @@
+import './normalize.css';
+import './skeleton.css';
 import './App.css';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import Footer from './components/Footer';
-import Header from './components/Header';
 import Main from './components/Main';
 function App() {
   return (
-    <div className="App">
-      <div className="container">
-        {/* <Header /> */}
-        <Main />
-        <Footer />
+    <Provider store={store}>
+      <div className="App">
+        <div className="container">
+          <Main />
+          <Footer />
+        </div>
       </div>
-    </div>
+    </Provider>
   );
 }
 
