@@ -19,21 +19,22 @@ button {
   text-align: center;
   color: var(--white);
   background-color: var(--blue);
+  max-width: 100vw;
+  max-height: 100vh;
+  height: 100vh;
 }
 .container {
   margin: auto;
+  max-height: 100vh;
   height: 100vh;
+  padding: 1rem 1rem 6rem 1rem;
   background-color: var(--blue);
   display: flex;
   flex-direction: column;
   max-width: 425px;
-  position: relative;
-
-  /* padding: 0 1rem; */
-  /* gap: 1rem; */
+  /* position: relative; */
 }
 .header {
-  /* height: 5%; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,11 +53,11 @@ button {
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
-  height: 4rem;
-  max-width: 425px;
+  height: 5rem;
+  max-width: calc(425px - 2rem);
   background-color: var(--blue);
   border-top: 1px solid;
 }
@@ -123,18 +124,22 @@ button {
 .count {
   display: flex;
   /* flex-direction: column; */
-}
-.count__amount {
-  padding: 0.5rem;
-  margin: 0;
+  gap: 0.5rem;
 }
 .count__plus,
-.count__minus {
-  width: 3rem;
-  height: 3rem;
+.count__minus,
+.count__amount {
+  width: 4rem;
+  height: 4rem;
   padding: 0 1rem;
-  line-height: 3rem;
+  /* line-height: 3rem; */
   margin: 0;
+}
+.count__amount {
+  /* padding: 0.5rem;
+  margin: 0;
+  width: 3rem;
+  height: 3rem; */
 }
 
 .login {
@@ -145,6 +150,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 2rem;
+  padding: 2rem 1rem 6rem;
 }
 .login_title {
 }

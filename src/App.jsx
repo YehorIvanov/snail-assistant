@@ -2,18 +2,17 @@ import './normalize.css';
 import './skeleton.css';
 import './App.css';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import store from './redux/store';
-import Footer from './components/Footer';
-import Main from './components/Main';
+import AppRouter from './components/AppRouter';
 function App() {
   return (
     <Provider store={store}>
-      <div className="App">
-        <div className="container">
-          <Main />
-          <Footer />
+      <BrowserRouter>
+        <div className="App">
+          <AppRouter />
         </div>
-      </div>
+      </BrowserRouter>
     </Provider>
   );
 }

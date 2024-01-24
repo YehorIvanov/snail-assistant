@@ -1,24 +1,14 @@
-// import { getDownloadURL, ref } from 'firebase/storage';
-// import { db } from '../firebaseConfig';
-
-// const getUrlFromFilePath = (path) => {
-//   const fileRef = ref(db, path);
-//  getDownloadURL(fileRef).then((url) => {
-//     console.log(url);
-//     return url;
-//   });
-// };
-// export default getUrlFromFilePath;
-
 import { getDownloadURL, ref } from 'firebase/storage';
-import { db } from '../firebaseConfig';
+import { storage } from '../firebaseConfig';
 
-const getUrlFromFilePath = (path) => {
-  const fileRef = ref(db, path);
-
-  const url = getDownloadURL(fileRef);
-  console.log(url);
-  return url;
+const getUrlFromFilePath = async (path) => {
+  try {
+    const fileRef = ref(storage, path);
+    const url = await getDownloadURL(fileRef);
+    return url;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export default getUrlFromFilePath;

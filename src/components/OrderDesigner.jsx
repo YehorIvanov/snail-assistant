@@ -1,37 +1,54 @@
 import React, { useState } from 'react';
 import { slugify } from 'transliteration';
 import Compressor from 'compressorjs';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
 import uploadFileToStorage from '../utils/uploadFileToStorage';
+import setDocToDB from '../utils/setDocToDB';
+import getNewFileNameByUser from '../utils/getNewFileNameByUser';
+import deleteFileFromStorage from './deleteFileFromStorage';
+import deleteDocFromDB from '../utils/deleteDocFromDB';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../redux/slices/userSlice';
 
 const OrderDesigner = () => {
-  const [orderDesigner, setOrderDesigner] = useState({
+  const user = useSelector(selectUser);
+  const initialOrderDesing = {
     name: '',
-    pseudo: '',
+    slug: '',
+    photo: '',
     products: [],
     creator: {},
     lastUpdate: new Date().getTime(),
-  });
+    published: true,
+  };
+  const [orderDesigner, setOrderDesigner] = useState(initialOrderDesing);
+  const handlerDeletOrderDesing = () => {
+    deleteFileFromStorage(orderDesigner.photo);
+    orderDesigner.products.forEach((product) => {
+      deleteFileFromStorage(product.productPhoto);
+    });
+    deleteDocFromDB('ordersDesings', orderDesigner.slug);
+    setDocToDB('trash', `${new Date().getTime()}-${user.email}`, orderDesigner);
+    setOrderDesigner(initialOrderDesing);
+  };
   const handlerDeletProduct = (index) => {
     const updatedProducts = [...orderDesigner.products];
-    updatedProducts.splice(index, 1);
+    deleteFileFromStorage(updatedProducts[index].productPhoto).then(() => {
+      updatedProducts.splice(index, 1);
+      setOrderDesigner({
+        ...orderDesigner,
+        products: updatedProducts,
+      });
+      setDocToDB('ordersDesings', orderDesigner.slug, orderDesigner);
+    });
+  };
+  const handlerSaveChangesToOrder = () => {
     setOrderDesigner({
       ...orderDesigner,
-      products: updatedProducts,
+      creator: { email: user.email, name: user.userName },
     });
+    setDocToDB('ordersDesings', orderDesigner.slug, orderDesigner);
   };
-
-  const handlerSaveChangesToOrder = () => {
-    console.log(orderDesigner);
-    const docRtef = doc(db, 'ordersDesings', orderDesigner.pseudo);
-    setDoc(docRtef, { ...orderDesigner });
-    getDoc(docRtef).then((docSnapshot) => {
-      console.log(docSnapshot.data());
-    });
-  };
-
-  const handlerOnPhotoChange = (e, index) => {
+  const handlerOnOrderPhotoChange = (e) => {
     const photo = e.target.files[0];
     if (!photo) {
       console.log('no file');
@@ -41,22 +58,54 @@ const OrderDesigner = () => {
       quality: 0.6,
       maxWidth: 320,
       maxHeight: 320,
-      convertTypes: 'image/png, image/webp, image/jpeg',
+      convertTypes: 'image/jpeg, image/png',
       success(result) {
+        result.name = getNewFileNameByUser(result.name, user.email);
+        uploadFileToStorage(result, result.name, 'products').then((url) => {
+          if (orderDesigner.photo) {
+            deleteFileFromStorage(orderDesigner.photo);
+          }
+          setOrderDesigner({
+            ...orderDesigner,
+            photo: url,
+            creator: { email: user.email, name: user.userName },
+          });
+          setDocToDB('ordersDesings', orderDesigner.slug, orderDesigner);
+        });
+      },
+      error(err) {
+        console.log(err.message);
+      },
+    });
+  };
+
+  const handlerOnProductPhotoChange = (e, index) => {
+    const photo = e.target.files[0];
+    if (!photo) {
+      console.log('no file');
+      return;
+    }
+    new Compressor(photo, {
+      quality: 0.6,
+      maxWidth: 320,
+      maxHeight: 320,
+      convertTypes: 'image/jpeg, image/png',
+      success(result) {
+        result.name = getNewFileNameByUser(result.name, user.email);
         const updatedProducts = [...orderDesigner.products];
 
-        uploadFileToStorage(result, result.name, 'products')
-          .then((url) => {
-            console.log('URL завантаженого файлу:', url);
-            updatedProducts[index].productPhoto = url;
-            setOrderDesigner({
-              ...orderDesigner,
-              products: updatedProducts,
-            });
-          })
-          .catch((error) => {
-            console.error('Помилка завантаження файлу:', error);
+        uploadFileToStorage(result, result.name, 'products').then((url) => {
+          if (updatedProducts[index].productPhoto) {
+            deleteFileFromStorage(updatedProducts[index].productPhoto);
+          }
+          updatedProducts[index].productPhoto = url;
+          setOrderDesigner({
+            ...orderDesigner,
+            creator: { email: user.email, name: user.userName },
+            products: updatedProducts,
           });
+          setDocToDB('ordersDesings', orderDesigner.slug, orderDesigner);
+        });
       },
       error(err) {
         console.log(err.message);
@@ -68,7 +117,7 @@ const OrderDesigner = () => {
     setOrderDesigner({
       ...orderDesigner,
       name: e.target.value,
-      pseudo: slugify(e.target.value),
+      slug: slugify(e.target.value),
     });
   };
 
@@ -80,7 +129,7 @@ const OrderDesigner = () => {
         {
           productPhoto: '',
           productName: '',
-          productPseudo: '',
+          productSlug: '',
           productUnit: '',
           productCategory: '',
         },
@@ -92,7 +141,7 @@ const OrderDesigner = () => {
     const updatedProducts = [...orderDesigner.products];
     updatedProducts[index][field] = value;
     if (field === 'productName') {
-      updatedProducts[index].productPseudo = slugify(value);
+      updatedProducts[index].slug = slugify(value);
     }
     setOrderDesigner({
       ...orderDesigner,
@@ -101,8 +150,26 @@ const OrderDesigner = () => {
   };
   return (
     <div className="order-designer">
-      <h5 className="order-designer_title">Конструктор Замовлень</h5>
+      <h5 className="order-designer_title">Шаблон Замовлення</h5>
       <hr />
+      <div className="photo-picker">
+        <label
+          className="photo-picker_label"
+          style={{
+            backgroundImage: `url(${
+              orderDesigner.photo && orderDesigner.photo
+            })`,
+          }}
+        >
+          ОБРАТИ ФОТО
+          <input
+            className="photo-picker_input"
+            onChange={handlerOnOrderPhotoChange}
+            type="file"
+            accept="image/jpeg, image/png"
+          />
+        </label>
+      </div>
       <input
         className="order-designer_input"
         type="text"
@@ -114,7 +181,7 @@ const OrderDesigner = () => {
         className="order-designer_input"
         type="text"
         placeholder="Псевдо Замовлення"
-        value={orderDesigner.pseudo}
+        value={orderDesigner.slug}
         disabled
         hidden
       />
@@ -136,10 +203,10 @@ const OrderDesigner = () => {
                   <input
                     className="photo-picker_input"
                     onChange={(e) => {
-                      handlerOnPhotoChange(e, index);
+                      handlerOnProductPhotoChange(e, index);
                     }}
                     type="file"
-                    accept="image/png, image/jpeg, image/webp"
+                    accept="image/jpeg, image/png"
                   />
                 </label>
                 <button onClick={() => handlerDeletProduct(index)}>
@@ -212,6 +279,12 @@ const OrderDesigner = () => {
         onClick={handlerSaveChangesToOrder}
       >
         Зберегти зміни
+      </button>
+      <button
+        className="order-design_controll-button"
+        onClick={handlerDeletOrderDesing}
+      >
+        Видалити Шаблон
       </button>
     </div>
   );
