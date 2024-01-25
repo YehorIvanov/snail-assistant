@@ -25,7 +25,7 @@ const Product = ({
           -
         </button>
         <button disabled className="count__amount">
-          {productAmount ? productAmount : 0}
+          {productAmount}
         </button>
         <button onClick={() => handler(index, 1)} className="count__plus">
           +

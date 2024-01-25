@@ -400,6 +400,11 @@ fieldset {
 input[type='checkbox'],
 input[type='radio'] {
   display: inline;
+  width: 2rem;
+  height: 2rem;
+  color: #222;
+  padding-right: 1rem;
+  border: 1px solid;
 }
 label > .label-body {
   display: inline-block;

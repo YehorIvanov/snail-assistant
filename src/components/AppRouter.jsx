@@ -7,11 +7,14 @@ import { auth } from '../firebaseConfig';
 import getDocFromDB from '../utils/getDocFromDB';
 import MainLayout from './MainLayout';
 import Login from './Login';
-import Orders from './Orders';
-import Main from './Main';
-import Reports from './Reports';
-import Docs from './Docs';
-import User from './User';
+import Orders from './Orders/Orders';
+import Main from './Main/Main';
+import Reports from './Reports/Reports';
+import Docs from './Docs/Docs';
+import User from './User/User';
+import Order from './Orders/Order';
+import OrderDesigner from './Orders/OrderDesigner';
+import OrderDesingList from './Orders/OrderDesingList';
 
 const AppRouter = () => {
   const user = useSelector(selectUser);
@@ -37,6 +40,12 @@ const AppRouter = () => {
       <Route path="/" element={<MainLayout />}>
         <Route path="/user" element={<User />} />
         <Route path="/orders" element={<Orders />} />
+        <Route path="/orders/:slug" element={<Order />} />
+        <Route path="/orders/desing-list" element={<OrderDesingList />} />
+        <Route
+          path="/prders/order-desinger/:slug"
+          element={<OrderDesigner />}
+        />
         <Route index element={<Main />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/docs" element={<Docs />} />

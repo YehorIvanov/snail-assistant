@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
-import getDocFromDB from '../utils/getDocFromDB';
+import getDocFromDB from '../../utils/getDocFromDB';
 import { useSelector } from 'react-redux';
-import { selectUser } from '../redux/slices/userSlice';
+import { selectUser } from '../../redux/slices/userSlice';
 import Product from './Product';
+import { useParams } from 'react-router';
+import setDocToDB from '../../utils/setDocToDB';
 const Order = () => {
+  const params = useParams();
   const user = useSelector(selectUser);
   const [order, setOrder] = useState({});
-  const [orderDesing, setOrderDesing] = useState({});
   useEffect(() => {
-    getDocFromDB('ordersDesings', '123').then((data) => {
-      setOrderDesing(data);
+    getDocFromDB('ordersDesings', params.slug).then((data) => {
+      // console.log(data);
       setOrder({
         name: data.name,
-        creator: { email: user.email, name: user.name },
+        creator: { email: user.email, name: user.userName },
         lastUpdate: new Date().getTime(),
         admin: '',
         cafe: '',
@@ -28,12 +30,30 @@ const Order = () => {
   console.log(order);
   const handlerChangeAmount = (index, action) => {
     const updatedProducts = [...order.products];
-    if (isNaN(updatedProducts[index].amount)) {
-      updatedProducts[index].amount = 0;
-    }
-    updatedProducts[index].amount += action;
-    if (updatedProducts[index].amount < 0) updatedProducts[index].amount = 0;
+    updatedProducts[index].productAmount += action;
+    if (updatedProducts[index].productAmount < 0)
+      updatedProducts[index].productAmount = 0;
     setOrder({ ...order, products: [...updatedProducts] });
+  };
+  const handlerCreateOrder = () => {
+    setDocToDB(
+      'orders',
+      `${new Date().getTime()}-${order.cafe}-${user.email}`,
+      order
+    )
+      .then(() => {
+        console.log('ok');
+      })
+      .catch((e) => {
+        console.log('error sending', e);
+      });
+
+    // setDocToDB('orders', `${new Date().getTime()}`, order);
+  };
+
+  const handlerOnCafeChenge = (e) => {
+    console.log(e.target.value);
+    setOrder({ ...order, cafe: e.target.value });
   };
 
   return (
@@ -44,10 +64,11 @@ const Order = () => {
         name=""
         id=""
         placeholder="Кав'ярня"
+        onChange={handlerOnCafeChenge}
       >
         <option
           className="order_cafe-option"
-          value="Золоті Ворота"
+          value="golden-gate"
           text="Золоті Ворота"
         >
           Золоті Ворота
@@ -67,8 +88,8 @@ const Order = () => {
           Хрещатик 27
         </option>
       </select>
-      {orderDesing.products &&
-        orderDesing.products.map((product, i) => {
+      {order.products &&
+        order.products.map((product, i) => {
           return (
             <Product
               key={i}
@@ -79,7 +100,9 @@ const Order = () => {
           );
         })}
 
-      <button className="order-button">ЗАМОВИТИ</button>
+      <button onClick={handlerCreateOrder} className="order-button">
+        ЗАМОВИТИ
+      </button>
     </div>
   );
 };

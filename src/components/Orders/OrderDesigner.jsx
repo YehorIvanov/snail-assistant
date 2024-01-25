@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/slices/userSlice';
 import { slugify } from 'transliteration';
 import Compressor from 'compressorjs';
-import uploadFileToStorage from '../utils/uploadFileToStorage';
-import setDocToDB from '../utils/setDocToDB';
-import getNewFileNameByUser from '../utils/getNewFileNameByUser';
-import deleteFileFromStorage from './deleteFileFromStorage';
-import deleteDocFromDB from '../utils/deleteDocFromDB';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../redux/slices/userSlice';
+import uploadFileToStorage from '../../utils/uploadFileToStorage';
+import setDocToDB from '../../utils/setDocToDB';
+import getNewFileNameByUser from '../../utils/getNewFileNameByUser';
+import deleteFileFromStorage from '../../utils/deleteFileFromStorage';
+import deleteDocFromDB from '../../utils/deleteDocFromDB';
+import { useParams } from 'react-router';
+import getDocFromDB from '../../utils/getDocFromDB';
 
 const OrderDesigner = () => {
   const user = useSelector(selectUser);
+  const params = useParams();
   const initialOrderDesing = {
     name: '',
     slug: '',
@@ -21,6 +24,13 @@ const OrderDesigner = () => {
     published: true,
   };
   const [orderDesigner, setOrderDesigner] = useState(initialOrderDesing);
+
+  useEffect(() => {
+    getDocFromDB('ordersDesings', params.slug).then((data) => {
+      setOrderDesigner(data);
+    });
+  }, []);
+
   const handlerDeletOrderDesing = () => {
     deleteFileFromStorage(orderDesigner.photo);
     orderDesigner.products.forEach((product) => {
@@ -121,6 +131,12 @@ const OrderDesigner = () => {
     });
   };
 
+  const handleOnPublishedChange = () => {
+    setOrderDesigner({
+      ...orderDesigner,
+      published: !orderDesigner.published,
+    });
+  };
   const handlerAddOneMoreProduct = () => {
     setOrderDesigner({
       ...orderDesigner,
@@ -150,16 +166,16 @@ const OrderDesigner = () => {
   };
   return (
     <div className="order-designer">
-      <h5 className="order-designer_title">Шаблон Замовлення</h5>
+      <h5 className="order-designer_title">Шаблон {orderDesigner.name}</h5>
       <hr />
-      <div className="photo-picker">
+      <div className="order-designer_top-section">
         <label
           className="photo-picker_label"
-          style={{
-            backgroundImage: `url(${
-              orderDesigner.photo && orderDesigner.photo
-            })`,
-          }}
+          style={
+            orderDesigner.photo
+              ? { backgroundImage: `url(${orderDesigner.photo})` }
+              : null
+          }
         >
           ОБРАТИ ФОТО
           <input
@@ -169,22 +185,28 @@ const OrderDesigner = () => {
             accept="image/jpeg, image/png"
           />
         </label>
+        <div className="order-designer_params">
+          <input
+            className="order-designer_input"
+            type="text"
+            placeholder="Назва Замовлення"
+            value={orderDesigner.name}
+            onChange={handlerOnNameChange}
+            disabled
+          />
+          <label>
+            <input
+              type="checkbox"
+              onClick={handleOnPublishedChange}
+              checked={orderDesigner.published}
+              name="Доступно до замовлення"
+              id=""
+            />
+            {'   '}
+            Доступно до замовлення
+          </label>
+        </div>
       </div>
-      <input
-        className="order-designer_input"
-        type="text"
-        placeholder="Назва Замовлення"
-        value={orderDesigner.name}
-        onChange={handlerOnNameChange}
-      />
-      <input
-        className="order-designer_input"
-        type="text"
-        placeholder="Псевдо Замовлення"
-        value={orderDesigner.slug}
-        disabled
-        hidden
-      />
       <hr />
       <div>
         {orderDesigner.products.map((product, index) => {
