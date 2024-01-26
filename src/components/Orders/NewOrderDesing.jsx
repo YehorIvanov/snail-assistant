@@ -3,9 +3,11 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
 import { slugify } from 'transliteration';
 import setDocToDB from '../../utils/setDocToDB';
+import { useNavigate } from 'react-router';
 
 const NewOrderDesing = () => {
   const user = useSelector(selectUser);
+  const navigate = useNavigate();
   const [orderDesingName, setOrderDesingName] = useState('');
   const handlerOrderDesingNameChange = (e) => {
     setOrderDesingName(e.target.value);
@@ -22,9 +24,8 @@ const NewOrderDesing = () => {
     };
 
     setDocToDB('ordersDesings', newOrderDesing.slug, newOrderDesing).then(() =>
-      setOrderDesingName('')
+      navigate(`/orders/order-desinger/${newOrderDesing.slug}`)
     );
-    //додати оновлення сторінки після відправки данних
   };
 
   return (

@@ -15,6 +15,7 @@ import User from './User/User';
 import Order from './Orders/Order';
 import OrderDesigner from './Orders/OrderDesigner';
 import OrderDesingList from './Orders/OrderDesingList';
+import OrderViev from './Orders/OrderViev';
 
 const AppRouter = () => {
   const user = useSelector(selectUser);
@@ -41,9 +42,10 @@ const AppRouter = () => {
         <Route path="/user" element={<User />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/orders/:slug" element={<Order />} />
+        <Route path='/orders/viev/:slug' element={ <OrderViev/>}/>
         <Route path="/orders/desing-list" element={<OrderDesingList />} />
         <Route
-          path="/prders/order-desinger/:slug"
+          path="/orders/order-desinger/:slug"
           element={<OrderDesigner />}
         />
         <Route index element={<Main />} />

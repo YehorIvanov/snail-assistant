@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
+import { useNavigate, useParams } from 'react-router';
 import { slugify } from 'transliteration';
 import Compressor from 'compressorjs';
 import uploadFileToStorage from '../../utils/uploadFileToStorage';
@@ -8,12 +9,12 @@ import setDocToDB from '../../utils/setDocToDB';
 import getNewFileNameByUser from '../../utils/getNewFileNameByUser';
 import deleteFileFromStorage from '../../utils/deleteFileFromStorage';
 import deleteDocFromDB from '../../utils/deleteDocFromDB';
-import { useParams } from 'react-router';
 import getDocFromDB from '../../utils/getDocFromDB';
 
 const OrderDesigner = () => {
   const user = useSelector(selectUser);
   const params = useParams();
+  const navigate = useNavigate();
   const initialOrderDesing = {
     name: '',
     slug: '',
@@ -38,7 +39,7 @@ const OrderDesigner = () => {
     });
     deleteDocFromDB('ordersDesings', orderDesigner.slug);
     setDocToDB('trash', `${new Date().getTime()}-${user.email}`, orderDesigner);
-    setOrderDesigner(initialOrderDesing);
+    navigate('/orders/desing-list');
   };
   const handlerDeletProduct = (index) => {
     const updatedProducts = [...orderDesigner.products];
@@ -56,7 +57,9 @@ const OrderDesigner = () => {
       ...orderDesigner,
       creator: { email: user.email, name: user.userName },
     });
-    setDocToDB('ordersDesings', orderDesigner.slug, orderDesigner);
+    setDocToDB('ordersDesings', orderDesigner.slug, orderDesigner).then(() => {
+      navigate('/orders/desing-list');
+    });
   };
   const handlerOnOrderPhotoChange = (e) => {
     const photo = e.target.files[0];

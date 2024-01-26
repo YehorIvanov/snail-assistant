@@ -9,7 +9,6 @@ const OrderDesingList = () => {
   useEffect(() => {
     getDocsColectionFromDB('ordersDesings').then((colection) => {
       setOrdersDesings(colection);
-      console.log(ordersDesings);
     });
   }, []);
 
@@ -22,7 +21,7 @@ const OrderDesingList = () => {
             return (
               <tr key={i}>
                 <td>
-                  <Link to={`/prders/order-desinger/${elem.slug}`}>
+                  <Link to={`/orders/order-desinger/${elem.slug}`}>
                     {elem.name}
                   </Link>
                 </td>
