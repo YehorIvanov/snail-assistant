@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import getDocFromDB from '../../utils/getDocFromDB';
 import timestampToTimestring from '../../utils/timestampToTimestring';
-import { setDoc } from 'firebase/firestore';
 import setDocToDB from '../../utils/setDocToDB';
-import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
 
 const OrderViev = () => {
   const params = useParams();
@@ -16,7 +14,7 @@ const OrderViev = () => {
         setOrder(data);
       })
       .finally(() => {});
-  }, []);
+  }, [params.slug]);
   console.log(order);
 
   const handlerChangeStatus = (status) => {

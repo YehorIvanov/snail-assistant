@@ -169,13 +169,13 @@ const OrderDesigner = () => {
   };
   return (
     <div className="order-designer">
-      <h5 className="order-designer_title">Шаблон {orderDesigner.name}</h5>
+      <h5 className="order-designer_title">Шаблон {orderDesigner?.name}</h5>
       <hr />
       <div className="order-designer_top-section">
         <label
           className="photo-picker_label"
           style={
-            orderDesigner.photo
+            orderDesigner?.photo
               ? { backgroundImage: `url(${orderDesigner.photo})` }
               : null
           }
@@ -193,17 +193,18 @@ const OrderDesigner = () => {
             className="order-designer_input"
             type="text"
             placeholder="Назва Замовлення"
-            value={orderDesigner.name}
+            value={orderDesigner?.name}
             onChange={handlerOnNameChange}
             disabled
           />
           <label>
             <input
               type="checkbox"
-              onClick={handleOnPublishedChange}
-              checked={orderDesigner.published}
+              onChange={handleOnPublishedChange}
+              checked={orderDesigner?.published}
               name="Доступно до замовлення"
               id=""
+              value={orderDesigner?.published}
             />
             {'   '}
             Доступно до замовлення
@@ -212,7 +213,7 @@ const OrderDesigner = () => {
       </div>
       <hr />
       <div>
-        {orderDesigner.products.map((product, index) => {
+        {orderDesigner?.products.map((product, index) => {
           return (
             <div className="order-designer_product" key={index}>
               <div className="photo-picker">

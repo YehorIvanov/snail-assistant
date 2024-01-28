@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/slices/userSlice';
+// import { useSelector } from 'react-redux';
+// import { selectUser } from '../../redux/slices/userSlice';
 import { useNavigate, useParams } from 'react-router';
 import Product from './Product';
 import getDocFromDB from '../../utils/getDocFromDB';
@@ -8,14 +8,14 @@ import setDocToDB from '../../utils/setDocToDB';
 const Order = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const user = useSelector(selectUser);
+  // const user = useSelector(selectUser);
   const [order, setOrder] = useState({});
   useEffect(() => {
     getDocFromDB('orders', params.slug).then((data) => {
       console.log(data);
       setOrder(data);
     });
-  }, []);
+  }, [params.slug]);
   const handlerChangeAmount = (index, action) => {
     const updatedProducts = [...order.products];
     updatedProducts[index].productAmount += action;
@@ -41,12 +41,12 @@ const Order = () => {
 
   return (
     <div className="order">
-      <h2 className="order_title">{order.name}</h2>
+      <h2 className="order_title">{order?.name}</h2>
       <select
         className="order_cafe-select"
         name=""
         id=""
-        value={order.cafe}
+        value={order?.cafe}
         placeholder="Кав'ярня"
         onChange={handlerOnCafeChenge}
       >

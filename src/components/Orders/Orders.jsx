@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
 import { Link, useNavigate } from 'react-router-dom';
 import OrdersList from './OrdersList';
-import { getDoc } from 'firebase/firestore';
-import getDocFromDB from '../../utils/getDocFromDB';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
 import setDocToDB from '../../utils/setDocToDB';
