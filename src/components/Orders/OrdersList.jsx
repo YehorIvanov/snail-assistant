@@ -1,20 +1,25 @@
-// import { useSelector } from 'react-redux';
-// import { selectUser } from '../../redux/slices/userSlice';
 import { useEffect, useState } from 'react';
 import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
 import { Link } from 'react-router-dom';
 import timestampToTimestring from '../../utils/timestampToTimestring';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectOrders,
+  subscribeToOrders,
+} from '../../redux/slices/ordersSlice';
 
 const OrdersList = () => {
-  // const user = useSelector(selectUser);
-  const [ordersList, setOrdersList] = useState([]);
+  const dispatch = useDispatch();
+  // const [ordersList, setOrdersList] = useState([]);
+  const ordersList = useSelector(selectOrders);
 
   useEffect(() => {
-    getDocsColectionFromDB('orders').then((data) => {
-      setOrdersList(data);
-    });
+    dispatch(subscribeToOrders());
+    // getDocsColectionFromDB('orders').then((data) => {
+    //   setOrdersList(data);
+    // });
   }, []);
-  console.log(ordersList);
+  // console.log(orders);
   return (
     <div>
       <h4>Замовлення</h4>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectOrdersDesigns,
-  subscribeToOrders,
+  subscribeToOrdersDesings,
 } from '../../redux/slices/ordersDesingsSlise';
 import { useEffect } from 'react';
 
@@ -13,7 +13,7 @@ const OrderDesingList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(subscribeToOrders());
+    dispatch(subscribeToOrdersDesings());
   }, []);
 
   return (

@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
 import { setError } from './errorSlice';
-export const subscribeToOrdersDesings = createAsyncThunk(
-  'ordersDesings/subscribeToOrdersDesingsDesingsDesings',
+export const subscribeToOrders = createAsyncThunk(
+  'ordersDesings/subscribeToOrders',
   async (_, { getState }, chunkAPI) => {
     try {
-      const { path, limit, where1, where2 } = getState().ordersDesings.params;
+      const { path, limit, where1, where2 } = getState().orders.params;
       const currentTime = new Date().getTime();
-      const lastUpdate = getState().ordersDesings.lastUpdate;
+      const lastUpdate = getState().orders.lastUpdate;
       if (lastUpdate + 6000 < currentTime) {
         console.log('updated');
         return await getDocsColectionFromDB(path, limit, where1, where2);
@@ -21,21 +21,22 @@ export const subscribeToOrdersDesings = createAsyncThunk(
         });
       }
     } catch (error) {
+      console.log(error);
       chunkAPI.dispatch(setError(error.message));
       return chunkAPI.rejectWithValue(error);
     }
   }
 );
 
-const ordersDesingsSlice = createSlice({
-  name: 'ordersDesings',
+const ordersSlice = createSlice({
+  name: 'orders',
   initialState: {
     orders: [],
     lastUpdate: '',
-    params: { path: 'ordersDesings', limit: 20, where1: '', where2: '' },
+    params: { path: 'orders', limit: 20, where1: '', where2: '' },
   },
   reducers: {
-    clearOrdersDesigns: (state) => {
+    clearOrders: (state) => {
       state.orders = [];
     },
     orderUpdated: (state, action) => {
@@ -44,22 +45,21 @@ const ordersDesingsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(subscribeToOrdersDesings.pending, (state) => {
+      .addCase(subscribeToOrders.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(subscribeToOrdersDesings.fulfilled, (state, action) => {
+      .addCase(subscribeToOrders.fulfilled, (state, action) => {
         if (action.payload) {
           state.orders = action.payload;
           state.lastUpdate = new Date().getTime();
         }
       })
-      .addCase(subscribeToOrdersDesings.rejected, (state, action) => {
+      .addCase(subscribeToOrders.rejected, (state, action) => {
         state.error = action.payload;
       });
   },
 });
 
 // export const { clearOrdersDesigns, orderUpdated } = ordersDesingsSlice.actions;
-export const selectOrdersDesigns = (state) => state.ordersDesings.orders;
-export default ordersDesingsSlice.reducer;
-// 
+export const selectOrders = (state) => state.orders.orders;
+export default ordersSlice.reducer;
