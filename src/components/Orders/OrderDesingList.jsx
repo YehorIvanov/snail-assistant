@@ -14,7 +14,7 @@ const OrderDesingList = () => {
 
   useEffect(() => {
     dispatch(subscribeToOrdersDesings());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="order-deing-list" style={{ padding: '1rem' }}>

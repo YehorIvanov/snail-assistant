@@ -30,7 +30,7 @@ const OrderDesigner = () => {
     getDocFromDB('ordersDesings', params.slug).then((data) => {
       setOrderDesigner(data);
     });
-  }, []);
+  }, [params.slug]);
 
   const handlerDeletOrderDesing = () => {
     deleteFileFromStorage(orderDesigner.photo);

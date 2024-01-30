@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
 import { setError } from './errorSlice';
-export const subscribeToOrders = createAsyncThunk(
-  'ordersDesings/subscribeToOrders',
+export const subscribeToUsers = createAsyncThunk(
+  'users/subscribeToUsers',
   async (_, { getState }, chunkAPI) => {
     try {
-      const { path, limit, where1, where2 } = getState().orders.params;
+      const { path, limit, where1, where2 } = getState().users.params;
       const currentTime = new Date().getTime();
       const lastUpdate = getState().orders.lastUpdate;
       if (lastUpdate + 6000 < currentTime) {
@@ -28,38 +28,38 @@ export const subscribeToOrders = createAsyncThunk(
   }
 );
 
-const ordersSlice = createSlice({
-  name: 'orders',
+const usersSlice = createSlice({
+  name: 'users',
   initialState: {
-    orders: [],
+    users: [],
     lastUpdate: '',
-    params: { path: 'orders', limit: 20, where1: '', where2: '' },
+    params: { path: 'users', limit: 20, where1: '', where2: '' },
   },
   reducers: {
-    clearOrders: (state) => {
+    clearUsers: (state) => {
       state.orders = [];
     },
-    orderUpdated: (state, action) => {
+    usersUpdated: (state, action) => {
       state.orders = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
-      // .addCase(subscribeToOrders.pending, (state) => {
-      //   state.status = 'loading';
-      // })
-      .addCase(subscribeToOrders.fulfilled, (state, action) => {
+      //   .addCase(subscribeToUsers.pending, (state) => {
+      //     state.status = 'loading';
+      //   })
+      .addCase(subscribeToUsers.fulfilled, (state, action) => {
         if (action.payload) {
-          state.orders = action.payload;
+          state.users = action.payload;
           state.lastUpdate = new Date().getTime();
         }
       })
-      .addCase(subscribeToOrders.rejected, (state, action) => {
+      .addCase(subscribeToUsers.rejected, (state, action) => {
         state.error = action.payload;
       });
   },
 });
 
 // export const { clearOrdersDesigns, orderUpdated } = ordersDesingsSlice.actions;
-export const selectOrders = (state) => state.orders.orders;
-export default ordersSlice.reducer;
+export const selectUsers = (state) => state.users.users;
+export default usersSlice.reducer;

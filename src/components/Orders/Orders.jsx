@@ -1,21 +1,24 @@
-import { useEffect, useState } from 'react';
-import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
+import { useEffect, } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import OrdersList from './OrdersList';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
 import setDocToDB from '../../utils/setDocToDB';
+import {
+  selectOrdersDesigns,
+  subscribeToOrdersDesings,
+} from '../../redux/slices/ordersDesingsSlise';
 
 const Orders = () => {
   const user = useSelector(selectUser);
   const navigate = useNavigate();
-  const [ordersDesings, setOrdersDesings] = useState([]);
-  useEffect(() => {
-    getDocsColectionFromDB('ordersDesings').then((colection) => {
-      setOrdersDesings(colection);
-    });
-  }, []);
+  const ordersDesings = useSelector(selectOrdersDesigns);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(subscribeToOrdersDesings());
+  }, [dispatch]);
+  console.log(ordersDesings);
   const handlerNewOrder = (slug) => {
     const selectedDesing = {
       ...ordersDesings.filter((desing) => desing.slug === slug)[0],
@@ -45,7 +48,6 @@ const Orders = () => {
         console.log('error sending', e);
       });
     console.log(newOrder);
-
   };
 
   return (
@@ -55,27 +57,28 @@ const Orders = () => {
     >
       <h2>Orders</h2>
       <div>
-        {ordersDesings
-          .filter((order) => order.published)
-          .map((order) => {
-            return (
-              <button
-                key={order.slug}
-                onClick={() => {
-                  handlerNewOrder(order.slug);
-                }}
-                style={{
-                  backgroundImage: `url(${order.photo})`,
-                  backgroundSize: 'cover',
-                  width: '40%',
-                  height: '16rem',
-                  margin: '1rem',
-                }}
-              >
-                {order.name}
-              </button>
-            );
-          })}
+        {ordersDesings &&
+          ordersDesings
+            .filter((order) => order.published)
+            .map((order) => {
+              return (
+                <button
+                  key={order.slug}
+                  onClick={() => {
+                    handlerNewOrder(order.slug);
+                  }}
+                  style={{
+                    backgroundImage: `url(${order.photo})`,
+                    backgroundSize: 'cover',
+                    width: '40%',
+                    height: '16rem',
+                    margin: '1rem',
+                  }}
+                >
+                  {order.name}
+                </button>
+              );
+            })}
       </div>
       <hr />
       <Link to="/orders/desing-list">

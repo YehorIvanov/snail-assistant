@@ -5,9 +5,11 @@ import { useNavigate, useParams } from 'react-router';
 import Product from './Product';
 import getDocFromDB from '../../utils/getDocFromDB';
 import setDocToDB from '../../utils/setDocToDB';
+
 const Order = () => {
   const params = useParams();
   const navigate = useNavigate();
+
   // const user = useSelector(selectUser);
   const [order, setOrder] = useState({});
   useEffect(() => {
