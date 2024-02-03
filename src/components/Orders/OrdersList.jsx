@@ -10,16 +10,12 @@ import {
 
 const OrdersList = () => {
   const dispatch = useDispatch();
-  // const [ordersList, setOrdersList] = useState([]);
   const ordersList = useSelector(selectOrders);
 
   useEffect(() => {
     dispatch(subscribeToOrders());
-    // getDocsColectionFromDB('orders').then((data) => {
-    //   setOrdersList(data);
-    // });
   }, []);
-  // console.log(orders);
+
   return (
     <div>
       <h4>Замовлення</h4>

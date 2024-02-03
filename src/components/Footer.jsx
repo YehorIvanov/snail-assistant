@@ -4,6 +4,7 @@ import {
   FaShoppingCart,
   FaBook,
   FaUserCircle,
+  FaClipboardCheck,
 } from 'react-icons/fa';
 import { GoChecklist } from 'react-icons/go';
 import { useSelector } from 'react-redux';
@@ -14,21 +15,27 @@ function Footer() {
   const user = useSelector(selectUser);
   return (
     <footer className="footer">
-      <Link to="/docs">
-        <FaBook size="2em" />
-      </Link>
-      <Link to="/orders">
-        <FaShoppingCart size="2em" />
-      </Link>
-      <Link to="/">
-        <FaHome size="2em" />
-      </Link>
-      <Link to="/reports">
-        <GoChecklist size="2em" />
-      </Link>
-      <Link to="/user">
-        {!!user ? <FaUserCircle size="2em" /> : <FaRegUserCircle size="2em" />}
-      </Link>
+      <nav className="footer_nav">
+        <Link className="footer_link" to="/docs">
+          <FaBook size="3rem" />
+        </Link>
+        <Link className="footer_link" to="/orders">
+          <FaShoppingCart size="3rem" />
+        </Link>
+        <Link className="footer_link" to="/">
+          <FaHome size="3rem" />
+        </Link>
+        <Link className="footer_link" to="/reports">
+          <FaClipboardCheck size="3rem" />
+        </Link>
+        <Link className="footer_link" to="/user">
+          {!!user ? (
+            <FaUserCircle size="3rem" />
+          ) : (
+            <FaRegUserCircle size="3rem" />
+          )}
+        </Link>
+      </nav>
     </footer>
   );
 }

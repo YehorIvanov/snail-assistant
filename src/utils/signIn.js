@@ -22,9 +22,10 @@ const signInWithGoogle = async () => {
               email: credentials.user.email,
               firstName: '',
               lastName: '',
+              tel: '',
+              admin: '',
               role: {
                 isGuest: true,
-                isЕrainee: false,
                 isBarista: false,
                 isAdmin: false,
                 isSuperadmin: false,

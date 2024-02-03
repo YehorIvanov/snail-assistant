@@ -16,6 +16,8 @@ import Order from './Orders/Order';
 import OrderDesigner from './Orders/OrderDesigner';
 import OrderDesingList from './Orders/OrderDesingList';
 import OrderViev from './Orders/OrderViev';
+import UserEdit from './User/UserEdit';
+import Users from './User/Users';
 
 const AppRouter = () => {
   const user = useSelector(selectUser);
@@ -36,13 +38,18 @@ const AppRouter = () => {
     };
   }, [dispatch]);
 
-  return !!user ? (
+  return !!user &&
+    (!!user.role.isAdmin ||
+      !!user.role.isSuperAdmin ||
+      !!user.role.isBarista) ? (
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route path="/user" element={<User />} />
+        <Route path="/user/edit-user/:slug" element={<UserEdit />} />
+        <Route path="/user/users" element={<Users />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/orders/:slug" element={<Order />} />
-        <Route path='/orders/viev/:slug' element={ <OrderViev/>}/>
+        <Route path="/orders/viev/:slug" element={<OrderViev />} />
         <Route path="/orders/desing-list" element={<OrderDesingList />} />
         <Route
           path="/orders/order-desinger/:slug"
@@ -63,7 +70,7 @@ const AppRouter = () => {
     </Routes>
   ) : (
     <Routes>
-      <Route path="/" element={<MainLayout />}>
+      <Route path="/" element={<Login />}>
         <Route index element={<Login />} />
         <Route path="*" element={<Login />} />
       </Route>

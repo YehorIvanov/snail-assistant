@@ -6,17 +6,20 @@ import signOut from '../utils/signOut';
 import signInWithGoogle from '../utils/signIn';
 
 const Login = () => {
+  
   const user = useSelector(selectUser);
   if (user) {
     return (
       <div className="login">
-        <img
-          className="login_avatar"
-          src={user.userPhotoURL}
-          alt="User avatar"
-          referrerPolicy="no-referrer"
-        />
-        <h4 className="login_username">{user && user.userName}</h4>
+        <div className="login_logo-box">
+          <GiSnail size="12rem" />
+          <h3 className="login_title">assistant</h3>
+        </div>
+        <p>
+          Ви увійшли як{' '}
+          <span style={{ color: 'var(--accent-color)' }}>{user.userName}</span>{' '}
+          для надяння доступу зверніться до свого адміністратора
+        </p>
         <button className="login_button" onClick={signOut}>
           Вийти
         </button>
@@ -25,9 +28,10 @@ const Login = () => {
   }
   return (
     <div className="login">
-      <h2 className="login_title">
+      <div className="login_logo-box">
         <GiSnail size="12rem" />
-      </h2>
+        <h3 className="login_title">assistant</h3>
+      </div>
       <button className="login_button" onClick={signInWithGoogle}>
         Увійти з Google
       </button>
