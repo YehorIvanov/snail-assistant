@@ -1,8 +1,8 @@
 function getUniqueAdminValues(users) {
   let uniqueValues = new Set();
   users.forEach((user) => {
-    if (user.admin) {
-      const adminString = JSON.stringify(user.admin);
+    if (user.role.isAdmin) {
+      const adminString = JSON.stringify({email: user.email, userName: user.userName});
       uniqueValues.add(adminString);
     }
   });

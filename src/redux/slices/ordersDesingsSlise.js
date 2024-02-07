@@ -5,17 +5,26 @@ export const subscribeToOrdersDesings = createAsyncThunk(
   'ordersDesings/subscribeToOrdersDesingsDesingsDesings',
   async (_, { getState }, chunkAPI) => {
     try {
-      const { path, limit, where1, where2 } = getState().ordersDesings.params;
+      const { path, orderedBy, limit, where1, where2 } =
+        getState().ordersDesings.params;
       const currentTime = new Date().getTime();
       const lastUpdate = getState().ordersDesings.lastUpdate;
       if (lastUpdate + 6000 < currentTime) {
         console.log('updated');
-        return await getDocsColectionFromDB(path, limit, where1, where2);
+        return await getDocsColectionFromDB(
+          path,
+          orderedBy,
+          limit,
+          where1,
+          where2
+        );
       } else {
         const remainingTime = lastUpdate + 60000 - currentTime;
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve(getDocsColectionFromDB(path, limit, where1, where2));
+            resolve(
+              getDocsColectionFromDB(path, orderedBy, limit, where1, where2)
+            );
             console.log('updated');
           }, remainingTime);
         });
@@ -32,7 +41,13 @@ const ordersDesingsSlice = createSlice({
   initialState: {
     orders: [],
     lastUpdate: '',
-    params: { path: 'ordersDesings', limit: 20, where1: '', where2: '' },
+    params: {
+      path: 'ordersDesings',
+      limit: 20,
+      where1: '',
+      where2: '',
+      orderedBy: 'lastUpdate',
+    },
   },
   reducers: {
     clearOrdersDesigns: (state) => {
@@ -44,9 +59,9 @@ const ordersDesingsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    //   .addCase(subscribeToOrdersDesings.pending, (state) => {
-    //     state.status = 'loading';
-    //   })
+      //   .addCase(subscribeToOrdersDesings.pending, (state) => {
+      //     state.status = 'loading';
+      //   })
       .addCase(subscribeToOrdersDesings.fulfilled, (state, action) => {
         if (action.payload) {
           state.orders = action.payload;
@@ -62,4 +77,4 @@ const ordersDesingsSlice = createSlice({
 // export const { clearOrdersDesigns, orderUpdated } = ordersDesingsSlice.actions;
 export const selectOrdersDesigns = (state) => state.ordersDesings.orders;
 export default ordersDesingsSlice.reducer;
-// 
+//

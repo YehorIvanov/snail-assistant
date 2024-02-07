@@ -1,4 +1,11 @@
-import { collection, getDocs, limit, query, where } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  where,
+} from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
 /**
@@ -9,7 +16,14 @@ import { db } from '../firebaseConfig';
  * @param {Array} [where2] - An array specifying the second condition to filter the documents.
  * @returns {Promise<Array>} - An array of document data that matches the specified conditions.
  */
-const getDocsColectionFromDB = async (path, limited = 500, where1, where2) => {
+const getDocsColectionFromDB = async (
+  path,
+  orderedBy,
+  limited = 500,
+  where1,
+  where2
+) => {
+  orderBy('lastUpdate', 'asc');
   try {
     const queryConditions = [];
     if (where1) {
@@ -18,7 +32,9 @@ const getDocsColectionFromDB = async (path, limited = 500, where1, where2) => {
     if (where2) {
       queryConditions.push(where(where2[0], where2[1], where2[2]));
     }
-
+    if (orderedBy) {
+      queryConditions.push(orderBy(orderedBy, 'desc'));
+    }
     const q = query(collection(db, path), ...queryConditions, limit(limited));
 
     const querySnapshot = await getDocs(q);

@@ -1,22 +1,60 @@
 import React from 'react';
 import signOut from '../../utils/signOut';
-import Users from './Users';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser, setUser } from '../../redux/slices/userSlice';
 import { FaSignOutAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router';
 
 const User = () => {
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  console.log('isBarista: ', user.role.isBarista);
+  console.log('isAdmin: ', user.role.isAdmin);
+  console.log('isSuperadmin: ', user.role.isSuperadmin);
+
+  const handlerOnBaristaClick = () => {
+    dispatch(
+      setUser({
+        ...user,
+        role: {
+          ...user.role,
+          isBarista: !user.role.isBarista,
+        },
+      })
+    );
+  };
+
+  const handlerOnAdminClick = () => {
+    dispatch(
+      setUser({
+        ...user,
+        role: {
+          ...user.role,
+          isAdmin: !user.role.isAdmin,
+        },
+      })
+    );
+  };
+  const handlerOnSuperadminClick = () => {
+    dispatch(
+      setUser({
+        ...user,
+        role: {
+          ...user.role,
+          isSuperadmin: !user.role.isSuperadmin,
+        },
+      })
+    );
+    console.log('isSuperadmin: ', user.role.isSuperadmin);
+  };
   return (
     <>
       <div className="user">
-        {/* <h2>User</h2> */}
         <div
           style={{
-            // backgroundColor: 'rgba(255,255,255, 0.1)',
             padding: '1rem 1rem 1rem',
-            // margin: '1rem 1rem 1rem',
             borderRadius: '2rem',
             gap: '1rem',
             display: 'flex',
@@ -27,7 +65,6 @@ const User = () => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              // padding: '0.5rem',
               gap: '1rem',
               backgroundColor: 'rgba(255, 255, 255, 0.2)',
               borderRadius: '2.5rem',
@@ -57,8 +94,47 @@ const User = () => {
             </button>
           </div>
         </div>
+        <div
+          style={{
+            display: 'flex',
+            gap: '2rem',
+            justifyContent: 'flex-start',
+            padding: '1rem',
+          }}
+        >
+          <label>
+            <input
+              type="checkbox"
+              checked={user.role.isBarista}
+              onChange={handlerOnBaristaClick}
+            />{' '}
+            Barista
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={user.role.isAdmin}
+              onChange={handlerOnAdminClick}
+            />{' '}
+            Admin
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={user.role.isSuperadmin}
+              onChange={handlerOnSuperadminClick}
+            />{' '}
+            Superadmin
+          </label>
+        </div>
+        <button
+          onClick={() => {
+            navigate('/user/users');
+          }}
+        >
+          Керувати Користувачами
+        </button>
       </div>
-      <Users />
     </>
   );
 };

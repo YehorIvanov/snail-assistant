@@ -1,21 +1,31 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
 import { setError } from './errorSlice';
+import { orderBy } from 'firebase/firestore';
 export const subscribeToOrders = createAsyncThunk(
   'ordersDesings/subscribeToOrders',
   async (_, { getState }, chunkAPI) => {
     try {
-      const { path, limit, where1, where2 } = getState().orders.params;
+      const { path, orderedBy, limit, where1, where2 } =
+        getState().orders.params;
       const currentTime = new Date().getTime();
       const lastUpdate = getState().orders.lastUpdate;
       if (lastUpdate + 6000 < currentTime) {
         console.log('updated');
-        return await getDocsColectionFromDB(path, limit, where1, where2);
+        return await getDocsColectionFromDB(
+          path,
+          orderedBy,
+          limit,
+          where1,
+          where2
+        );
       } else {
         const remainingTime = lastUpdate + 60000 - currentTime;
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve(getDocsColectionFromDB(path, limit, where1, where2));
+            resolve(
+              getDocsColectionFromDB(path, orderedBy, limit, where1, where2)
+            );
             console.log('updated');
           }, remainingTime);
         });
@@ -33,7 +43,13 @@ const ordersSlice = createSlice({
   initialState: {
     orders: [],
     lastUpdate: '',
-    params: { path: 'orders', limit: 20, where1: '', where2: '' },
+    params: {
+      path: 'orders',
+      limit: 100,
+      where1: '',
+      where2: '',
+      orderedBy: 'lastUpdate',
+    },
   },
   reducers: {
     clearOrders: (state) => {

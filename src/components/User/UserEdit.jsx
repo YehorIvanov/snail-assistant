@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
-// import { slugify } from 'transliteration';
 import setDocToDB from '../../utils/setDocToDB';
 import { useNavigate, useParams } from 'react-router';
-import { selectUsers } from '../../redux/slices/usersSlice';
+import { selectUsers, subscribeToUsers } from '../../redux/slices/usersSlice';
 import getUniqueAdminValues from '../../utils/getUniqueAdminValues';
+import './UserEdit.css';
+import Compressor from 'compressorjs';
+import getNewFileNameByUser from '../../utils/getNewFileNameByUser';
+import uploadFileToStorage from '../../utils/uploadFileToStorage';
+import deleteFileFromStorage from '../../utils/deleteFileFromStorage';
+import deleteDocFromDB from '../../utils/deleteDocFromDB';
 import { setError } from '../../redux/slices/errorSlice';
+
 const UserEdit = () => {
   const user = useSelector(selectUser);
   const users = useSelector(selectUsers);
@@ -17,6 +23,21 @@ const UserEdit = () => {
     users.filter((user) => user.email === params.slug)[0]
   );
   console.log(editingUser);
+  const handlerOnSave = () => {
+    if (editingUser.role.isAdmin && !user.role.isSuperadmin) {
+      dispatch(
+        setError(
+          `Для редагування данних адміністратора ${editingUser.userName} перейдіть в режим Superadmin`
+        )
+      );
+      return;
+    }
+    setDocToDB('users', editingUser.email, editingUser).then(() => {
+      console.log('user saved');
+      navigate('/user/users');
+    });
+  };
+
   const handlerOnAdminChange = (selected) => {
     console.log(selected);
     const admin = {
@@ -62,57 +83,108 @@ const UserEdit = () => {
         ...editingUser,
         role: { ...editingUser.role, isAdmin: e.target.checked },
       });
+      return;
     }
+    dispatch(
+      setError(
+        `Для зміни прав адміністратора ${editingUser.userName} перейдіть в режим Superadmin`
+      )
+    );
   };
-  const handlerOnAvatarChange = () => {};
+  const handlerOnAvatarChange = (e) => {
+    const photo = e.target.files[0];
+    if (!photo) {
+      console.log('no file');
+      return;
+    }
+    new Compressor(photo, {
+      quality: 0.6,
+      maxWidth: 425,
+      maxHeight: 425,
+      convertTypes: 'image/jpeg, image/png',
+      success(result) {
+        result.name = getNewFileNameByUser(result.name, editingUser.email);
+        uploadFileToStorage(result, result.name, 'usersAvatars').then((url) => {
+          if (editingUser) {
+            deleteFileFromStorage(editingUser.userPhotoURL).catch((err) =>
+              console.log('не вдалося видалити попередне фото', err)
+            );
+          }
+          setEditingUser({
+            ...editingUser,
+            userPhotoURL: url,
+          });
+          setDocToDB('users', editingUser.email, {
+            ...editingUser,
+            userPhotoURL: url,
+          }).then(() => {});
+        });
+      },
+      error(err) {
+        console.log(err.message);
+      },
+    });
+  };
+  const handlerOnUserDelete = (e) => {
+    if (!editingUser) {
+      console.log('no user');
+      return;
+    }
+    console.log(
+      editingUser.role.isAdmin && user.role.isSuperadmin,
+      editingUser.role.isAdmin,
+      user.role.isSuperadmin
+    );
+    if (editingUser.role.isAdmin && !user.role.isSuperadmin) {
+      dispatch(
+        setError(
+          `Для видалення адміністратора ${editingUser.userName} перейдіть в режим Superadmin`
+        )
+      );
+      return;
+    }
+    deleteFileFromStorage(editingUser.userPhotoURL);
+    deleteDocFromDB('users', editingUser.email)
+      .then(() => {
+        navigate('/user/users');
+      })
+      .catch((err) => console.log(err));
+  };
 
   if (!!user && (!!user.role.isAdmin || !!user.role.isSuperAdmin)) {
     return (
-      <div>
-        <h4>Редагувати користувача</h4>
-        <p>{editingUser?.userName}</p>
-
+      <div className="user-edit">
         <form onSubmit={() => {}} className="user-edit_form">
-          <label
-            className="photo-picker_label"
-            style={
-              editingUser?.userPhotoURL
-                ? { backgroundImage: `url(${editingUser.userPhotoURL})` }
-                : null
-            }
-          >
-            ОБРАТИ ФОТО
-            <input
-              className="photo-picker_input"
-              onChange={handlerOnAvatarChange}
-              type="file"
-              accept="image/jpeg, image/png"
-            />
-          </label>
-          <input
-            className="user-edit_input"
-            style={{ width: '100%' }}
-            type="email"
-            onChange={() => {}}
-            value={editingUser?.email}
-            disabled
-          />
-          <input
-            className="user-edit_input"
-            style={{ width: '100%' }}
-            type="text"
-            placeholder="Ім'я"
-            onChange={() => {}}
-            value={editingUser.userName}
-            disabled
-          />
+          <div className="user-edit_form-header">
+            <label
+              className="photo-picker_label user-edit_avatar"
+              style={
+                editingUser?.userPhotoURL
+                  ? { backgroundImage: `url(${editingUser.userPhotoURL})` }
+                  : null
+              }
+            >
+              ОБРАТИ ФОТО
+              <input
+                className="photo-picker_input"
+                onChange={handlerOnAvatarChange}
+                type="file"
+                accept="image/jpeg, image/png"
+              />
+            </label>
+            <div className="user-edit_info">
+              <h4 className="user-edit_title">{editingUser?.userName}</h4>
+              <p>{editingUser?.email}</p>
+            </div>
+          </div>
+
           <input
             className="user-edit_input"
             style={{ width: '100%' }}
             type="text"
             placeholder="Ім'я"
             onChange={handlerOnFirstNameChange}
-            value={editingUser.firstName}
+            value={editingUser?.firstName}
           />
           <input
             className="user-edit_input"
@@ -120,25 +192,25 @@ const UserEdit = () => {
             type="text"
             placeholder="Прізвище"
             onChange={handlerOnLastNameChange}
-            value={editingUser.lastName}
+            value={editingUser?.lastName}
           />
+          <label>Телефон:</label>
           <input
             className="user-edit_input"
             style={{ width: '100%' }}
             type="tel"
-            placeholder="Телефон"
+            placeholder="Телефон: xxx xxxxxxx"
             onChange={handlerOnTelChange}
-            value={editingUser.tel}
+            value={editingUser?.tel}
           />
           <label>
             Адміністратор:
             <select
               className="users_filter-select"
-              value={editingUser.admin.userName}
-              // defaultValue={editingUser.admin.userName}
+              value={editingUser?.admin.userName}
               onChange={(e) => handlerOnAdminChange(e.target.value)}
             >
-              {editingUser.admin ? (
+              {editingUser?.admin ? (
                 <option value={editingUser.admin.email}>
                   {editingUser.admin.userName}
                 </option>
@@ -154,46 +226,29 @@ const UserEdit = () => {
               })}
             </select>
           </label>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
+          <div className="user-edit_role-box">
             <label>
               <input
                 type="checkbox"
-                checked={editingUser.role.isBarista}
+                checked={editingUser?.role.isBarista}
                 onChange={handlerOnRoleBaristaChange}
-                value={editingUser.role.isBarista}
-                // disabled={!user.isAdmin}
               />
-              {'   '}
-              Бариста
+              {'  Бариста'}
             </label>
             <label>
-              {' '}
               <input
                 type="checkbox"
-                checked={editingUser.role.isAdmin}
+                checked={editingUser?.role.isAdmin}
                 onChange={handlerOnRoleAdminChange}
-                // disabled={!user.role.isSuperadmin}
               />
-              Адмін
-            </label>
-            <label>
-              {'   '}
-              <input
-                type="checkbox"
-                checked={editingUser.role.isSuperadmin}
-                onChange={() => {}}
-                disabled
-              />
-              СуперАдмін
+              {'   Адмін'}
             </label>
           </div>
-          <button className="new-user_button" type="submit">
+          <button
+            className="new-user_button"
+            type="button"
+            onClick={handlerOnSave}
+          >
             Зберегти Зміни
           </button>
           <button
@@ -203,59 +258,17 @@ const UserEdit = () => {
           >
             повернутись без Зміни
           </button>
-          <button className="new-user_button" type="submit">
-            Видалити
+          <button
+            className="new-user_button"
+            type="button"
+            onClick={handlerOnUserDelete}
+          >
+            Видалити користувача
           </button>
         </form>
       </div>
     );
   }
-
-  //   const handlerNewUserCreate = () => {};
-  //   const handlerOnEmailChange = () => {};
-  //   return (
-  //     <form
-  //     //   onSubmit={handlerCreateNewOrderDesing}
-  //       className="new-user_form"
-  //       style={{ display: 'flex', gap: '1rem' }}
-  //     >
-  //       <input
-  //         className="new-user_input"
-  //         // style={{ width: '100%' }}
-  //         type="email"
-  //         placeholder="email нового користувача"
-  //         onChange={handlerOnEmailChange}
-  //         // value={orderDesingName}
-  //       />
-  //       <button className="new-user_button" type="submit">
-  //         Створити
-  //       </button>
-  //     </form>
-  //   );
 };
 
 export default UserEdit;
-
-// const NewOrderDesing = () => {
-//   const user = useSelector(selectUser);
-//   const navigate = useNavigate();
-//   const [orderDesingName, setOrderDesingName] = useState('');
-//   const handlerOrderDesingNameChange = (e) => {
-//     setOrderDesingName(e.target.value);
-//   };
-//   const handlerCreateNewOrderDesing = (e) => {
-//     e.preventDefault();
-//     const newOrderDesing = {
-//       name: orderDesingName,
-//       slug: slugify(orderDesingName),
-//       products: [],
-//       creator: { email: user.email, user: user.userName },
-//       lastUpdate: new Date().getTime(),
-//       published: false,
-//     };
-
-//     setDocToDB('ordersDesings', newOrderDesing.slug, newOrderDesing).then(() =>
-//       navigate(`/orders/order-desinger/${newOrderDesing.slug}`)
-//     );
-//   };
-// };

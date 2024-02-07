@@ -18,6 +18,7 @@ import OrderDesingList from './Orders/OrderDesingList';
 import OrderViev from './Orders/OrderViev';
 import UserEdit from './User/UserEdit';
 import Users from './User/Users';
+import { subscribeToUsers } from '../redux/slices/usersSlice';
 
 const AppRouter = () => {
   const user = useSelector(selectUser);
@@ -36,6 +37,10 @@ const AppRouter = () => {
     return () => {
       unsubscribe();
     };
+  }, [dispatch]);
+  
+  useEffect(() => {
+    dispatch(subscribeToUsers());
   }, [dispatch]);
 
   return !!user &&

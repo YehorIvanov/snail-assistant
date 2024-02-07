@@ -5,17 +5,26 @@ export const subscribeToUsers = createAsyncThunk(
   'users/subscribeToUsers',
   async (_, { getState }, chunkAPI) => {
     try {
-      const { path, limit, where1, where2 } = getState().users.params;
+      const { path, orderedBy, limit, where1, where2 } =
+        getState().users.params;
       const currentTime = new Date().getTime();
       const lastUpdate = getState().orders.lastUpdate;
       if (lastUpdate + 6000 < currentTime) {
         console.log('updated');
-        return await getDocsColectionFromDB(path, limit, where1, where2);
+        return await getDocsColectionFromDB(
+          path,
+          orderedBy,
+          limit,
+          where1,
+          where2
+        );
       } else {
         const remainingTime = lastUpdate + 60000 - currentTime;
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve(getDocsColectionFromDB(path, limit, where1, where2));
+            resolve(
+              getDocsColectionFromDB(path, orderedBy, limit, where1, where2)
+            );
             console.log('updated');
           }, remainingTime);
         });
@@ -33,7 +42,13 @@ const usersSlice = createSlice({
   initialState: {
     users: [],
     lastUpdate: '',
-    params: { path: 'users', limit: 20, where1: '', where2: '' },
+    params: {
+      path: 'users',
+      limit: 20,
+      where1: '',
+      where2: '',
+      orderedBy: 'lastLogin',
+    },
   },
   reducers: {
     clearUsers: (state) => {

@@ -41,7 +41,6 @@ const Users = () => {
     }
   };
 
-
   if ((!!user && !!user.role.isAdmin) || !!user.role.isSuperAdmin) {
     return (
       <div className="users">
@@ -77,8 +76,12 @@ const Users = () => {
                 />
                 <div className="users_user-info">
                   <span>{user?.userName}</span> <span>{user?.email}</span>
-                  <span>{user?.tel}</span> <span>{user?.firstName}</span>
-                  <span>{user?.lastName}</span>
+                  <a
+                    href={`tel:${user?.tel}`}
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                  >
+                    {user?.tel}
+                  </a>
                   <span>Адміністратор: {user?.admin.userName}</span>
                 </div>
                 <Link to={`/user/edit-user/${user.email}`}>
