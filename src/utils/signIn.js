@@ -4,6 +4,8 @@ import { auth, googleAuthProvider } from '../firebaseConfig';
 import getDocFromDB from './getDocFromDB';
 import setDocToDB from './setDocToDB';
 import updateDocInDB from './updateDocInDB';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../redux/slices/userSlice';
 
 const signInWithGoogle = async () => {
   await signInWithPopup(auth, googleAuthProvider).then((credentials) => {
@@ -30,6 +32,10 @@ const signInWithGoogle = async () => {
                 isAdmin: false,
                 isSuperadmin: false,
               },
+            }).then(() => {
+              getDocFromDB('users', credentials.user.email).then((userData) =>
+                dispatchEvent(setUser(userData))
+              );
             });
           }
         });
