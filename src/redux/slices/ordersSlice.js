@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
 import { setError } from './errorSlice';
-import { orderBy } from 'firebase/firestore';
 export const subscribeToOrders = createAsyncThunk(
   'ordersDesings/subscribeToOrders',
   async (_, { getState }, chunkAPI) => {
@@ -11,7 +10,7 @@ export const subscribeToOrders = createAsyncThunk(
       const currentTime = new Date().getTime();
       const lastUpdate = getState().orders.lastUpdate;
       if (lastUpdate + 6000 < currentTime) {
-        console.log('updated');
+        // console.log('updated');
         return await getDocsColectionFromDB(
           path,
           orderedBy,
@@ -26,7 +25,7 @@ export const subscribeToOrders = createAsyncThunk(
             resolve(
               getDocsColectionFromDB(path, orderedBy, limit, where1, where2)
             );
-            console.log('updated');
+            // console.log('updated');
           }, remainingTime);
         });
       }

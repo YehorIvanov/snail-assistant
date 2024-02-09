@@ -32,7 +32,7 @@ const OrderViev = () => {
   useEffect(() => {
     if (order?.products) {
       setShowStock(
-        !order.products.filter((elem) => elem.productStock !== 0).length === 0
+        order.products.filter((elem) => elem.productStock !== 0).length > 0
       );
     }
   }, [order]);

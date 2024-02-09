@@ -4,9 +4,9 @@ import { selectUser } from '../redux/slices/userSlice';
 import { GiSnail } from 'react-icons/gi';
 import signOut from '../utils/signOut';
 import signInWithGoogle from '../utils/signIn';
+import './Login.css';
 
 const Login = () => {
-  
   const user = useSelector(selectUser);
   if (user) {
     return (

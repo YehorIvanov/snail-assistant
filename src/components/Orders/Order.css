@@ -1,0 +1,25 @@
+.order {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 0.5rem;
+  padding: 1rem 1rem 7rem;
+}
+.order_title {
+  margin-bottom: 0.5rem;
+  position: sticky;
+  display: block;
+}
+.order_cafe-select {
+  margin-bottom: 0.5rem;
+}
+.order_cafe-option {
+}
+.order_tooltip {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 0 0 70px;
+  gap: 1rem;
+}
+.order_button {
+}

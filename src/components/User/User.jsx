@@ -10,10 +10,6 @@ const User = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log('isBarista: ', user.role.isBarista);
-  console.log('isAdmin: ', user.role.isAdmin);
-  console.log('isSuperadmin: ', user.role.isSuperadmin);
-
   const handlerOnBaristaClick = () => {
     dispatch(
       setUser({

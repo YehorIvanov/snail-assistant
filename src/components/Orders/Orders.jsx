@@ -8,19 +8,18 @@ import {
   selectOrdersDesigns,
   subscribeToOrdersDesings,
 } from '../../redux/slices/ordersDesingsSlise';
-
+import './Orders.css';
 const Orders = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(subscribeToOrdersDesings());
   }, [dispatch]);
-  
+
   const user = useSelector(selectUser);
   const navigate = useNavigate();
   const ordersDesings = useSelector(selectOrdersDesigns);
 
-  // console.log(ordersDesings);
   const handlerNewOrder = (slug) => {
     const selectedDesing = {
       ...ordersDesings.filter((desing) => desing.slug === slug)[0],
@@ -51,30 +50,31 @@ const Orders = () => {
       });
     console.log(newOrder);
   };
-
   return (
-    <div
-      className="orders"
-      style={{ overflowY: 'auto', padding: '2rem 1rem 6rem' }}
-    >
-      <h2>Orders</h2>
-      <div>
+    <div className="orders">
+      <h3 className="orders_title">Замовлення</h3>
+      <div
+        style={{
+          height: `${
+            ordersDesings.filter((elem) => elem.published).length * 10
+          }rem`,
+        }}
+        className="orders_button-wraper"
+      >
         {ordersDesings &&
           ordersDesings
             .filter((order) => order.published)
             .map((order) => {
               return (
                 <button
+                  className="orders_new-order-btn"
                   key={order.slug}
                   onClick={() => {
                     handlerNewOrder(order.slug);
                   }}
                   style={{
                     backgroundImage: `url(${order.photo})`,
-                    backgroundSize: 'cover',
-                    width: '40%',
-                    height: '16rem',
-                    margin: '1rem',
+                    // flex: '0 0 40%',
                   }}
                 >
                   {order.name}
@@ -83,11 +83,15 @@ const Orders = () => {
             })}
       </div>
       <hr />
-      <Link to="/orders/desing-list">
-        <button>Редагувати шаблони замовлень</button>
+      {(user.role.isAdmin || user.role.isSuperadmin) && (
+        <Link to="/orders/desing-list">
+          <button>шаблони замовлень</button>
+        </Link>
+      )}
+      <Link to="/orders/orders-list">
+        <button>Мої замовлення</button>
       </Link>
-
-      <OrdersList />
+      {/* <OrdersList /> */}
     </div>
   );
 };

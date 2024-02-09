@@ -5,24 +5,33 @@ import { useNavigate, useParams } from 'react-router';
 import Product from './Product';
 import getDocFromDB from '../../utils/getDocFromDB';
 import setDocToDB from '../../utils/setDocToDB';
-
+import './Order.css';
 const Order = () => {
   const params = useParams();
   const navigate = useNavigate();
 
   // const user = useSelector(selectUser);
   const [order, setOrder] = useState({});
+  const [addStock, setAddStock] = useState(true);
+
   useEffect(() => {
     getDocFromDB('orders', params.slug).then((data) => {
       console.log(data);
       setOrder(data);
     });
   }, [params.slug]);
-  const handlerChangeAmount = (index, action) => {
+
+  const handlerChangeAmount = (index, action, isStock) => {
     const updatedProducts = [...order.products];
-    updatedProducts[index].productAmount += action;
-    if (updatedProducts[index].productAmount < 0)
-      updatedProducts[index].productAmount = 0;
+    if (isStock) {
+      updatedProducts[index].productStock += action;
+      if (updatedProducts[index].productStock < 0)
+        updatedProducts[index].productStock = 0;
+    } else {
+      updatedProducts[index].productAmount += action;
+      if (updatedProducts[index].productAmount < 0)
+        updatedProducts[index].productAmount = 0;
+    }
     setOrder({ ...order, products: [...updatedProducts] });
   };
   const handlerCreateOrder = () => {
@@ -46,8 +55,6 @@ const Order = () => {
       <h2 className="order_title">{order?.name}</h2>
       <select
         className="order_cafe-select"
-        name=""
-        id=""
         value={order?.cafe}
         placeholder="Кав'ярня"
         onChange={handlerOnCafeChenge}
@@ -70,6 +77,21 @@ const Order = () => {
           Хрещатик 27
         </option>
       </select>
+      <label>
+        <input
+          type="checkbox"
+          checked={addStock}
+          onChange={() => {
+            setAddStock(!addStock);
+          }}
+        />{' '}
+        Подати залишки
+      </label>
+      {addStock && (
+        <div className="order_tooltip">
+          <span>Залишок</span> <span>Замовити</span>
+        </div>
+      )}
       {order.products &&
         order.products.map((product, i) => {
           return (
@@ -78,6 +100,7 @@ const Order = () => {
               {...product}
               index={i}
               handler={handlerChangeAmount}
+              addStock={addStock}
             />
           );
         })}

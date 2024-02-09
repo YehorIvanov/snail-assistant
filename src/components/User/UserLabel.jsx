@@ -3,16 +3,10 @@ import { useSelector } from 'react-redux';
 import { selectUsers } from '../../redux/slices/usersSlice';
 
 const UserLabel = ({ name, email }) => {
-  console.log(name);
-  console.log(email);
-
   const users = useSelector(selectUsers);
-
   const getAvatarByEmail = (email, users) => {
     try {
-      console.log(users.filter((elem) => elem.email === email)[0].userPhotoUrl);
       let url = users.filter((elem) => elem.email === email)[0].userPhotoURL;
-      console.log(url);
       if (url) return url;
       return '';
     } catch (e) {}

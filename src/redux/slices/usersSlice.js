@@ -10,7 +10,7 @@ export const subscribeToUsers = createAsyncThunk(
       const currentTime = new Date().getTime();
       const lastUpdate = getState().orders.lastUpdate;
       if (lastUpdate + 6000 < currentTime) {
-        console.log('updated');
+        // console.log('updated');
         return await getDocsColectionFromDB(
           path,
           orderedBy,
@@ -25,7 +25,7 @@ export const subscribeToUsers = createAsyncThunk(
             resolve(
               getDocsColectionFromDB(path, orderedBy, limit, where1, where2)
             );
-            console.log('updated');
+            // console.log('updated');
           }, remainingTime);
         });
       }

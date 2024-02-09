@@ -25,6 +25,7 @@ const OrdersList = () => {
         gap: '1rem',
         display: 'flex',
         flexDirection: 'column',
+        padding: '1rem 1rem 7rem',
       }}
     >
       <h4>Замовлення</h4>
@@ -58,7 +59,7 @@ const OrdersList = () => {
                 style={{
                   color: 'var(--fuchsia)',
                   fontWeight: '600',
-                  fontSize: '1.5rem',
+                  fontSize: '2rem',
                 }}
                 to={`/orders/viev/${elem.docName}`}
               >
