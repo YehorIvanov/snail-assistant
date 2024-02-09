@@ -1,4 +1,4 @@
-import { useEffect, } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import OrdersList from './OrdersList';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,15 +10,17 @@ import {
 } from '../../redux/slices/ordersDesingsSlise';
 
 const Orders = () => {
-  const user = useSelector(selectUser);
-  const navigate = useNavigate();
-  const ordersDesings = useSelector(selectOrdersDesigns);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(subscribeToOrdersDesings());
   }, [dispatch]);
-  console.log(ordersDesings);
+  
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
+  const ordersDesings = useSelector(selectOrdersDesigns);
+
+  // console.log(ordersDesings);
   const handlerNewOrder = (slug) => {
     const selectedDesing = {
       ...ordersDesings.filter((desing) => desing.slug === slug)[0],
@@ -34,7 +36,7 @@ const Orders = () => {
           return { ...product, productAmount: 0, productStock: 0 };
         }),
       ],
-      status: 'draft',
+      status: 'NEW',
       docName: `${new Date().getTime()}-${user.email}`,
     };
     delete newOrder.published;

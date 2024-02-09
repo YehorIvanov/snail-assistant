@@ -19,7 +19,7 @@ const OrderDesingList = () => {
   return (
     <div className="order-deing-list" style={{ padding: '1rem' }}>
       <h3>Шаблони замовлень</h3>
-      <table className="u-full-width">
+      <table style={{ width: '95%' }} >
         <tbody>
           {ordersDesings.map((elem, i) => (
             <tr key={i}>

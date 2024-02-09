@@ -1,0 +1,79 @@
+.order-view {
+  overflow-y: auto;
+}
+.order-view_button {
+  background-color: transparent;
+}
+.order-view_title {
+  /* color: var(--color); */
+  color: var(--accent-color-2);
+  text-align: left;
+  margin: 0;
+}
+.order-view_header {
+  padding: 1rem 1rem 1rem 1rem;
+  background-size: cover;
+  background-position: center;
+  text-align: right;
+}
+.order-view_order {
+  padding: 0 1rem 6rem;
+}
+.order-view_cafe {
+  text-align: left;
+  color: var(--accent-color-2);
+  margin: 0;
+}
+
+.order-view_status {
+  color: var(--accent-color-2);
+  text-align: left;
+  margin: 0;
+  /* background-color: var(--accent-color); */
+}
+.order-view_barista {
+  color: var(--accent-color-2);
+  text-align: right;
+  margin: 0;
+}
+.order-view_admin {
+  text-align: right;
+  margin: 0;
+}
+.order-view_date {
+  margin: 0;
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 0.5rem;
+  border-radius: 1.5rem;
+  display: inline-flex;
+  border: 1px solid white;
+  height: 3rem;
+  align-items: center;
+}
+.order-view_button-block {
+  display: flex;
+  gap: 1rem;
+  
+}
+.order-viev_params {
+  display: flex;
+  gap: 2rem;
+  justify-content: stretch;
+  padding: 1rem 0;
+}
+.order-view table {
+  width: 100%;
+  margin: 0 0 2rem 0;
+}
+.order-view table th {
+}
+.order-view table tr {
+  /* border-bottom: 1px solid var(--accent-color); */
+  /* margin: 0 1rem; */
+}
+.order-view table th,
+.order-view table td {
+  text-align: center;
+  padding: 0.5rem 1rem;
+  line-height: 1.5rem;
+}

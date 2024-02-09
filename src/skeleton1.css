@@ -2,18 +2,19 @@
   --fuchsia-rgb: 210, 65, 127;
   --fuchsia: #d2417f;
   --light-pink: #f1c6d8;
-  --yellow-rgb: 251, 255, 0;
+  --yellow: 251, 255, 0;
+  /*  #d2417f  #d6548b  #db6698  #df7aa5   #e48db2  #e8a0bf  #edb3cb  #f1c6d8  #f6d9e5  #faecf2 */
   --blue: rgb(0, 0, 80);
   --white: rgb(255, 255, 255);
-  /*  #d2417f  #d6548b  #db6698  #df7aa5   #e48db2  #e8a0bf  #edb3cb  #f1c6d8  #f6d9e5  #faecf2 */
   --accent-color: var(--fuchsia);
   --accent-color-2: var(--white);
+  --accent-color-3: var(--yellow);
   --color: var(--blue);
   --bg-color: var(--light-pink);
   --elem-height: 5rem;
   --border-radius: calc(var(--elem-height) / 2);
   --border: 0.25rem solid var(--color);
-  --border-accent: 0.25rem solid var(--color);
+  --border-accent: 0.25rem solid var(--accent-color);
   --glas: rgba(255, 255, 255, 0.2);
 }
 .container {
@@ -26,7 +27,7 @@
   box-sizing: border-box;
   margin: auto;
   /* margin: 0 auto; */
-  padding: 1rem 1rem 6rem 0;
+  padding: 0 0 6rem 0;
   display: flex;
   flex-direction: column;
   color: var(--color);
@@ -121,6 +122,7 @@ p {
 
 a {
   color: var(--color);
+  /* text-decoration-style: none; */
 }
 a:hover {
   color: var(--color);
@@ -131,9 +133,11 @@ button,
 input[type='submit'],
 input[type='reset'],
 input[type='button'] {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   height: var(--elem-height);
-  padding: 0 2rem;
+  padding: 0 1rem;
   text-align: center;
   font-size: 1.6rem;
   font-weight: 900;
@@ -150,7 +154,13 @@ input[type='button'] {
   color: var(--color);
   background: var(--bg-color);
 
-  backdrop-filter: blur(15px);
+  /* backdrop-filter: blur(15px); */
+}
+.button-round {
+  min-width: var(--elem-height);
+  width: var(--elem-height);
+  padding: 0.5rem;
+  height: var(--elem-height);
 }
 .button:hover,
 button:hover,
@@ -241,10 +251,11 @@ select:focus {
 }
 label,
 legend {
-  display: block;
+  display: inline-flex;
   margin-bottom: 0.5rem;
   font-weight: 600;
   text-align: left;
+  gap: 1rem;
 }
 fieldset {
   padding: 0;

@@ -15,13 +15,14 @@ import User from './User/User';
 import Order from './Orders/Order';
 import OrderDesigner from './Orders/OrderDesigner';
 import OrderDesingList from './Orders/OrderDesingList';
-import OrderViev from './Orders/OrderViev';
+import OrderView from './Orders/OrderView';
 import UserEdit from './User/UserEdit';
 import Users from './User/Users';
 import { subscribeToUsers } from '../redux/slices/usersSlice';
+import OrdersList from './Orders/OrdersList';
 
 const AppRouter = () => {
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUser)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const AppRouter = () => {
       unsubscribe();
     };
   }, [dispatch]);
-  
+
   useEffect(() => {
     dispatch(subscribeToUsers());
   }, [dispatch]);
@@ -54,7 +55,8 @@ const AppRouter = () => {
         <Route path="/user/users" element={<Users />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/orders/:slug" element={<Order />} />
-        <Route path="/orders/viev/:slug" element={<OrderViev />} />
+        <Route path="/orders/viev/:slug" element={<OrderView />} />
+        <Route path='/orders/orders-list' element={<OrdersList />} />
         <Route path="/orders/desing-list" element={<OrderDesingList />} />
         <Route
           path="/orders/order-desinger/:slug"
