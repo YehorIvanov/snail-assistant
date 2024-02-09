@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, setUser } from '../../redux/slices/userSlice';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
-
+import './User.css';
 const User = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -50,53 +50,31 @@ const User = () => {
       <div className="user">
         <div
           style={{
-            padding: '1rem 1rem 1rem',
+            // padding: '1rem 1rem 1rem',
             borderRadius: '2rem',
             gap: '1rem',
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              borderRadius: '2.5rem',
-              border: ' 0.3rem solid',
-              height: '5rem',
-              overflow: 'hidden',
-            }}
-          >
+          <div className="user_info">
             <img
+              className="user_avatar"
               src={user.userPhotoURL}
               alt="avatar"
               referrerPolicy="no-referrer"
-              style={{ width: '5rem', height: '5rem', borderRadius: '50%' }}
             />
-            <span style={{ fontSize: '1.5rem', fontWeight: '600' }}>
-              {user.userName}
-            </span>
-            <button
-              style={{
-                width: '5rem',
-                margin: '0 -0.3rem 0 auto',
-                justifySelf: 'end',
-              }}
+            <span>{user.userName}</span>
+            <button className='user_exit-btn'
+        
               onClick={signOut}
             >
               <FaSignOutAlt />
             </button>
           </div>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            gap: '2rem',
-            justifyContent: 'flex-start',
-            padding: '1rem',
-          }}
+        <div className='uaser_permissions'
+   
         >
           <label>
             <input

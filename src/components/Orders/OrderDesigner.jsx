@@ -10,7 +10,7 @@ import getNewFileNameByUser from '../../utils/getNewFileNameByUser';
 import deleteFileFromStorage from '../../utils/deleteFileFromStorage';
 import deleteDocFromDB from '../../utils/deleteDocFromDB';
 import getDocFromDB from '../../utils/getDocFromDB';
-
+import './OrderDesinger.css';
 const OrderDesigner = () => {
   const user = useSelector(selectUser);
   const params = useParams();

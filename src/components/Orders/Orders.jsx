@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import OrdersList from './OrdersList';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
 import setDocToDB from '../../utils/setDocToDB';
@@ -53,6 +52,9 @@ const Orders = () => {
   return (
     <div className="orders">
       <h3 className="orders_title">Замовлення</h3>
+      <Link to="/orders/orders-list">
+        <button>Мої замовлення</button>
+      </Link>
       <div
         style={{
           height: `${
@@ -74,7 +76,6 @@ const Orders = () => {
                   }}
                   style={{
                     backgroundImage: `url(${order.photo})`,
-                    // flex: '0 0 40%',
                   }}
                 >
                   {order.name}
@@ -82,16 +83,11 @@ const Orders = () => {
               );
             })}
       </div>
-      <hr />
       {(user.role.isAdmin || user.role.isSuperadmin) && (
         <Link to="/orders/desing-list">
           <button>шаблони замовлень</button>
         </Link>
       )}
-      <Link to="/orders/orders-list">
-        <button>Мої замовлення</button>
-      </Link>
-      {/* <OrdersList /> */}
     </div>
   );
 };

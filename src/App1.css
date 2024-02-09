@@ -1,11 +1,3 @@
-
-
-
-
-/* .order-design_controll-button {
-  width: 100%;
-} */
-
 .photo-picker {
   display: flex;
   flex-direction: column;
@@ -19,9 +11,10 @@
   background-position: center;
   background-size: cover;
   background-image: url(./img/placeholder.jpg);
-  padding-top: 7rem;
+  padding: 5rem 1rem 1rem 1rem;
   font-size: 1rem;
-  color: silver;
+  color: var(--accent-color-2);
+  text-align: center;
 }
 .photo-picker_input {
   visibility: hidden;

@@ -8,33 +8,50 @@ import {
 } from 'react-icons/fa';
 import { GoChecklist } from 'react-icons/go';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { selectUser } from '../redux/slices/userSlice';
-
+import './Footer.css';
 function Footer() {
   const user = useSelector(selectUser);
   return (
     <footer className="footer">
       <nav className="footer_nav">
-        <Link className="footer_link" to="/docs">
+        <NavLink
+          // className="footer_link"
+          className={({ isActive }) =>
+            isActive ? 'footer_link__active' : 'footer_link'
+          }
+          to="/docs"
+        >
           <FaBook size="3rem" />
-        </Link>
-        <Link className="footer_link" to="/orders">
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? 'footer_link__active' : 'footer_link'
+          }
+          to="/orders"
+        >
           <FaShoppingCart size="3rem" />
-        </Link>
-        <Link className="footer_link" to="/">
+        </NavLink>
+        <NavLink         className={({ isActive }) =>
+            isActive ? 'footer_link__active' : 'footer_link'
+          } to="/">
           <FaHome size="3rem" />
-        </Link>
-        <Link className="footer_link" to="/reports">
+        </NavLink>
+        <NavLink         className={({ isActive }) =>
+            isActive ? 'footer_link__active' : 'footer_link'
+          }to="/reports">
           <FaClipboardCheck size="3rem" />
-        </Link>
-        <Link className="footer_link" to="/user">
+        </NavLink>
+        <NavLink         className={({ isActive }) =>
+            isActive ? 'footer_link__active' : 'footer_link'
+          } to="/user">
           {!!user ? (
             <FaUserCircle size="3rem" />
           ) : (
             <FaRegUserCircle size="3rem" />
           )}
-        </Link>
+        </NavLink>
       </nav>
     </footer>
   );

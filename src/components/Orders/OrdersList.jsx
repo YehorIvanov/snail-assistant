@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import timestampToTimestring from '../../utils/timestampToTimestring';
-import getAvatarByEmail from '../../utils/getAvatarByEmail';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectOrders,
@@ -10,7 +9,10 @@ import {
 import { selectUsers } from '../../redux/slices/usersSlice';
 import '../../img/1706184943469-2229696@gmail.com.jpeg';
 import UserLabel from '../User/UserLabel';
+import './ordersList.css';
+import { FaReply } from 'react-icons/fa';
 const OrdersList = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(subscribeToOrders());
@@ -18,91 +20,92 @@ const OrdersList = () => {
 
   const ordersList = useSelector(selectOrders);
   const users = useSelector(selectUsers);
-
+  console.log(ordersList);
+  const getUniqueBarista = (ordersList) => {
+    let uniqueValues = new Set();
+    ordersList.forEach((order) => {
+      if (order.creator.name) {
+        const baristaString = JSON.stringify(order.creator.name);
+        uniqueValues.add(baristaString);
+      }
+    });
+    return Array.from(uniqueValues).map((baristaString) =>
+      JSON.parse(baristaString)
+    );
+  };
+  console.log(getUniqueBarista(ordersList));
   return (
-    <div
-      style={{
-        gap: '1rem',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '1rem 1rem 7rem',
-      }}
-    >
-      <h4>Замовлення</h4>
-
+    <div className="orders-list">
+      <h4 className="orders-list_title">Мої замовлення</h4>
+      <div className="orders-list_filters">
+        <div className="orders-list_filter-group">
+          <select>
+            <option value="">Type</option>
+          </select>
+          <select placeholder="cafe">
+            <option value="">cafe</option>
+          </select>
+        </div>
+        <div className="orders-list_filter-group">
+          <select>
+            <option value="">Бариста</option>
+            {ordersList &&
+              getUniqueBarista(ordersList).map((barista) => {
+                return <option value={barista}>{barista}</option>;
+              })}
+          </select>
+          <select placeholder="cafe">
+            <option value="">status</option>
+          </select>
+        </div>
+        <div className="orders-list_filter-group">
+          <button
+            className="order-view_button"
+            style={{
+              width: 'var(--elem-height)',
+              minWidth: 'var(--elem-height)',
+              height: 'var(--elem-height)',
+              padding: '0.5rem',
+            }}
+            onClick={() => {
+              navigate('./');
+            }}
+          >
+            <FaReply />
+          </button>
+          <select name="" id="">
+            <option value="">admin</option>
+          </select>
+        </div>
+      </div>
       {ordersList.map((elem, i) => {
         return (
           <div
-            className=""
+            className="orders-list_order-box"
             key={i}
             style={{
-              border: '1px solid white',
-              borderRadius: '1rem',
-              padding: '1rem',
-              gap: '1rem',
-              display: 'flex',
-              flexDirection: 'column',
               backgroundImage: `url(${elem.photo}), linear-gradient(45deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4))`,
-              backgroundBlendMode: 'overlay',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                gap: '1rem',
-              }}
-            >
+            <div className="orders-list_order-top">
               <Link
-                style={{
-                  color: 'var(--fuchsia)',
-                  fontWeight: '600',
-                  fontSize: '2rem',
-                }}
+                className="orders-list_order-name"
                 to={`/orders/viev/${elem.docName}`}
               >
                 {elem.name}
               </Link>
-              <span>{elem?.cafe ? elem.cafe : 'Назва Локації'}</span>
+              <UserLabel {...elem?.creator} />
             </div>
-            <span style={{ alignSelf: 'flex-end' }}>{elem.status}</span>
+            <span className="orders-list_order-status">{elem.status}</span>
             <div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
-              >
-                {/* <div
-                  style={{
-                    borderRadius: '1rem',
-                    height: '2rem',
-                    backgroundColor: 'var(--glas)',
-                    display: 'inline-flex',
-                    gap: '0.5rem',
-                    alignItems: 'center',
-                    padding: '0 0.5rem 0 0',
-                    fontSize: '1.2rem',
-                    fontWeight: '600',
-                  }}
+              <div className="orders-list_order-bottom">
+                <span className="orders-list_order-cafe">
+                  {elem?.cafe ? elem.cafe : 'Назва Локації'}
+                </span>
+                <span
+                  className="orders-list_order-date"
+                  style={{ fontSize: '1.2rem' }}
                 >
-                  <img
-                    src={getAvatarByEmail(elem.creator.email, users)}
-                    alt="avatar"
-                    referrerPolicy="no-referrer"
-                    style={{
-                      width: '2rem',
-                      height: '2rem',
-                      borderRadius: '50%',
-                    }}
-                  />
-                  {elem.creator.name}
-                </div> */}
-                <UserLabel {...elem?.creator} />
-                <span style={{ fontSize: '1.2rem' }}>
                   {timestampToTimestring(elem.lastUpdate)}
                 </span>
               </div>

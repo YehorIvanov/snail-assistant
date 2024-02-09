@@ -1,0 +1,41 @@
+.user {
+  padding: 1rem 1rem 7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.user_avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  border: 0.3rem solid;
+  margin-left: -0.3rem;
+}
+.user_info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--glas);
+  border-radius: 2.5rem;
+  border: 0.3rem solid;
+  height: 5rem;
+  overflow: hidden;
+}
+.user_name {
+  font-size: 1.9rem;
+  font-weight: 600;
+}
+.user_exit-btn {
+  width: 5rem;
+  margin: 0 -0.3rem 0 auto;
+  justify-self: end;
+}
+.uaser_permissions {
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-start;
+  padding: 1rem;
+  background-color: var(--glas);
+  border-radius: 1rem;
+  border: 1px solid var(--accent-color-2);
+}

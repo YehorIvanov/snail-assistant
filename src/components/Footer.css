@@ -1,0 +1,25 @@
+.footer {
+  position: fixed;
+  padding: 1rem;
+  bottom: 0;
+  width: 100%;
+  max-width: calc(425px);
+}
+
+.footer_nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  gap: 1rem;
+  height: var(--elem-height);
+  border-radius: var(--border-radius);
+  background-color: var(--color);
+  padding: 1rem;
+}
+.footer_link {
+  color: var(--bg-color);
+  margin-bottom: 2rem;
+}
+.footer_link__active {
+  color: #db6698;
+}

@@ -9,3 +9,13 @@ function getUniqueAdminValues(users) {
   return Array.from(uniqueValues).map((adminString) => JSON.parse(adminString));
 }
 export default getUniqueAdminValues;
+ const getUniqueBarista = (ordersList) => {
+  let uniqueValues = new Set();
+  ordersList.forEach((order) => {
+    if (order.creator.name) {
+      const baristaString = JSON.stringify(order.creator.name);
+      uniqueValues.add(baristaString);
+    }
+  });
+  return Array.from(uniqueValues).map((baristaString) => JSON.parse(baristaString));
+}

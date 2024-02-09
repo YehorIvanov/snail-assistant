@@ -378,30 +378,7 @@ hr {
   padding: 1rem;
   margin: 0 0 6rem 0;
 }
-.footer {
-  position: fixed;
-  padding: 1rem;
-  bottom: 0;
-  width: 100%;
-  max-width: calc(425px);
 
-  /* background-color: var(--accent-color); */
-}
-.footer_nav {
-  display: flex;
-  justify-content: space-around;
-  align-items: stretch;
-  gap: 1rem;
-  height: var(--elem-height);
-  border-radius: var(--border-radius);
-  /* border: var(--border); */
-  background-color: var(--color);
-  padding: 1rem;
-}
-.footer_link {
-  color: var(--bg-color);
-  margin-bottom: 2rem;
-}
 
 /* Larger than mobile */
 @media (min-width: 400px) {
