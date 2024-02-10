@@ -6,11 +6,13 @@ import Product from './Product';
 import getDocFromDB from '../../utils/getDocFromDB';
 import setDocToDB from '../../utils/setDocToDB';
 import './Order.css';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/slices/userSlice';
 const Order = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  // const user = useSelector(selectUser);
+  const user = useSelector(selectUser);
   const [order, setOrder] = useState({});
   const [addStock, setAddStock] = useState(true);
 
@@ -35,7 +37,7 @@ const Order = () => {
     setOrder({ ...order, products: [...updatedProducts] });
   };
   const handlerCreateOrder = () => {
-    setDocToDB('orders', order.docName, order)
+    setDocToDB('orders', order.docName, { ...order, admin: user.admin })
       .then(() => {
         console.log('ok');
         navigate('/orders');

@@ -71,13 +71,8 @@ const OrderViev = () => {
         </div>
         <div className="order-view_button-block">
           <button
-            className="order-view_button"
-            style={{
-              width: 'var(--elem-height)',
-              minWidth: 'var(--elem-height)',
-              height: 'var(--elem-height)',
-              padding: '0.5rem',
-            }}
+            className="order-view_button button-round"
+
             onClick={() => {
               navigate('./');
             }}

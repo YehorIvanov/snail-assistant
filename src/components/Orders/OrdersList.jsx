@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import timestampToTimestring from '../../utils/timestampToTimestring';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,66 +19,166 @@ const OrdersList = () => {
   }, [dispatch]);
 
   const ordersList = useSelector(selectOrders);
-  const users = useSelector(selectUsers);
-  console.log(ordersList);
+  // const users = useSelector(selectUsers);
+  // console.log(ordersList);
+
   const getUniqueBarista = (ordersList) => {
-    let uniqueValues = new Set();
+    const uniqueValues = new Set();
     ordersList.forEach((order) => {
-      if (order.creator.name) {
-        const baristaString = JSON.stringify(order.creator.name);
-        uniqueValues.add(baristaString);
-      }
+      order.creator.name && uniqueValues.add(order.creator.name);
     });
-    return Array.from(uniqueValues).map((baristaString) =>
-      JSON.parse(baristaString)
-    );
+    return Array.from(uniqueValues);
   };
-  console.log(getUniqueBarista(ordersList));
+  const getUniqueCafe = (ordersList) => {
+    const uniqueValues = new Set();
+    ordersList.forEach((order) => {
+      order.cafe && uniqueValues.add(order.cafe);
+    });
+    return Array.from(uniqueValues);
+  };
+  const getUniqueStatus = (ordersList) => {
+    const uniqueValues = new Set();
+    ordersList.forEach((order) => {
+      order.status && uniqueValues.add(order.status);
+    });
+    return Array.from(uniqueValues);
+  };
+  const getUniqueAdmin = (ordersList) => {
+    const uniqueValues = new Set();
+    ordersList.forEach((order) => {
+      order.admin.userName && uniqueValues.add(order.admin.userName);
+    });
+    return Array.from(uniqueValues);
+  };
+  const getUniqueOrderTypes = (ordersList) => {
+    const uniqueValues = new Set();
+    ordersList.forEach((order) => {
+      order.name && uniqueValues.add(order.name);
+    });
+    return Array.from(uniqueValues);
+  };
+
+  const [filters, setFilters] = useState({
+    barista: '',
+    admin: '',
+    status: '',
+    cafe: '',
+    name: '',
+  });
+  const [filteredOrdersList, setFilteredOrdersList] = useState([...ordersList]);
+
+  useEffect(() => {
+    setFilteredOrdersList([
+      ...ordersList
+        .filter((order) => (filters.cafe ? order.cafe === filters.cafe : true))
+        .filter((order) =>
+          filters.barista ? order.creator.name === filters.barista : true
+        )
+        .filter((order) =>
+          filters.admin ? order.admin.userName === filters.admin : true
+        )
+        .filter((order) =>
+          filters.status ? order.status === filters.status : true
+        )
+        .filter((order) => (filters.name ? order.name === filters.name : true)),
+    ]);
+  }, [filters, ordersList]);
+  console.log(filters, filteredOrdersList);
   return (
     <div className="orders-list">
       <h4 className="orders-list_title">Мої замовлення</h4>
       <div className="orders-list_filters">
         <div className="orders-list_filter-group">
-          <select>
-            <option value="">Type</option>
+          <select
+            value={filters.name}
+            onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+          >
+            <option value="">Тип замовлення</option>
+            {ordersList &&
+              getUniqueOrderTypes(ordersList).map((name) => {
+                return (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                );
+              })}
           </select>
-          <select placeholder="cafe">
-            <option value="">cafe</option>
+
+          <select
+            value={filters.cafe}
+            onChange={(e) => setFilters({ ...filters, cafe: e.target.value })}
+          >
+            <option value="">Локація</option>
+            {ordersList &&
+              getUniqueCafe(ordersList).map((cafe) => {
+                return (
+                  <option key={cafe} value={cafe}>
+                    {cafe}
+                  </option>
+                );
+              })}
           </select>
         </div>
         <div className="orders-list_filter-group">
-          <select>
+          <select
+            value={filters.barista}
+            onChange={(e) =>
+              setFilters({ ...filters, barista: e.target.value })
+            }
+          >
             <option value="">Бариста</option>
             {ordersList &&
               getUniqueBarista(ordersList).map((barista) => {
-                return <option value={barista}>{barista}</option>;
+                return (
+                  <option key={barista} value={barista}>
+                    {barista}
+                  </option>
+                );
               })}
           </select>
-          <select placeholder="cafe">
-            <option value="">status</option>
+
+          <select
+            value={filters.status}
+            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+          >
+            <option value="">Стан</option>
+            {ordersList &&
+              getUniqueStatus(ordersList).map((status) => {
+                return (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                );
+              })}
           </select>
         </div>
         <div className="orders-list_filter-group">
+          <select
+            value={filters.admin}
+            onChange={(e) => setFilters({ ...filters, admin: e.target.value })}
+          >
+            <option value="">admin</option>
+            {ordersList &&
+              getUniqueAdmin(ordersList).map((admin) => {
+                return (
+                  <option key={admin} value={admin}>
+                    {admin}
+                  </option>
+                );
+              })}
+          </select>
+
           <button
-            className="order-view_button"
-            style={{
-              width: 'var(--elem-height)',
-              minWidth: 'var(--elem-height)',
-              height: 'var(--elem-height)',
-              padding: '0.5rem',
-            }}
+            className="order-view_button button-round"
             onClick={() => {
-              navigate('./');
+              navigate('/orders');
             }}
           >
             <FaReply />
           </button>
-          <select name="" id="">
-            <option value="">admin</option>
-          </select>
         </div>
       </div>
-      {ordersList.map((elem, i) => {
+      {filteredOrdersList.map((elem, i) => {
         return (
           <div
             className="orders-list_order-box"
