@@ -34,6 +34,7 @@
   display: flex;
   gap: 2rem;
   justify-content: flex-start;
+  flex-wrap: wrap;
   padding: 1rem;
   background-color: var(--glas);
   border-radius: 1rem;

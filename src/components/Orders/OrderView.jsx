@@ -20,7 +20,7 @@ const OrderViev = () => {
 
   useEffect(() => {
     dispatch(subscribeToOrders());
-  }, []);
+  }, [dispatch]);
 
   const [order, setOrder] = useState();
   const ordersList = useSelector(selectOrders);
@@ -72,7 +72,6 @@ const OrderViev = () => {
         <div className="order-view_button-block">
           <button
             className="order-view_button button-round"
-
             onClick={() => {
               navigate('./');
             }}
@@ -124,7 +123,7 @@ const OrderViev = () => {
           </thead>
           <tbody>
             {order?.products.map((product, i) => {
-              if (!showNull && !product.productAmount) return;
+              if (!showNull && !product.productAmount) return null;
               return (
                 <tr key={i}>
                   <td>

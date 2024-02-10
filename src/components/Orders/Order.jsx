@@ -6,12 +6,15 @@ import Product from './Product';
 import getDocFromDB from '../../utils/getDocFromDB';
 import setDocToDB from '../../utils/setDocToDB';
 import './Order.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
+import deleteDocFromDB from '../../utils/deleteDocFromDB';
+import { setError } from '../../redux/slices/errorSlice';
+// import './Order.css';
 const Order = () => {
   const params = useParams();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const [order, setOrder] = useState({});
   const [addStock, setAddStock] = useState(true);
@@ -37,14 +40,30 @@ const Order = () => {
     setOrder({ ...order, products: [...updatedProducts] });
   };
   const handlerCreateOrder = () => {
-    setDocToDB('orders', order.docName, { ...order, admin: user.admin })
-      .then(() => {
-        console.log('ok');
-        navigate('/orders');
-      })
-      .catch((e) => {
-        console.log('error sending', e);
-      });
+    if (!order.cafe) {
+      dispatch(setError('Локація не вказана. Оберіть локацію для замовлення'));
+      deleteDocFromDB('orders', order.docName);
+      return;
+    }
+    const isNotEmptyOrder =
+      order.products?.reduce((acc, product) => {
+        return product.productAmount > 0 || product.productStock > 0
+          ? (acc += 1)
+          : acc;
+      }, 0) > 0;
+    if (isNotEmptyOrder) {
+      setDocToDB('orders', order.docName, { ...order, admin: user.admin })
+        .then(() => {
+          console.log('ok');
+          navigate('/orders');
+        })
+        .catch((e) => {
+          console.log('error sending', e);
+        });
+    } else {
+      deleteDocFromDB('orders', order.docName).then(navigate('/orders'));
+      dispatch(setError('Замовлення порожне. Замовлення не створено! '));
+    }
   };
 
   const handlerOnCafeChenge = (e) => {

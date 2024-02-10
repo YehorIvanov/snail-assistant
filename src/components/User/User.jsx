@@ -50,7 +50,6 @@ const User = () => {
       <div className="user">
         <div
           style={{
-            // padding: '1rem 1rem 1rem',
             borderRadius: '2rem',
             gap: '1rem',
             display: 'flex',
@@ -65,17 +64,12 @@ const User = () => {
               referrerPolicy="no-referrer"
             />
             <span>{user.userName}</span>
-            <button className='user_exit-btn'
-        
-              onClick={signOut}
-            >
+            <button className="user_exit-btn" onClick={signOut}>
               <FaSignOutAlt />
             </button>
           </div>
         </div>
-        <div className='uaser_permissions'
-   
-        >
+        <div className="uaser_permissions">
           <label>
             <input
               type="checkbox"
@@ -101,13 +95,16 @@ const User = () => {
             Superadmin
           </label>
         </div>
-        <button
-          onClick={() => {
-            navigate('/user/users');
-          }}
-        >
-          Керувати Користувачами
-        </button>
+        {(user.role.isAdmin || user.role.isSuperadmin) && (
+          <button
+            onClick={() => {
+              navigate('/user/users');
+            }}
+          >
+            Керувати Користувачами
+          </button>
+          
+        )}
       </div>
     </>
   );

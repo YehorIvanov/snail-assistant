@@ -6,7 +6,6 @@ import {
   selectOrders,
   subscribeToOrders,
 } from '../../redux/slices/ordersSlice';
-import { selectUsers } from '../../redux/slices/usersSlice';
 import '../../img/1706184943469-2229696@gmail.com.jpeg';
 import UserLabel from '../User/UserLabel';
 import './ordersList.css';
@@ -19,8 +18,6 @@ const OrdersList = () => {
   }, [dispatch]);
 
   const ordersList = useSelector(selectOrders);
-  // const users = useSelector(selectUsers);
-  // console.log(ordersList);
 
   const getUniqueBarista = (ordersList) => {
     const uniqueValues = new Set();

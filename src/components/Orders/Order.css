@@ -13,13 +13,10 @@
 .order_cafe-select {
   margin-bottom: 0.5rem;
 }
-.order_cafe-option {
-}
+
 .order_tooltip {
   display: flex;
   justify-content: space-around;
   padding: 0 0 0 70px;
   gap: 1rem;
-}
-.order_button {
 }
