@@ -57,7 +57,7 @@ const Orders = () => {
       </Link>
       <div
         style={{
-          height: `${
+          maxHeight: `${
             ordersDesings.filter((elem) => elem.published).length * 10
           }rem`,
         }}

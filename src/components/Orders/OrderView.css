@@ -11,7 +11,7 @@
   margin: 0;
 }
 .order-view_header {
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 1rem 1rem 0 1rem;
   background-size: cover;
   background-position: center;
   text-align: right;
@@ -53,13 +53,13 @@
 .order-view_button-block {
   display: flex;
   gap: 1rem;
-  
+  padding: 1rem 0 0;
 }
 .order-viev_params {
   display: flex;
   gap: 2rem;
   justify-content: stretch;
-  padding: 1rem 0;
+  padding: 0 1rem;
 }
 .order-view table {
   width: 100%;
@@ -74,6 +74,6 @@
 .order-view table th,
 .order-view table td {
   text-align: center;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   line-height: 1.5rem;
 }

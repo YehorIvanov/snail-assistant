@@ -80,6 +80,9 @@ const Order = () => {
         placeholder="Кав'ярня"
         onChange={handlerOnCafeChenge}
       >
+        <option className="order_cafe-option" value="">
+          Оберіть локацію
+        </option>
         <option
           className="order_cafe-option"
           value="golden-gate"

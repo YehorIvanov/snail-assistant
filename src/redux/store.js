@@ -4,6 +4,7 @@ import errorReducer from './slices/errorSlice';
 import ordersDesingsReducer from './slices/ordersDesingsSlise';
 import ordersReducer from './slices/ordersSlice';
 import usersReducer from './slices/usersSlice';
+import ordersFiltersReducer from './slices/ordersFiltersSlice';
 const store = configureStore({
   reducer: {
     user: userReducer,
@@ -11,6 +12,7 @@ const store = configureStore({
     error: errorReducer,
     ordersDesings: ordersDesingsReducer,
     orders: ordersReducer,
+    ordersFilters: ordersFiltersReducer,
   },
 });
 

@@ -37,15 +37,16 @@
 .orders-list_order-name {
   color: var(--accent-color);
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 1.8rem;
+  text-align: left;
 }
 .orders-list_order-cafe {
   font-weight: 600;
-  font-size: 1.5rem;
+  /* font-size: 1.5rem; */
 }
 .orders-list_order-status {
   align-self: flex-start;
-  font-weight: 600;
+  font-weight: 500;
 }
 .orders-list_order-bottom {
   display: flex;
@@ -53,4 +54,12 @@
   align-items: flex-end;
 }
 .orders-list_order-date {
+  margin: 0;
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 0.5rem;
+  border-radius: 1.5rem;
+  display: inline-flex;
+  border: 1px solid white;
+  height: 3rem;
+  align-items: center;
 }

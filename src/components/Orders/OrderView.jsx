@@ -9,9 +9,12 @@ import {
 } from '../../redux/slices/ordersSlice';
 import './OrderView.css';
 import UserLabel from '../User/UserLabel';
+import { selectUser } from '../../redux/slices/userSlice';
 import { FaReply } from 'react-icons/fa';
 
 const OrderViev = () => {
+  // const user = useSelector(select);
+  const user = useSelector(selectUser);
   const params = useParams();
   const dispatch = useDispatch();
   const [showStock, setShowStock] = useState(true);
@@ -73,25 +76,40 @@ const OrderViev = () => {
           <button
             className="order-view_button button-round"
             onClick={() => {
-              navigate('./');
+              navigate('/orders/orders-list');
             }}
           >
             <FaReply />
           </button>
 
-          <button
-            className="order-view_button"
-            onClick={() => handlerChangeStatus('ЗАМОВЛЕНО')}
-          >
-            Замовлено
-          </button>
-          <button
-            className="order-view_button"
-            onClick={() => handlerChangeStatus('ПРИЙНЯТО')}
-          >
-            Прийняти
-          </button>
+          {user.role.isAdmin && (
+            <>
+              <button
+                className="order-view_button"
+                onClick={() => handlerChangeStatus('ЗАМОВЛЕНО')}
+              >
+                Замовлено
+              </button>
+              <button
+                className="order-view_button"
+                onClick={() => handlerChangeStatus('ПРИЙНЯТО')}
+              >
+                Прийняти
+              </button>
+            </>
+          )}
+          {user.role.isBarista &&
+            order?.status === 'NEW' &&
+            order?.creator.email === user.email && (
+              <button
+                className="order-view_button"
+                onClick={() => navigate(`/orders/${order?.docName}`)}
+              >
+                редагувати
+              </button>
+            )}
         </div>
+
         <div className="order-viev_params">
           <label>
             <input
@@ -99,7 +117,7 @@ const OrderViev = () => {
               checked={showStock}
               onChange={() => setShowStock(!showStock)}
             />
-            Показати залишки
+            Залишки
           </label>
           <label>
             <input
@@ -107,17 +125,17 @@ const OrderViev = () => {
               checked={showNull}
               onChange={() => setShowNull(!showNull)}
             />
-            Показати нульові
+            Порожні
           </label>
         </div>
       </div>
-      <div className="order-view_header">
+      <div className="order-view_order">
         <table>
           <thead>
             <tr>
               <td> </td>
               <td></td>
-              {showStock && <td>Залишок</td>}
+              {showStock && <td>Залишки</td>}
               <td>Замовлено</td>
             </tr>
           </thead>
@@ -149,7 +167,7 @@ const OrderViev = () => {
         </table>
         <div className="order-view_button-block">
           <button
-            className="order-view_button button-round "
+            className="order-view_button button-round"
             onClick={() => {
               navigate('/orders/orders-list');
             }}
@@ -157,18 +175,32 @@ const OrderViev = () => {
             <FaReply />
           </button>
 
-          <button
-            className="order-view_button"
-            onClick={() => handlerChangeStatus('ЗАМОВЛЕНО')}
-          >
-            Замовлено
-          </button>
-          <button
-            className="order-view_button"
-            onClick={() => handlerChangeStatus('ПРИЙНЯТО')}
-          >
-            Прийняти
-          </button>
+          {user.role.isAdmin && (
+            <>
+              <button
+                className="order-view_button"
+                onClick={() => handlerChangeStatus('ЗАМОВЛЕНО')}
+              >
+                Замовлено
+              </button>
+              <button
+                className="order-view_button"
+                onClick={() => handlerChangeStatus('ПРИЙНЯТО')}
+              >
+                Прийняти
+              </button>
+            </>
+          )}
+          {user.role.isBarista &&
+            order?.status === 'NEW' &&
+            order?.creator.email === user.email && (
+              <button
+                className="order-view_button"
+                onClick={() => navigate(`/orders/${order?.docName}`)}
+              >
+                редагувати
+              </button>
+            )}
         </div>
       </div>
     </div>
