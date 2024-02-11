@@ -20,6 +20,7 @@ import UserEdit from './User/UserEdit';
 import Users from './User/Users';
 import { subscribeToUsers } from '../redux/slices/usersSlice';
 import OrdersList from './Orders/OrdersList';
+import CafeList from './User/CafeList';
 
 const AppRouter = () => {
   const user = useSelector(selectUser)
@@ -53,6 +54,7 @@ const AppRouter = () => {
         <Route path="/user" element={<User />} />
         <Route path="/user/edit-user/:slug" element={<UserEdit />} />
         <Route path="/user/users" element={<Users />} />
+        <Route path='/user/cafe-list' element={<CafeList/>}/>
         <Route path="/orders" element={<Orders />} />
         <Route path="/orders/:slug" element={<Order />} />
         <Route path="/orders/viev/:slug" element={<OrderView />} />

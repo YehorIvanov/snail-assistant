@@ -14,18 +14,20 @@ const NewOrderDesing = () => {
   };
   const handlerCreateNewOrderDesing = (e) => {
     e.preventDefault();
-    const newOrderDesing = {
-      name: orderDesingName,
-      slug: slugify(orderDesingName),
-      products: [],
-      creator: { email: user.email, user: user.userName },
-      lastUpdate: new Date().getTime(),
-      published: false,
-    };
+    if (orderDesingName) {
+      const newOrderDesing = {
+        name: orderDesingName,
+        slug: slugify(orderDesingName),
+        products: [],
+        creator: { email: user.email, user: user.userName },
+        lastUpdate: new Date().getTime(),
+        published: false,
+      };
 
-    setDocToDB('ordersDesings', newOrderDesing.slug, newOrderDesing).then(() =>
-      navigate(`/orders/order-desinger/${newOrderDesing.slug}`)
-    );
+      setDocToDB('ordersDesings', newOrderDesing.slug, newOrderDesing).then(
+        () => navigate(`/orders/order-desinger/${newOrderDesing.slug}`)
+      );
+    }
   };
 
   return (

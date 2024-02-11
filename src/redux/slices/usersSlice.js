@@ -44,7 +44,7 @@ const usersSlice = createSlice({
     lastUpdate: '',
     params: {
       path: 'users',
-      limit: 20,
+      limit: 400,
       where1: '',
       where2: '',
       orderedBy: 'lastLogin',
@@ -75,6 +75,6 @@ const usersSlice = createSlice({
   },
 });
 
-// export const { clearOrdersDesigns, orderUpdated } = ordersDesingsSlice.actions;
+
 export const selectUsers = (state) => state.users.users;
 export default usersSlice.reducer;

@@ -52,37 +52,39 @@ const Orders = () => {
   return (
     <div className="orders">
       <h3 className="orders_title">Замовлення</h3>
+      {user.role.isBarista && (
+        <div
+          className="orders_button-wraper"
+          style={{
+            maxHeight: `${
+              ordersDesings.filter((elem) => elem.published).length * 10
+            }rem`,
+          }}
+        >
+          {ordersDesings &&
+            ordersDesings
+              .filter((order) => order.published)
+              .map((order) => {
+                return (
+                  <button
+                    className="orders_new-order-btn"
+                    key={order.slug}
+                    onClick={() => {
+                      handlerNewOrder(order.slug);
+                    }}
+                    style={{
+                      backgroundImage: `url(${order.photo})`,
+                    }}
+                  >
+                    {order.name}
+                  </button>
+                );
+              })}
+        </div>
+      )}
       <Link to="/orders/orders-list">
         <button>Мої замовлення</button>
       </Link>
-      <div
-        style={{
-          maxHeight: `${
-            ordersDesings.filter((elem) => elem.published).length * 10
-          }rem`,
-        }}
-        className="orders_button-wraper"
-      >
-        {ordersDesings &&
-          ordersDesings
-            .filter((order) => order.published)
-            .map((order) => {
-              return (
-                <button
-                  className="orders_new-order-btn"
-                  key={order.slug}
-                  onClick={() => {
-                    handlerNewOrder(order.slug);
-                  }}
-                  style={{
-                    backgroundImage: `url(${order.photo})`,
-                  }}
-                >
-                  {order.name}
-                </button>
-              );
-            })}
-      </div>
       {(user.role.isAdmin || user.role.isSuperadmin) && (
         <Link to="/orders/desing-list">
           <button>шаблони замовлень</button>

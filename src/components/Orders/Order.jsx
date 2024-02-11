@@ -17,7 +17,7 @@ const Order = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const [order, setOrder] = useState({});
-  const [addStock, setAddStock] = useState(true);
+  const [addStock, setAddStock] = useState(false);
 
   useEffect(() => {
     getDocFromDB('orders', params.slug).then((data) => {
@@ -128,6 +128,8 @@ const Order = () => {
             />
           );
         })}
+
+      <textarea placeholder="Коментар до замовлення" type="text" />
 
       <button onClick={handlerCreateOrder} className="order-button">
         ЗАМОВИТИ

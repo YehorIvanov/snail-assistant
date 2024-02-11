@@ -19,10 +19,10 @@ const Product = ({
       />
 
       <div className="product_detail">
-        <h6 className="product_title">
-          {productName} {productUnit}{' '}
-        </h6>
-        <div style={{}} className="product_controls">
+        <h5 className="product_title">
+          {productName} {` (${productUnit})`}{' '}
+        </h5>
+        <div className="product_controls">
           {addStock && (
             <div className="product_count">
               <div className=" count">
@@ -53,9 +53,14 @@ const Product = ({
               >
                 -
               </button>
-              <button disabled className="count__amount">
+              {/* <input type="text" disabled className="count__amount">
                 {productAmount}
-              </button>
+              </input> */}
+              <input
+                type="text"
+                className="count__amount"
+                value={productAmount}
+              />
               <button onClick={() => handler(index, 1)} className="count__plus">
                 +
               </button>

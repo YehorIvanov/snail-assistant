@@ -103,7 +103,15 @@ const User = () => {
           >
             Керувати Користувачами
           </button>
-          
+        )}
+        {(user.role.isAdmin || user.role.isSuperadmin) && (
+          <button
+            onClick={() => {
+              navigate('/user/cafe-list');
+            }}
+          >
+            Керувати локаціями
+          </button>
         )}
       </div>
     </>
