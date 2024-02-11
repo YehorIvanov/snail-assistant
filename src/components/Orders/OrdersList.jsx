@@ -6,22 +6,18 @@ import {
   selectOrders,
   subscribeToOrders,
 } from '../../redux/slices/ordersSlice';
-import '../../img/1706184943469-2229696@gmail.com.jpeg';
+// import '../../img/1706184943469-2229696@gmail.com.jpeg';
 import UserLabel from '../User/UserLabel';
 import './ordersList.css';
-// import { FaReply } from 'react-icons/fa';
-// import { selectUser } from '../../redux/slices/userSlice';
 import { selectOrdersFilters } from '../../redux/slices/ordersFiltersSlice';
 import OrdersFilters from './OrdersFilters';
 const OrdersList = () => {
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(subscribeToOrders());
   }, [dispatch]);
 
   const ordersList = useSelector(selectOrders);
-
   const filters = useSelector(selectOrdersFilters);
   const [filteredOrdersList, setFilteredOrdersList] = useState([...ordersList]);
 
