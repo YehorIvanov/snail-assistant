@@ -23,31 +23,32 @@ const Orders = () => {
     const selectedDesing = {
       ...ordersDesings.filter((desing) => desing.slug === slug)[0],
     };
-    const newOrder = {
-      ...selectedDesing,
-      creator: { email: user.email, name: user.userName },
-      lastUpdate: new Date().getTime(),
-      admin: '',
-      cafe: '',
-      products: [
-        ...selectedDesing.products.map((product) => {
-          return { ...product, productAmount: 0, productStock: 0 };
-        }),
-      ],
-      status: 'NEW',
-      docName: `${new Date().getTime()}-${user.email}`,
-    };
-    delete newOrder.published;
+    // const newOrder = {
+    //   ...selectedDesing,
+    //   creator: { email: user.email, name: user.userName },
+    //   lastUpdate: new Date().getTime(),
+    //   admin: '',
+    //   cafe: '',
+    //   products: [
+    //     ...selectedDesing.products.map((product) => {
+    //       return { ...product, productAmount: 0, productStock: 0 };
+    //     }),
+    //   ],
+    //   status: 'NEW',
+    //   docName: `${new Date().getTime()}-${user.email}`,
+    // };
+    // delete newOrder.published;
 
-    setDocToDB('orders', newOrder.docName, newOrder)
-      .then(() => {
-        console.log('ok');
-        navigate(`/orders/${newOrder.docName}`);
-      })
-      .catch((e) => {
-        console.log('error sending', e);
-      });
-    console.log(newOrder);
+    // setDocToDB('orders', newOrder.docName, newOrder)
+    //   .then(() => {
+    //     console.log('ok');
+    //     navigate(`/orders/${newOrder.docName}`);
+    //   })
+    //   .catch((e) => {
+    //     console.log('error sending', e);
+    //   });
+    // console.log(newOrder);
+    navigate(`/orders/${selectedDesing.slug}`)
   };
   return (
     <div className="orders">

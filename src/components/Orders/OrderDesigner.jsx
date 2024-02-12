@@ -19,6 +19,7 @@ const OrderDesigner = () => {
     name: '',
     slug: '',
     photo: '',
+    comentToBarista: '',
     products: [],
     creator: {},
     lastUpdate: new Date().getTime(),
@@ -211,6 +212,18 @@ const OrderDesigner = () => {
           </label>
         </div>
       </div>
+      <textarea
+        placeholder="Нагадування баристі, наприклад про мінімальну кількість товару для замовлення."
+        value={orderDesigner?.comentToBarista}
+        onChange={(e) => {
+          setOrderDesigner({
+            ...orderDesigner,
+            comentToBarista: e.target.value,
+          });
+        }}
+        cols="30"
+        rows="10"
+      ></textarea>
       <hr />
       <div>
         {orderDesigner?.products.map((product, index) => {

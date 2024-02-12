@@ -19,51 +19,66 @@ const Product = ({
       />
 
       <div className="product_detail">
-        <h5 className="product_title">
+        <h6 className="product_title">
           {productName} {` (${productUnit})`}{' '}
-        </h5>
+        </h6>
         <div className="product_controls">
           {addStock && (
             <div className="product_count">
+              {addStock && (
+                <span className="product_count-tooltip">Залишок</span>
+              )}
               <div className=" count">
-                <button
-                  onClick={() => handler(index, -1, true)}
+                <div
+                  onClick={() => handler(index, productStock - 1, true)}
                   className="count__minus"
                 >
                   -
-                </button>
-                <button disabled className="count__amount">
-                  {productStock}
-                </button>
-                <button
-                  onClick={() => handler(index, 1, true)}
+                </div>
+                <input
+                  type="text"
+                  className="count__amount"
+                  onChange={(e) => {
+                    handler(index, e.target.value, true);
+                  }}
+                  value={productStock}
+                />
+                <div
+                  onClick={() => handler(index, productStock + 1, true)}
                   className="count__plus"
                 >
                   +
-                </button>
+                </div>
               </div>
             </div>
           )}
 
           <div className="product_count">
+            {addStock && (
+              <span className="product_count-tooltip">Замовити</span>
+            )}
             <div className=" count">
-              <button
-                onClick={() => handler(index, -1)}
+              <div
+                onClick={(e) => handler(index, productAmount - 1)}
                 className="count__minus"
               >
                 -
-              </button>
-              {/* <input type="text" disabled className="count__amount">
-                {productAmount}
-              </input> */}
+              </div>
+
               <input
                 type="text"
                 className="count__amount"
+                onChange={(e) => {
+                  handler(index, e.target.value);
+                }}
                 value={productAmount}
               />
-              <button onClick={() => handler(index, 1)} className="count__plus">
+              <div
+                onClick={() => handler(index, productAmount + 1)}
+                className="count__plus"
+              >
                 +
-              </button>
+              </div>
             </div>
           </div>
         </div>

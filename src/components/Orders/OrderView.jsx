@@ -10,10 +10,9 @@ import {
 import './OrderView.css';
 import UserLabel from '../User/UserLabel';
 import { selectUser } from '../../redux/slices/userSlice';
-import { FaReply } from 'react-icons/fa';
+import { FaClipboard, FaCopy, FaReply } from 'react-icons/fa';
 
 const OrderViev = () => {
-  // const user = useSelector(select);
   const user = useSelector(selectUser);
   const params = useParams();
   const dispatch = useDispatch();
@@ -73,6 +72,9 @@ const OrderViev = () => {
           </div>
         </div>
         <div className="order-view_button-block">
+          <button className="order-view_button button-round">
+            <FaCopy />
+          </button>
           <button
             className="order-view_button button-round"
             onClick={() => {
@@ -103,7 +105,7 @@ const OrderViev = () => {
             order?.creator.email === user.email && (
               <button
                 className="order-view_button"
-                onClick={() => navigate(`/orders/${order?.docName}`)}
+                onClick={() => navigate(`/orders/order-edite/${order.docName}`)}
               >
                 редагувати
               </button>
@@ -130,6 +132,10 @@ const OrderViev = () => {
         </div>
       </div>
       <div className="order-view_order">
+        <p className="order-view_order-coment">
+          <b>Коментар до замовлення: </b>
+          {order?.coment}
+        </p>
         <table>
           <thead>
             <tr>

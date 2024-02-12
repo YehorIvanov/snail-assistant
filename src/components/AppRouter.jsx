@@ -23,7 +23,7 @@ import OrdersList from './Orders/OrdersList';
 import CafeList from './User/CafeList';
 
 const AppRouter = () => {
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -54,11 +54,12 @@ const AppRouter = () => {
         <Route path="/user" element={<User />} />
         <Route path="/user/edit-user/:slug" element={<UserEdit />} />
         <Route path="/user/users" element={<Users />} />
-        <Route path='/user/cafe-list' element={<CafeList/>}/>
+        <Route path="/user/cafe-list" element={<CafeList />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/orders/:slug" element={<Order />} />
+        <Route path="/orders/order-edite/:slug" element={<Order isEditeMode={true} />} />
         <Route path="/orders/viev/:slug" element={<OrderView />} />
-        <Route path='/orders/orders-list' element={<OrdersList />} />
+        <Route path="/orders/orders-list" element={<OrdersList />} />
         <Route path="/orders/desing-list" element={<OrderDesingList />} />
         <Route
           path="/orders/order-desinger/:slug"

@@ -9,7 +9,7 @@
   justify-content: start;
   width: 100%;
   align-items: flex-start;
-  flex-flow: column-reverse wrap;
+  flex-flow: column wrap;
 }
 
 .orders_new-order-btn {
@@ -24,8 +24,8 @@
   white-space: pre-wrap;
 }
 .orders_new-order-btn:nth-child(odd) {
-  height: 14rem;
+  height: 13rem;
 }
 .orders_new-order-btn:first-child {
-  height: 18rem;
+  height: 19rem;
 }

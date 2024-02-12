@@ -217,8 +217,6 @@ select {
   border-radius: var(--border-radius);
   border: var(--border);
   background: var(--bg-color);
-
-  backdrop-filter: blur(15px);
 }
 /* Removes awkward default styles on some inputs for iOS */
 input[type='email'],
@@ -270,6 +268,7 @@ input[type='radio'] {
   color: var(--color);
   padding-right: 1rem;
   border: var(--border);
+  cursor: pointer;
 }
 label > .label-body {
   display: inline-block;

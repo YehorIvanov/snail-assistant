@@ -7,16 +7,15 @@
 }
 .order_title {
   margin-bottom: 0.5rem;
-  position: sticky;
-  display: block;
+  margin: 0;
 }
 .order_cafe-select {
   margin-bottom: 0.5rem;
 }
 
 .order_tooltip {
-  display: flex;
-  justify-content: space-around;
-  padding: 0 0 0 70px;
-  gap: 1rem;
+  padding: 0.5rem;
+  border: 2px dashed var(--accent-color);
+  margin: 0;
+  text-align: left;
 }
