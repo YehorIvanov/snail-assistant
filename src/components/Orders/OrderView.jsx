@@ -10,8 +10,8 @@ import {
 import './OrderView.css';
 import UserLabel from '../User/UserLabel';
 import { selectUser } from '../../redux/slices/userSlice';
-import { FaClipboard, FaCopy, FaReply } from 'react-icons/fa';
-
+import { FaCopy, FaReply } from 'react-icons/fa';
+import copy from 'copy-to-clipboard';
 const OrderViev = () => {
   const user = useSelector(selectUser);
   const params = useParams();
@@ -72,7 +72,12 @@ const OrderViev = () => {
           </div>
         </div>
         <div className="order-view_button-block">
-          <button className="order-view_button button-round">
+          <button
+            className="order-view_button button-round"
+            onClick={() => {
+              copy(order.name);
+            }}
+          >
             <FaCopy />
           </button>
           <button
