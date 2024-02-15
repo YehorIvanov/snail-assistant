@@ -36,7 +36,9 @@ const Product = ({
                   -
                 </div>
                 <input
-                  type="text"
+                  type="number"
+                  min="0"
+                  max="99"
                   className="count__amount"
                   onChange={(e) => {
                     handler(index, e.target.value, true);
@@ -66,7 +68,9 @@ const Product = ({
               </div>
 
               <input
-                type="text"
+                type="number"
+                min="0"
+                max="99"
                 className="count__amount"
                 onChange={(e) => {
                   handler(index, e.target.value);

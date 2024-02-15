@@ -9,6 +9,7 @@ import { selectUser } from '../../redux/slices/userSlice';
 import deleteDocFromDB from '../../utils/deleteDocFromDB';
 import { setError } from '../../redux/slices/errorSlice';
 import { selectCafeList, subscribeToCafe } from '../../redux/slices/cafeSlice';
+import { FaReply } from 'react-icons/fa';
 
 const Order = (props) => {
   const { isEditeMode } = props;
@@ -21,7 +22,7 @@ const Order = (props) => {
   const cafeList = useSelector(selectCafeList);
 
   useEffect(() => {
-    dispatch(subscribeToCafe);
+    dispatch(subscribeToCafe());
   }, [dispatch]);
 
   useEffect(() => {
@@ -53,11 +54,11 @@ const Order = (props) => {
   const handlerChangeAmount = (index, value, isStock) => {
     const updatedProducts = [...order.products];
     if (isStock) {
-      updatedProducts[index].productStock = value;
+      updatedProducts[index].productStock = parseInt(value);
       if (updatedProducts[index].productStock < 0)
         updatedProducts[index].productStock = 0;
     } else {
-      updatedProducts[index].productAmount = value;
+      updatedProducts[index].productAmount = parseInt(value);
       if (updatedProducts[index].productAmount < 0)
         updatedProducts[index].productAmount = 0;
     }
@@ -79,7 +80,6 @@ const Order = (props) => {
     if (isNotEmptyOrder) {
       setDocToDB('orders', order.docName, { ...order, admin: user.admin })
         .then(() => {
-          console.log('ok');
           navigate('/orders');
         })
         .catch((e) => {
@@ -118,16 +118,26 @@ const Order = (props) => {
             );
           })}
       </select>
-      <label>
-        <input
-          type="checkbox"
-          checked={addStock}
-          onChange={() => {
-            setAddStock(!addStock);
+      <div className="order_buttons-block">
+        <label>
+          <input
+            type="checkbox"
+            checked={addStock}
+            onChange={() => {
+              setAddStock(!addStock);
+            }}
+          />
+          Подати залишки
+        </label>
+        <button
+          className=" button-round"
+          onClick={() => {
+            navigate('/orders');
           }}
-        />
-        Подати залишки
-      </label>
+        >
+          <FaReply />
+        </button>
+      </div>
 
       {order.products &&
         order.products.map((product, i) => {

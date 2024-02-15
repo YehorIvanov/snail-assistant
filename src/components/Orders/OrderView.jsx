@@ -39,6 +39,13 @@ const OrderViev = () => {
     }
   }, [order]);
 
+  const handlerOnCopyClick = () => {
+    const string = `Це
+    форматований 
+   рядок засовлення`;
+    copy(string);
+    console.log(string);
+  };
   const handlerChangeStatus = (status) => {
     setDocToDB(`orders`, order.docName, { ...order, status: status }).then(
       () => {
@@ -74,14 +81,12 @@ const OrderViev = () => {
         <div className="order-view_button-block">
           <button
             className="order-view_button button-round"
-            onClick={() => {
-              copy(order.name);
-            }}
+            onClick={handlerOnCopyClick}
           >
             <FaCopy />
           </button>
           <button
-            className="order-view_button button-round"
+            className="button-round"
             onClick={() => {
               navigate('/orders/orders-list');
             }}

@@ -12,7 +12,11 @@
 .order_cafe-select {
   margin-bottom: 0.5rem;
 }
-
+.order_buttons-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .order_tooltip {
   padding: 0.5rem;
   border: 2px dashed var(--accent-color);

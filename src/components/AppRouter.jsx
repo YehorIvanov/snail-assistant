@@ -21,11 +21,22 @@ import Users from './User/Users';
 import { subscribeToUsers } from '../redux/slices/usersSlice';
 import OrdersList from './Orders/OrdersList';
 import CafeList from './User/CafeList';
+import {
+  selectOrdersFilters,
+  setOrdersFilters,
+} from '../redux/slices/ordersFiltersSlice';
+import {
+  setOrdersParams,
+  subscribeToOrders,
+} from '../redux/slices/ordersSlice';
+import { subscribeToCafe } from '../redux/slices/cafeSlice';
+import { subscribeToOrdersDesings } from '../redux/slices/ordersDesingsSlise';
+import CafeEdit from './User/CafeEdit';
 
 const AppRouter = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-
+  const filters = useSelector(selectOrdersFilters);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (!!currentUser && !!currentUser.email) {
@@ -43,7 +54,21 @@ const AppRouter = () => {
 
   useEffect(() => {
     dispatch(subscribeToUsers());
-  }, [dispatch]);
+    dispatch(subscribeToOrdersDesings());
+    dispatch(subscribeToCafe());
+
+    if (user?.role.isBarista) {
+      dispatch(
+        setOrdersParams({ where1: ['creator.email', '==', user.email] })
+      );
+    }
+    if (user?.role.isAdmin) {
+      dispatch(setOrdersParams({ where1: ['admin.email', '==', user.email] }));
+    }
+    if (user?.role.isSuperadmin) {
+      dispatch(setOrdersParams({ where1: '' }));
+    }
+  }, [dispatch, user]);
 
   return !!user &&
     (!!user.role.isAdmin ||
@@ -55,9 +80,13 @@ const AppRouter = () => {
         <Route path="/user/edit-user/:slug" element={<UserEdit />} />
         <Route path="/user/users" element={<Users />} />
         <Route path="/user/cafe-list" element={<CafeList />} />
+        <Route path="/user/cafe-edit/:slug" element={<CafeEdit />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/orders/:slug" element={<Order />} />
-        <Route path="/orders/order-edite/:slug" element={<Order isEditeMode={true} />} />
+        <Route
+          path="/orders/order-edite/:slug"
+          element={<Order isEditeMode={true} />}
+        />
         <Route path="/orders/viev/:slug" element={<OrderView />} />
         <Route path="/orders/orders-list" element={<OrdersList />} />
         <Route path="/orders/desing-list" element={<OrderDesingList />} />

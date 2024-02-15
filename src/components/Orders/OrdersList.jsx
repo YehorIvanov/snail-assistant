@@ -10,6 +10,7 @@ import UserLabel from '../User/UserLabel';
 import { selectOrdersFilters } from '../../redux/slices/ordersFiltersSlice';
 import OrdersFilters from './OrdersFilters';
 import './ordersList.css';
+import { selectUser } from '../../redux/slices/userSlice';
 
 const OrdersList = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const OrdersList = () => {
   const ordersList = useSelector(selectOrders);
   const filters = useSelector(selectOrdersFilters);
   const [filteredOrdersList, setFilteredOrdersList] = useState([...ordersList]);
-
+  const user = useSelector(selectUser);
   useEffect(() => {
     setFilteredOrdersList([
       ...ordersList
@@ -41,6 +42,7 @@ const OrdersList = () => {
   return (
     <div className="orders-list">
       <h4 className="orders-list_title">Мої замовлення</h4>
+      {user.role.isAdmin && <OrdersFilters />}
       <div className="orders-list_orders-container">
         {filteredOrdersList.map((elem, i) => {
           return (
@@ -78,7 +80,6 @@ const OrdersList = () => {
           );
         })}
       </div>
-      <OrdersFilters />
     </div>
   );
 };

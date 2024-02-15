@@ -44,13 +44,16 @@ const ordersSlice = createSlice({
     lastUpdate: '',
     params: {
       path: 'orders',
-      limit: 100,
-      where1: '',
+      limit: 450,
+      where1: '', //['admin.email', '==', '2229696@gmail.com']
       where2: '',
       orderedBy: 'lastUpdate',
     },
   },
   reducers: {
+    setOrdersParams: (state, action) => {
+      state.params = { ...state.params, ...action.payload };
+    },
     clearOrders: (state) => {
       state.orders = [];
     },
@@ -77,4 +80,5 @@ const ordersSlice = createSlice({
 
 // export const { clearOrdersDesigns, orderUpdated } = ordersDesingsSlice.actions;
 export const selectOrders = (state) => state.orders.orders;
+export const { setOrdersParams } = ordersSlice.actions;
 export default ordersSlice.reducer;

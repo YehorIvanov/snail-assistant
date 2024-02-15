@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { FaPenAlt } from 'react-icons/fa';
+import { FaPenAlt, FaReply, FaTrash } from 'react-icons/fa';
 import './CafeList.css';
 import UserLabel from './UserLabel';
 import setDocToDB from '../../utils/setDocToDB';
 import { slugify } from 'transliteration';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
 import getDocFromDB from '../../utils/getDocFromDB';
 import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
+import getUniqueAdminValues from '../../utils/getUniqueAdminValues';
+import { selectUsers } from '../../redux/slices/usersSlice';
+import deleteDocFromDB from '../../utils/deleteDocFromDB';
+import { useNavigate } from 'react-router';
+import { selectCafeList, subscribeToCafe } from '../../redux/slices/cafeSlice';
 const CafeList = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector(selectUser);
+
   const initialNewCaffe = {
     docName: '',
     name: '',
+    admin: {},
+    address: '',
+    workingTime: '',
+    phpto: '',
+    coment: '',
   };
-  const [cafeList, setCafeList] = useState([]);
+  const cafeList = useSelector(selectCafeList);
   const [newCafe, setNewCafe] = useState(initialNewCaffe);
   const [showAddForm, setShowAddForm] = useState(false);
-  useEffect(() => {
-    getDocsColectionFromDB('cafe').then((data) => {
-      setCafeList(data);
-    });
-  }, [showAddForm]);
 
-  console.log(cafeList);
+  useEffect(() => {
+    dispatch(subscribeToCafe());
+  }, [dispatch]);
 
   const handlerOnCafeAdd = (e) => {
     e.preventDefault();
@@ -31,9 +41,6 @@ const CafeList = () => {
       ...newCafe,
       admin: { email: user.email, name: user.userName },
     })
-      .then(
-        getDocFromDB('cafe', newCafe.docName).then((data) => console.log(data))
-      )
       .catch((e) => {
         console.log(e);
       })
@@ -46,111 +53,38 @@ const CafeList = () => {
     <div className="cafe-list">
       <h3 className="cafe-list_title">Мої Локації</h3>
       <div className="cafe-list_container">
-        <div className="cafe-list_cafe-box">
-          <div className="cafe-list_cafe-info ">
-            <h5 className="cafe-list_cafe-title">Золоті Ворота</h5>
-            <p>
-              <b>Адресса:</b> Володимирська 40/2
-            </p>
-            <p>
-              <b>Графік роботи:</b> Пн-Пт 8-20, Сб-Нд вихідний
-            </p>
-            <div className="cafe-list_cafe-staff">
-              <b>На зміні: </b>{' '}
-              <UserLabel
-                {...{ name: 'Yehor Inanov', email: '2229696@gmail.com' }}
-              />
-            </div>
-            <div>Ппримітки: </div>
-          </div>
-          <div className="cafe-list_cafe-controls ">
-            <button className="cafe-list_add-btn button-round">
-              <FaPenAlt />
-            </button>
-          </div>
-        </div>
-        <div className="cafe-list_cafe-box">
-          <div className="cafe-list_cafe-info ">
-            <h5 className="cafe-list_cafe-title">Хрешатик 1</h5>
-            <p>
-              <b>Адресса:</b> Хрещатик 27
-            </p>
-            <p>
-              <b>Графік роботи:</b> Пн-Пт 8-20, Сб-Нд 8-20
-            </p>
-            <div className="cafe-list_cafe-staff">
-              <b>На зміні: </b>{' '}
-              <UserLabel
-                {...{ name: 'Yehor Inanov', email: '2229696@gmail.com' }}
-              />
-            </div>
-          </div>
-          <div className="cafe-list_cafe-controls ">
-            <button className="cafe-list_add-btn button-round">
-              <FaPenAlt />
-            </button>
-          </div>
-        </div>
-        <div className="cafe-list_cafe-box">
-          <div className="cafe-list_cafe-info ">
-            <h5 className="cafe-list_cafe-title">Хрешатик 1 Ніч</h5>
-            <p>
-              <b>Адресса:</b> Хрещатик 27
-            </p>
-            <p>
-              <b>Графік роботи:</b> Пн-Пт 20-8, Сб-Нд 20-8
-            </p>
-            <div className="cafe-list_cafe-staff">
-              <b>На зміні: </b>{' '}
-              <UserLabel
-                {...{ name: 'Yehor Inanov', email: '2229696@gmail.com' }}
-              />
-            </div>
-          </div>
-          <div className="cafe-list_cafe-controls ">
-            <button className="cafe-list_add-btn button-round">
-              <FaPenAlt />
-            </button>
-          </div>
-        </div>
-        <div className="cafe-list_cafe-box">
-          <div className="cafe-list_cafe-info ">
-            <h5 className="cafe-list_cafe-title">Золоті Ворота</h5>
-            <p>
-              <b>Адресса:</b> Володимирська 40/2
-            </p>
-            <p>
-              <b>Графік роботи:</b> Пн-Пт 8-20, Сб-Нд вихідний
-            </p>
-          </div>
-          <div className="cafe-list_cafe-controls ">
-            <button className="cafe-list_add-btn button-round">
-              <FaPenAlt />
-            </button>
-          </div>
-        </div>
         {cafeList &&
           cafeList.map((cafe) => {
             return (
-              <div className="cafe-list_cafe-box">
+              <div
+                key={cafe.name}
+                className="cafe-list_cafe-box"
+                style={{
+                  backgroundImage: `url(${cafe.photo}), linear-gradient(45deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.4))`,
+                }}
+              >
                 <div className="cafe-list_cafe-info ">
                   <h5 className="cafe-list_cafe-title">{cafe?.name}</h5>
                   <p>
-                    <b>Адресса:</b> {cafe?.addres}
+                    <b>Адресса:</b> {cafe?.address}
                   </p>
                   <p>
                     <b>Графік роботи:</b> {cafe?.workingTime}
                   </p>
                   <div className="cafe-list_cafe-staff">
-                    <b>На зміні: </b>{' '}
-                    {/* <UserLabel
-                      {...{ name: 'Yehor Inanov', email: '2229696@gmail.com' }}
-                    /> */}
+                    <b>Адміністратор: </b> <UserLabel {...cafe?.admin} />
                   </div>
-                  <div>Ппримітки: </div>
+                  <div>
+                    <b>Ппримітки: </b> {cafe?.coment}
+                  </div>
                 </div>
                 <div className="cafe-list_cafe-controls ">
-                  <button className="cafe-list_add-btn button-round">
+                  <button
+                    className="cafe-list_edit-btn button-round"
+                    onClick={() => {
+                      navigate(`/user/cafe-edit/${cafe.docName}`);
+                    }}
+                  >
                     <FaPenAlt />
                   </button>
                 </div>
@@ -158,14 +92,26 @@ const CafeList = () => {
             );
           })}
       </div>
-      <button
-        onClick={() => {
-          setShowAddForm(!showAddForm);
-        }}
-        hidden={showAddForm}
+      <div
+        style={showAddForm ? { display: 'none' } : { display: 'flex' }}
+        className="cafe-edit_buttons-block "
       >
-        Додати локацію
-      </button>
+        <button
+          onClick={() => {
+            setShowAddForm(!showAddForm);
+          }}
+        >
+          Додати локацію
+        </button>
+        <button
+          className="button-round"
+          onClick={() => {
+            navigate(`/user`);
+          }}
+        >
+          <FaReply />
+        </button>
+      </div>
       <form
         style={showAddForm ? { display: 'flex' } : { display: 'none' }}
         onSubmit={handlerOnCafeAdd}
@@ -184,8 +130,15 @@ const CafeList = () => {
           placeholder="Назва локації"
         />
         <button className="cafe-list_add-btn" type="submit">
-          {' '}
           зберегти
+        </button>
+        <button
+          className="button-round"
+          onClick={() => {
+            navigate(`/user`);
+          }}
+        >
+          <FaReply />
         </button>
       </form>
     </div>

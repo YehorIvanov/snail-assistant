@@ -40,7 +40,7 @@ const NewOrderDesing = () => {
         className="create-order-desing_input"
         style={{ width: '100%' }}
         type="text"
-        placeholder="Новий шаблон замовлення"
+        placeholder="Введіть назву"
         onChange={handlerOrderDesingNameChange}
         value={orderDesingName}
       />

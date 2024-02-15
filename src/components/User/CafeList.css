@@ -20,7 +20,11 @@
   display: flex;
   gap: 1rem;
   justify-content: space-between;
+  background-blend-mode: overlay;
+  background-size: cover;
+  background-position: center;
 }
+
 .cafe-list_cafe-controls {
 }
 .cafe-list_cafe-info {
@@ -31,8 +35,8 @@
   align-items: start;
 }
 .cafe-list_cafe-info p {
-    text-align: left;
-    margin: 0;
+  text-align: left;
+  margin: 0;
 }
 .cafe-list_cafe-title {
   margin: 0;
@@ -46,4 +50,7 @@
 .cafe-list_add-cafe-form {
   display: flex;
   gap: 1rem;
+}
+.cafe-list_edit-btn {
+  background-color: transparent;
 }

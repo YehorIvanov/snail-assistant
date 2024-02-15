@@ -199,7 +199,7 @@ const UserEdit = () => {
             className="user-edit_input"
             style={{ width: '100%' }}
             type="tel"
-            placeholder="Телефон: xxx xxxxxxx"
+            placeholder="Телефон: xxx xxx xx xx"
             onChange={handlerOnTelChange}
             value={editingUser?.tel}
           />

@@ -50,17 +50,17 @@ const Users = () => {
           className="users_filter-select"
           onChange={(e) => handlerOnAdminChange(e.target.value)}
         >
-          {/* <option value=""></option> */}
           <option value="my">Мої</option>
-          <option value="all">Всі</option>
+          {user.role.isSuperadmin && <option value="all">Всі</option>}
           <option value="new">Нові</option>
-          {getUniqueAdminValues(users).map((elem) => {
-            return (
-              <option key={elem.email} value={elem.email}>
-                {elem.userName}
-              </option>
-            );
-          })}
+          {user.role.isSuperadmin &&
+            getUniqueAdminValues(users).map((elem) => {
+              return (
+                <option key={elem.email} value={elem.email}>
+                  {`Адміністратор: ${elem.userName}`}
+                </option>
+              );
+            })}
         </select>
 
         {filteredUsers &&
@@ -85,7 +85,9 @@ const Users = () => {
                   <span>Адміністратор: {user?.admin.userName}</span>
                 </div>
                 <Link to={`/user/edit-user/${user.email}`}>
-                  <FaPencilAlt size="4rem" />
+                  <button className="button-round">
+                    <FaPencilAlt size="2rem" />
+                  </button>
                 </Link>
               </div>
             );

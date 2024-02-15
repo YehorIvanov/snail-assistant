@@ -4,7 +4,7 @@
   --light-pink: #f1c6d8;
   --yellow: 251, 255, 0;
   /*  #d2417f  #d6548b  #db6698  #df7aa5   #e48db2  #e8a0bf  #edb3cb  #f1c6d8  #f6d9e5  #faecf2 */
-  --blue: rgb(0, 0, 80);
+  --blue: rgb(0, 0, 110);
   --white: rgb(255, 255, 255);
   --accent-color: var(--fuchsia);
   --accent-color-2: var(--white);
@@ -162,6 +162,7 @@ input[type='button'] {
   width: var(--elem-height);
   padding: 0.5rem;
   height: var(--elem-height);
+  margin: 0;
 }
 .button:hover,
 button:hover,
