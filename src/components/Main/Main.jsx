@@ -1,15 +1,16 @@
-
+import Shedule from './Shedule';
 
 const Main = () => {
   return (
     <div className="main">
-      <h3>головна сторінка додатку</h3>
+      {/* <h3>головна сторінка додатку</h3> */}
+      {/* <hr /> */}
+      <Shedule />
+      {/* <div>погода на тиждень</div> */}
       <hr />
-      <div>погода на тиждень</div>
+      {/* <div>графік на тиждень</div> */}
       <hr />
-      <div>графік на тиждень</div>
-      <hr />
-      <div>щось ще конче важливе</div>
+      {/* <div>щось ще конче важливе</div> */}
       <div style={{ border: '2px dashed var(--accent-color)' }}>
         сьогодні день замовлень на: макаруни молоко майяююю
       </div>
@@ -17,7 +18,6 @@ const Main = () => {
       <div style={{ border: '2px dashed var(--accent-color)' }}>
         штендера ховаемо о 19-30
       </div>
-      
     </div>
   );
 };

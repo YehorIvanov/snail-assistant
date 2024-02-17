@@ -1,0 +1,77 @@
+.shedule {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* padding: 0.5rem; */
+}
+.shedule_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  /* border: 1px solid; */
+  padding: 0.5rem;
+}
+.shedule_header-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* border: 1px solid; */
+  /* padding: 0.5rem; */
+}
+
+.shedule_header-controls {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid; */
+  /* padding: 0.5rem; */
+}
+.shedule_week-shedule {
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid; */
+  /* padding: 0.5rem; */
+}
+.shedule_week-header {
+  display: flex;
+  justify-content: space-between;
+  /* border: 1px solid; */
+  /* padding: 0.5rem; */
+}
+.shedule_week-header-day {
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid; */
+  /* padding: 0.5rem; */
+  /* gap: 0.5rem; */
+}
+.shedule_week-box {
+  display: flex;
+  flex-direction: column;
+}
+.shedule_week-location-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.shedule_week-location {
+  font-weight: 600;
+}
+.shedule_week-location-shedule {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.shedule_week-location-day {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.shedule_user-avatar {
+  border: 1px solid;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+}
