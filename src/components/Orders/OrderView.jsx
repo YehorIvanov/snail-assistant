@@ -12,6 +12,7 @@ import UserLabel from '../User/UserLabel';
 import { selectUser } from '../../redux/slices/userSlice';
 import { FaCopy, FaReply } from 'react-icons/fa';
 import copy from 'copy-to-clipboard';
+import { selectCafeList } from '../../redux/slices/cafeSlice';
 const OrderViev = () => {
   const user = useSelector(selectUser);
   const params = useParams();
@@ -26,7 +27,7 @@ const OrderViev = () => {
 
   const [order, setOrder] = useState();
   const ordersList = useSelector(selectOrders);
-
+  const cafeList = useSelector(selectCafeList);
   useEffect(() => {
     setOrder(ordersList.filter((elem) => elem.docName === params.slug)[0]);
   }, [ordersList, params.slug]);
@@ -40,10 +41,26 @@ const OrderViev = () => {
   }, [order]);
 
   const handlerOnCopyClick = () => {
-    const string = `Це
-    форматований 
-   рядок засовлення`;
-    copy(string);
+    const string = order.products.reduce(
+      (acc, product) => {
+        if (product.productAmount > 0)
+          return (
+            acc +
+            `${product.productName} - ${product.productAmount}${product.productUnit} \n`
+          );
+        return acc;
+      },
+      `${order.cafe} \n ${
+        cafeList.filter((cafe) => cafe.name === order.cafe)[0]?.address
+      } \n ${user?.userName} ${user?.tel}
+      \n`
+    );
+
+    copy(
+      string
+      //  { format: 'text/html' }
+    );
+
     console.log(string);
   };
   const handlerChangeStatus = (status) => {
@@ -65,14 +82,7 @@ const OrderViev = () => {
         <h3 className="order-view_title">{order?.name}</h3>
         <h4 className="order-view_cafe"> {order?.cafe}</h4>
         <h5 className="order-view_status">{order?.status}</h5>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '1rem 0 ',
-          }}
-        >
+        <div className="order-view_header-bottom-row ">
           <UserLabel {...order?.creator} />
           <div className="order-view_date">
             {timestampToTimestring(order?.lastUpdate)}
@@ -86,7 +96,7 @@ const OrderViev = () => {
             <FaCopy />
           </button>
           <button
-            className="button-round"
+            className="order-view_button button-round"
             onClick={() => {
               navigate('/orders/orders-list');
             }}
@@ -184,6 +194,12 @@ const OrderViev = () => {
         <div className="order-view_button-block">
           <button
             className="order-view_button button-round"
+            onClick={handlerOnCopyClick}
+          >
+            <FaCopy />
+          </button>
+          <button
+            className="order-view_button button-round"
             onClick={() => {
               navigate('/orders/orders-list');
             }}
@@ -212,7 +228,7 @@ const OrderViev = () => {
             order?.creator.email === user.email && (
               <button
                 className="order-view_button"
-                onClick={() => navigate(`/orders/${order?.docName}`)}
+                onClick={() => navigate(`/orders/order-edite/${order.docName}`)}
               >
                 редагувати
               </button>

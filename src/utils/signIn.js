@@ -1,10 +1,8 @@
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleAuthProvider } from '../firebaseConfig';
-
 import getDocFromDB from './getDocFromDB';
 import setDocToDB from './setDocToDB';
 import updateDocInDB from './updateDocInDB';
-import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/slices/userSlice';
 
 const signInWithGoogle = async () => {

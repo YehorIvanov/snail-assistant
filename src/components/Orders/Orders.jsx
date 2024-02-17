@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
-import setDocToDB from '../../utils/setDocToDB';
 import {
   selectOrdersDesigns,
   subscribeToOrdersDesings,
 } from '../../redux/slices/ordersDesingsSlise';
 import './Orders.css';
+import OrdersObserver from './OrdersObserver';
 const Orders = () => {
   const dispatch = useDispatch();
 
@@ -23,12 +23,14 @@ const Orders = () => {
     const selectedDesing = {
       ...ordersDesings.filter((desing) => desing.slug === slug)[0],
     };
- 
-    navigate(`/orders/${selectedDesing.slug}`)
+
+    navigate(`/orders/${selectedDesing.slug}`);
   };
   return (
     <div className="orders">
       <h3 className="orders_title">Замовлення</h3>
+      <OrdersObserver />
+
       {user.role.isBarista && (
         <div
           className="orders_button-wraper"

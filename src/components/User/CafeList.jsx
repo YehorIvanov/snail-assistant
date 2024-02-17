@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { FaPenAlt, FaReply, FaTrash } from 'react-icons/fa';
+import { FaPenAlt, FaReply } from 'react-icons/fa';
 import './CafeList.css';
 import UserLabel from './UserLabel';
 import setDocToDB from '../../utils/setDocToDB';
 import { slugify } from 'transliteration';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
-import getDocFromDB from '../../utils/getDocFromDB';
-import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
-import getUniqueAdminValues from '../../utils/getUniqueAdminValues';
-import { selectUsers } from '../../redux/slices/usersSlice';
-import deleteDocFromDB from '../../utils/deleteDocFromDB';
 import { useNavigate } from 'react-router';
 import { selectCafeList, subscribeToCafe } from '../../redux/slices/cafeSlice';
 const CafeList = () => {
@@ -18,6 +13,9 @@ const CafeList = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
+  useEffect(() => {
+    dispatch(subscribeToCafe());
+  }, [dispatch]);
   const initialNewCaffe = {
     docName: '',
     name: '',

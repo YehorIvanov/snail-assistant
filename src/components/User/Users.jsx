@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 import { selectUser } from '../../redux/slices/userSlice';
 import './Users.css';
 import { FaPencilAlt } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import getUniqueAdminValues from '../../utils/getUniqueAdminValues';
 const Users = () => {
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
   const user = useSelector(selectUser);
-  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(subscribeToUsers());
   }, [dispatch]);
@@ -19,7 +19,7 @@ const Users = () => {
   );
   useEffect(() => {
     setFilteredUsers(users.filter((elem) => elem.admin.email === user.email));
-  }, [users]);
+  }, [user.email, users]);
 
   const handlerOnAdminChange = (admin) => {
     switch (admin) {

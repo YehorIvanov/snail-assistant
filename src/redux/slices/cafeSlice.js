@@ -4,7 +4,6 @@ import { setError } from './errorSlice';
 export const subscribeToCafe = createAsyncThunk(
   'cafe/subscribeToCafe',
   async (_, { getState }, chunkAPI) => {
-    console.log('subscribe to orders');
     try {
       const { path, orderedBy, limit, where1, where2 } = getState().cafe.params;
       const currentTime = new Date().getTime();

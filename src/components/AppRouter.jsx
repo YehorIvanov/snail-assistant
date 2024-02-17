@@ -21,14 +21,7 @@ import Users from './User/Users';
 import { subscribeToUsers } from '../redux/slices/usersSlice';
 import OrdersList from './Orders/OrdersList';
 import CafeList from './User/CafeList';
-import {
-  selectOrdersFilters,
-  setOrdersFilters,
-} from '../redux/slices/ordersFiltersSlice';
-import {
-  setOrdersParams,
-  subscribeToOrders,
-} from '../redux/slices/ordersSlice';
+import { setOrdersParams } from '../redux/slices/ordersSlice';
 import { subscribeToCafe } from '../redux/slices/cafeSlice';
 import { subscribeToOrdersDesings } from '../redux/slices/ordersDesingsSlise';
 import CafeEdit from './User/CafeEdit';
@@ -36,7 +29,6 @@ import CafeEdit from './User/CafeEdit';
 const AppRouter = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  const filters = useSelector(selectOrdersFilters);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (!!currentUser && !!currentUser.email) {

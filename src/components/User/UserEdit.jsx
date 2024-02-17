@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
 import setDocToDB from '../../utils/setDocToDB';
 import { useNavigate, useParams } from 'react-router';
-import { selectUsers, subscribeToUsers } from '../../redux/slices/usersSlice';
+import { selectUsers } from '../../redux/slices/usersSlice';
 import getUniqueAdminValues from '../../utils/getUniqueAdminValues';
 import './UserEdit.css';
 import Compressor from 'compressorjs';

@@ -6,9 +6,8 @@ import {
   FaUserCircle,
   FaClipboardCheck,
 } from 'react-icons/fa';
-import { GoChecklist } from 'react-icons/go';
 import { useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { selectUser } from '../redux/slices/userSlice';
 import './Footer.css';
 function Footer() {
@@ -17,7 +16,6 @@ function Footer() {
     <footer className="footer">
       <nav className="footer_nav">
         <NavLink
-          // className="footer_link"
           className={({ isActive }) =>
             isActive ? 'footer_link__active' : 'footer_link'
           }
@@ -33,19 +31,28 @@ function Footer() {
         >
           <FaShoppingCart size="3rem" />
         </NavLink>
-        <NavLink         className={({ isActive }) =>
+        <NavLink
+          className={({ isActive }) =>
             isActive ? 'footer_link__active' : 'footer_link'
-          } to="/">
+          }
+          to="/"
+        >
           <FaHome size="3rem" />
         </NavLink>
-        <NavLink         className={({ isActive }) =>
+        <NavLink
+          className={({ isActive }) =>
             isActive ? 'footer_link__active' : 'footer_link'
-          }to="/reports">
+          }
+          to="/reports"
+        >
           <FaClipboardCheck size="3rem" />
         </NavLink>
-        <NavLink         className={({ isActive }) =>
+        <NavLink
+          className={({ isActive }) =>
             isActive ? 'footer_link__active' : 'footer_link'
-          } to="/user">
+          }
+          to="/user"
+        >
           {!!user ? (
             <FaUserCircle size="3rem" />
           ) : (

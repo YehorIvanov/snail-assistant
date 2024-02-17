@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import timestampToTimestring from '../../utils/timestampToTimestring';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -7,21 +7,34 @@ import {
   subscribeToOrders,
 } from '../../redux/slices/ordersSlice';
 import UserLabel from '../User/UserLabel';
-import { selectOrdersFilters } from '../../redux/slices/ordersFiltersSlice';
+import {
+  selectOrdersFilters,
+  setOrdersFilters,
+} from '../../redux/slices/ordersFiltersSlice';
 import OrdersFilters from './OrdersFilters';
 import './ordersList.css';
 import { selectUser } from '../../redux/slices/userSlice';
+import queryString from 'query-string';
 
 const OrdersList = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(subscribeToOrders());
   }, [dispatch]);
+  const location = useLocation();
+
+  console.log(queryString.parse(location.search));
 
   const ordersList = useSelector(selectOrders);
   const filters = useSelector(selectOrdersFilters);
   const [filteredOrdersList, setFilteredOrdersList] = useState([...ordersList]);
   const user = useSelector(selectUser);
+
+  useEffect(() => {
+    const filtersUpdate = queryString.parse(location.search);
+    dispatch(setOrdersFilters({ ...filters, ...filtersUpdate }));
+    console.log(filters);
+  }, []);
   useEffect(() => {
     setFilteredOrdersList([
       ...ordersList
@@ -35,8 +48,12 @@ const OrdersList = () => {
         .filter((order) =>
           filters.status ? order.status === filters.status : true
         )
-        .filter((order) => (filters.name ? order.name === filters.name : true)),
+        .filter((order) => (filters.name ? order.name === filters.name : true))
+        .filter((order) =>
+          filters.notStatus ? order.status !== filters.notStatus : true
+        ),
     ]);
+    console.log(filters.status);
   }, [filters, ordersList]);
 
   return (

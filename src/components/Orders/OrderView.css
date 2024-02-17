@@ -15,6 +15,12 @@
   background-position: center;
   text-align: right;
 }
+.order-view_header-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0 ;
+}
 .order-view_order {
   padding: 0 1rem 6rem;
 }

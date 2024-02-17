@@ -8,7 +8,6 @@
   margin: 0;
 }
 .cafe-list_container {
-  /* border: 1px solid; */
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -25,14 +24,12 @@
   background-position: center;
 }
 
-.cafe-list_cafe-controls {
-}
 .cafe-list_cafe-info {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   justify-content: flex-start;
-  align-items: start;
+  align-items: flex-start;
 }
 .cafe-list_cafe-info p {
   text-align: left;

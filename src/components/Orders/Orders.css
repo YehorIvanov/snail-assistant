@@ -1,12 +1,18 @@
 .orders {
   overflow-y: auto;
   padding: 1rem 1rem 7rem;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+.orders_title {
+  margin: 0;
 }
 .orders_button-wraper {
   gap: 1rem;
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
+  justify-content: flex-start;
   width: 100%;
   align-items: flex-start;
   flex-flow: column wrap;

@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-const initialState = { barista: '', admin: '', status: '', cafe: '', name: '' };
+const initialState = {
+  barista: '',
+  admin: '',
+  status: '',
+  cafe: '',
+  name: '',
+  notStatus: '',
+};
 
 const ordersFiltersSlice = createSlice({
   name: 'ordersFilters',
