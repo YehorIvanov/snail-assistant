@@ -5,13 +5,13 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background: repeating-linear-gradient(
+  /* background: repeating-linear-gradient(
     to right,
     var(--glas) 0%,
     var(--glas) 10%,
     var(--bg-color) 10%,
     var(--bg-color) 20%
-  );
+  ); */
 }
 .orders-observer_header {
   display: flex;

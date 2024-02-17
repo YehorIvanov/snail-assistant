@@ -24,11 +24,34 @@ const OrdersObserver = () => {
   const ordersDesings = useSelector(selectOrdersDesigns);
   const ordersList = useSelector(selectOrders);
 
+  const getRepeatingLinearGradient = (columns, direction, color1, color2) => {
+    const columnWidth = 100 / columns;
+    let gradient = `repeating-linear-gradient(${direction},`;
+    for (let i = 0; i < columns; i++) {
+      const startPosition = i * columnWidth;
+      const endPosition = (i + 1) * columnWidth;
+      gradient += `${i % 2 === 0 ? color1 : color2} ${startPosition}%, ${
+        i % 2 === 0 ? color1 : color2
+      } ${endPosition}%${i < columns - 1 ? ',' : ''}`;
+    }
+    gradient += ')';
+    return gradient;
+  };
+
   if (user.role.isAdmin) {
     console.log(ordersDesings);
     return (
-      <div className="orders-observer">
-     
+      <div
+        className="orders-observer"
+        style={{
+          background: getRepeatingLinearGradient(
+            ordersDesings.filter((desing) => desing.published).length,
+            'to left',
+            'var(--bg-color)',
+            'var(--glas)'
+          ),
+        }}
+      >
         <div className="orders-observer_header">
           {ordersDesings &&
             ordersDesings.map((desing) => {
@@ -52,7 +75,10 @@ const OrdersObserver = () => {
             return (
               <div className="orders-observer_row" key={cafe.name}>
                 <div>
-                  <Link className='orders-observer_cafe' to={`/orders/orders-list/?cafe=${cafe?.name}`}>
+                  <Link
+                    className="orders-observer_cafe"
+                    to={`/orders/orders-list/?cafe=${cafe?.name}`}
+                  >
                     {cafe?.name}
                   </Link>
                 </div>
