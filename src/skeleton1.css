@@ -6,11 +6,25 @@
   /*  #d2417f  #d6548b  #db6698  #df7aa5   #e48db2  #e8a0bf  #edb3cb  #f1c6d8  #f6d9e5  #faecf2 */
   --blue: rgb(0, 0, 110);
   --white: rgb(255, 255, 255);
+
+  /* --accent-color: var(--fuchsia);
+  --accent-color-2: var(--fuchsia);
+  --accent-color-3: var(--yellow);
+  --color: var(--white);
+  --bg-color: var(--blue); */
+
   --accent-color: var(--fuchsia);
   --accent-color-2: var(--white);
   --accent-color-3: var(--yellow);
   --color: var(--blue);
   --bg-color: var(--light-pink);
+
+  /* --accent-color: var(black);
+  --accent-color-2: var(black);
+  --accent-color-3: var(--yellow);
+  --color: var(black);
+  --bg-color: var(--white); */
+
   --elem-height: 5rem;
   --border-radius: calc(var(--elem-height) / 2);
   --border: 0.25rem solid var(--color);
