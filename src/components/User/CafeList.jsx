@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaPenAlt, FaReply } from 'react-icons/fa';
+import { FaPencilAlt, FaReply } from 'react-icons/fa';
 import './CafeList.css';
 import UserLabel from './UserLabel';
 import setDocToDB from '../../utils/setDocToDB';
@@ -83,7 +83,7 @@ const CafeList = () => {
                       navigate(`/user/cafe-edit/${cafe.docName}`);
                     }}
                   >
-                    <FaPenAlt />
+                    <FaPencilAlt />
                   </button>
                 </div>
               </div>
