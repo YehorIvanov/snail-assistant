@@ -30,13 +30,81 @@ const Shedule = () => {
       console.log(data);
     });
   }, []);
+
+  const addNonExistentCafesToEditingWeek = (data) => {
+    if (!data || !data.cafeList || !Array.isArray(daysOfWeek)) {
+      return [];
+    }
+    return cafeList
+      .filter((cafe) => {
+        return !data.cafeList.some((elem) => elem.cafeName === cafe.name);
+      })
+      .map((cafe) => {
+        return {
+          cafeName: cafe.name,
+          schedule: daysOfWeek.map((day) => {
+            return {
+              firstBarista: {
+                userName: '',
+                email: '',
+              },
+              secondBarista: {
+                userName: '',
+                email: '',
+              },
+              day,
+            };
+          }),
+        };
+      });
+  };
+
   const handlerOnChangeDisplayedWeek = (value) => {
     setDisplayedWeek(displayedWeek.clone().add(value, 'week'));
   };
+  const handlerOnEditShedule = () => {
+    getDocFromDB('shedule', displayedWeek.format('YY-WW')).then((data) => {
+      if (data) {
+        data.cafeList = [
+          ...data.cafeList,
+          ...addNonExistentCafesToEditingWeek(data),
+        ];
+        setEditingWeek({ ...data });
+        setEditMode(true);
+        return;
+      }
+      setDocToDB('shedule', displayedWeek.format('YY-WW'), {
+        docName: displayedWeek.format('YY-WW'),
+        cafeList: [],
+      }).then((data) => {
+        if (data) {
+          console.log(addNonExistentCafesToEditingWeek(data));
+          data.cafeList = [
+            ...data.cafeList,
+            ...addNonExistentCafesToEditingWeek(data),
+          ];
+          setEditingWeek({ ...data });
+          setEditMode(true);
+        }
+      });
+    });
+  };
 
+  const handlerOnSaveShedule = () => {
+    setDocToDB('shedule', editingWeek.docName, editingWeek).then(
+      getDocsColectionFromDB('shedule').then((data) => {
+        setShedule(data);
+        console.log(data);
+      })
+    );
+    setEditingWeek({});
+    setEditMode(false);
+  };
+
+  console.log(addNonExistentCafesToEditingWeek());
+  console.log('editingWeek', editingWeek);
   return (
     <div className="shedule">
-      {/* <h6 className="shedule_today">{currentDate.format('[Вдалої] LLLL ')}</h6> */}
       <div className="shedule_header">
         <div
           className="shedule_header-controls"
@@ -79,49 +147,113 @@ const Shedule = () => {
           })}
         </div>
         <div className="shedule_week-box">
-          {cafeList.map((cafe) => {
-            const currentWeekSchedule = shedule.find(
-              (week) => week.docName === displayedWeek.format('YY-WW')
-            );
-            const cafeSchedule = currentWeekSchedule?.cafeList?.find(
-              (c) => c.cafeName === cafe.name
-            )?.shedule;
+          {editMode
+            ? cafeList.map((cafe) => {
+                const currentWeekSchedule = shedule.find(
+                  (week) => week.docName === displayedWeek.format('YY-WW')
+                );
+                // console.log('currentWeekSchedule', currentWeekSchedule);
+                const cafeSchedule = currentWeekSchedule?.cafeList?.find(
+                  (c) => c.cafeName === cafe.name
+                )?.shedule;
 
-            return (
-              <div key={cafe.name} className="shedule_week-location-box">
-                <div className="shedule_week-location">{cafe.name}</div>
-                <div className="shedule_week-location-shedule">
-                  {cafeSchedule?.map((day) => (
-                    <div className="shedule_week-location-day" key={day.day}>
-                      <img
-                        className="shedule_user-avatar"
-                        src={getAvatarByEmail(day.firstBarista.email, users)}
-                        alt="avatar"
-                      />
-                      <span className="shedule_user-name">
-                        {day.firstBarista.userName}
-                      </span>
+                return (
+                  <div key={cafe.name} className="shedule_week-location-box">
+                    <div className="shedule_week-location">{cafe.name}</div>
+                    <div className="shedule_week-location-shedule">
+                      {cafeSchedule?.map((day) => (
+                        <div
+                          className="shedule_week-location-day"
+                          key={day.day}
+                        >
+                          <img
+                            className="shedule_user-avatar"
+                            src={getAvatarByEmail(
+                              day.firstBarista.email,
+                              users
+                            )}
+                            alt="avatar"
+                          />
+                          <span className="shedule_user-name">
+                            {day.firstBarista.userName}
+                          </span>
+                        </div>
+                      ))}
+                      {/* {[...Array(7 - (cafeSchedule?.length || 0))].map(
+                      (_, index) => (
+                        <div
+                          key={index}
+                          className="shedule_week-location-day"
+                        >
+                          <img
+                            className="shedule_user-avatar"
+                            src="/img/placeholder.jpg"
+                            alt=""
+                          />
+                          <span className="shedule_user-name">N/A</span>
+                        </div>
+                      )
+                    )} */}
                     </div>
-                  ))}
-                  {[...Array(7 - (cafeSchedule?.length || 0))].map(
-                    (_, index) => (
-                      <div key={index} className="shedule_week-location-day">
-                        <img
-                          className="shedule_user-avatar"
-                          src="/img/placeholder.jpg"
-                          alt=""
-                        />
-                        <span className="shedule_user-name">N/A</span>
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
-            );
-          })}
+                  </div>
+                );
+              })
+            : cafeList.map((cafe) => {
+                const currentWeekSchedule = shedule.find(
+                  (week) => week.docName === displayedWeek.format('YY-WW')
+                );
+                // console.log('currentWeekSchedule', currentWeekSchedule);
+                const cafeSchedule = currentWeekSchedule?.cafeList?.find(
+                  (c) => c.cafeName === cafe.name
+                )?.shedule;
+
+                return (
+                  <div key={cafe.name} className="shedule_week-location-box">
+                    <div className="shedule_week-location">{cafe.name}</div>
+                    <div className="shedule_week-location-shedule">
+                      {cafeSchedule?.map((day) => (
+                        <div
+                          className="shedule_week-location-day"
+                          key={day.day}
+                        >
+                          <img
+                            className="shedule_user-avatar"
+                            src={getAvatarByEmail(
+                              day.firstBarista.email,
+                              users
+                            )}
+                            alt="avatar"
+                          />
+                          <span className="shedule_user-name">
+                            {day.firstBarista.userName}
+                          </span>
+                        </div>
+                      ))}
+                      {[...Array(7 - (cafeSchedule?.length || 0))].map(
+                        (_, index) => (
+                          <div
+                            key={index}
+                            className="shedule_week-location-day"
+                          >
+                            <img
+                              className="shedule_user-avatar"
+                              src="/img/placeholder.jpg"
+                              alt=""
+                            />
+                            <span className="shedule_user-name">N/A</span>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
         </div>
       </div>
-      <div className="shedule_buttons-box">
+      <div
+        className="shedule_buttons-box"
+        style={!user.role.isAdmin ? { display: 'none' } : { display: 'flex' }}
+      >
         {/* <button
           onClick={() => {
             const weekShedule = {
@@ -202,34 +334,13 @@ const Shedule = () => {
         </button> */}
         <button
           style={editMode ? { display: 'none' } : { display: 'flex' }}
-          onClick={() => {
-            getDocFromDB('shedule', displayedWeek.format('YY-WW')).then(
-              (data) => {
-                if (data) {
-                  console.log(data);
-                  setEditMode(true);
-                  return;
-                }
-                setDocToDB('shedule', displayedWeek.format('YY-WW'), {
-                  docName: displayedWeek.format('YY-WW'),
-                  cafeList: [],
-                }).then((data) => {
-                  if (data) {
-                    console.log(data);
-                    setEditMode(true);
-                  }
-                });
-              }
-            );
-          }}
+          onClick={handlerOnEditShedule}
         >
           редагувати графік
         </button>
         <button
           style={editMode ? { display: 'flex' } : { display: 'none' }}
-          onClick={() => {
-            setEditMode(false);
-          }}
+          onClick={handlerOnSaveShedule}
         >
           зберегти зміни
         </button>
@@ -256,7 +367,6 @@ const Shedule = () => {
           )})`,
         }}
       >
-
         {users.map((user) => {
           return <option value={user.email}>{user.userName}</option>;
         })}
