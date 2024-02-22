@@ -4,7 +4,7 @@ const getAvatarByEmail = (email, users) => {
     if (url) return url;
     return '/img/placeholder.jpg';
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return '/img/placeholder.jpg';
   }
 };
