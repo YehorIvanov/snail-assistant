@@ -24,6 +24,7 @@ const Schedule = () => {
   const [editMode, setEditMode] = useState(false);
   const [editingWeek, setEditingWeek] = useState({});
   const [renderedWeek, setRenderedWeek] = useState();
+  const [display2Barista, setDisplay2Barista] = useState(false);
   useEffect(() => {
     getDocsColectionFromDB('schedule').then((data) => {
       setSchedule(data);
@@ -271,101 +272,110 @@ const Schedule = () => {
                         }
                       )}
                     </div>
-                    <div className="schedule_week-location-schedule">
-                      {editingWeek.cafeList[cafe.name].schedule.map(
-                        (day, i) => {
-                          return (
-                            <div className="schedule_week-location-day" key={i}>
-                              <select
-                                className="schedule_user-select"
-                                style={{
-                                  backgroundImage: `URL(${getAvatarByEmail(
-                                    day.secondBarista.email,
-                                    users
-                                  )})`,
-                                }}
-                                value={
-                                  editingWeek.cafeList[cafe.name].schedule[i]
-                                    .secondBarista.email
-                                }
-                                onChange={(e) => {
-                                  const updatedSchedule = editingWeek.cafeList[
-                                    cafe.name
-                                  ].schedule.map((scheduleItem, index) => {
-                                    if (index === i) {
-                                      return {
-                                        ...scheduleItem,
-                                        secondBarista: {
-                                          ...scheduleItem.secondBarista,
-                                          userName: e.target.value
-                                            ? users.find(
-                                                (elem) =>
-                                                  e.target.value === elem.email
-                                              ).userName
-                                            : '',
-                                          email: e.target.value
-                                            ? e.target.value
-                                            : '',
-                                        },
-                                      };
-                                    }
-                                    return scheduleItem;
-                                  });
-                                  setEditingWeek((editingWeek) => ({
-                                    ...editingWeek,
-                                    cafeList: {
-                                      ...editingWeek.cafeList,
-                                      [cafe.name]: {
-                                        ...editingWeek.cafeList[cafe.name],
-                                        schedule: updatedSchedule,
-                                      },
-                                    },
-                                  }));
-                                }}
+                    {display2Barista && (
+                      <div className="schedule_week-location-schedule">
+                        {editingWeek.cafeList[cafe.name].schedule.map(
+                          (day, i) => {
+                            return (
+                              <div
+                                className="schedule_week-location-day"
+                                key={i}
                               >
-                                <option value="">Оберіть бариста</option>
-                                <option
+                                <select
+                                  className="schedule_user-select"
+                                  style={{
+                                    backgroundImage: `URL(${getAvatarByEmail(
+                                      day.secondBarista.email,
+                                      users
+                                    )})`,
+                                  }}
                                   value={
                                     editingWeek.cafeList[cafe.name].schedule[i]
                                       .secondBarista.email
                                   }
+                                  onChange={(e) => {
+                                    const updatedSchedule =
+                                      editingWeek.cafeList[
+                                        cafe.name
+                                      ].schedule.map((scheduleItem, index) => {
+                                        if (index === i) {
+                                          return {
+                                            ...scheduleItem,
+                                            secondBarista: {
+                                              ...scheduleItem.secondBarista,
+                                              userName: e.target.value
+                                                ? users.find(
+                                                    (elem) =>
+                                                      e.target.value ===
+                                                      elem.email
+                                                  ).userName
+                                                : '',
+                                              email: e.target.value
+                                                ? e.target.value
+                                                : '',
+                                            },
+                                          };
+                                        }
+                                        return scheduleItem;
+                                      });
+                                    setEditingWeek((editingWeek) => ({
+                                      ...editingWeek,
+                                      cafeList: {
+                                        ...editingWeek.cafeList,
+                                        [cafe.name]: {
+                                          ...editingWeek.cafeList[cafe.name],
+                                          schedule: updatedSchedule,
+                                        },
+                                      },
+                                    }));
+                                  }}
                                 >
-                                  {
-                                    editingWeek.cafeList[cafe.name].schedule[i]
-                                      .secondBarista.userName
-                                  }
-                                </option>
-                                {users
-                                  .filter((userElem) =>
-                                    user.role.isSuperadmin
-                                      ? true
-                                      : userElem.admin.email ===
-                                        user.admin.email
-                                  )
-                                  .filter((userElem) =>
-                                    checkIsBaristaAvailable(
-                                      userElem.email,
-                                      i,
-                                      editingWeek,
-                                      cafeList
+                                  <option value="">Оберіть бариста</option>
+                                  <option
+                                    value={
+                                      editingWeek.cafeList[cafe.name].schedule[
+                                        i
+                                      ].secondBarista.email
+                                    }
+                                  >
+                                    {
+                                      editingWeek.cafeList[cafe.name].schedule[
+                                        i
+                                      ].secondBarista.userName
+                                    }
+                                  </option>
+                                  {users
+                                    .filter((userElem) =>
+                                      user.role.isSuperadmin
+                                        ? true
+                                        : userElem.admin.email ===
+                                          user.admin.email
                                     )
-                                  )
-                                  .map((userElem) => {
-                                    return (
-                                      <option
-                                        key={userElem.email}
-                                        value={userElem.email}
-                                      >
-                                        {userElem.userName}
-                                      </option>
-                                    );
-                                  })}
-                              </select>
-                            </div>
-                          );
-                        }
-                      )}
-                    </div>
+                                    .filter((userElem) =>
+                                      checkIsBaristaAvailable(
+                                        userElem.email,
+                                        i,
+                                        editingWeek,
+                                        cafeList
+                                      )
+                                    )
+                                    .map((userElem) => {
+                                      return (
+                                        <option
+                                          key={userElem.email}
+                                          value={userElem.email}
+                                        >
+                                          {userElem.userName}
+                                        </option>
+                                      );
+                                    })}
+                                </select>
+                              </div>
+                            );
+                          }
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })
@@ -437,6 +447,7 @@ const Schedule = () => {
               })}
         </div>
       </div>
+
       <div
         className="schedule_buttons-box"
         style={!user.role.isAdmin ? { display: 'none' } : { display: 'flex' }}
@@ -461,6 +472,30 @@ const Schedule = () => {
           }}
         >
           <FaReply />
+        </button>
+      </div>
+      <div
+        className="schedule_buttons-box"
+        style={!user.role.isAdmin ? { display: 'none' } : { display: 'flex' }}
+      >
+        <button
+          style={editMode ? { display: 'flex' } : { display: 'none' }}
+          onClick={() => setDisplay2Barista(!display2Barista)}
+        >
+          {display2Barista
+            ? 'один бариста на локації'
+            : 'показати 2 бариста на локації'}
+        </button>
+      </div>
+      <div
+        className="schedule_buttons-box"
+        style={!user.role.isAdmin ? { display: 'none' } : { display: 'flex' }}
+      >
+        <button
+          style={editMode ? { display: 'flex' } : { display: 'none' }}
+          // onClick={handlerOnSaveSchedule}
+        >
+          копіювати попередній тиждень
         </button>
       </div>
     </div>
