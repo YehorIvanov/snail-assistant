@@ -161,8 +161,8 @@ const Schedule = () => {
         <div className="schedule_week-header">
           {daysOfWeek.map((day) => {
             return (
-              <div key={day} className="shedule_week-header-day">
-                <span className="shedule_week-header-day-name">
+              <div key={day} className="schedule_week-header-day">
+                <span className="schedule_week-header-day-name">
                   {displayedWeek.clone().day(day).format('dd')}
                 </span>
                 <span>{displayedWeek.clone().day(day).format('DD.MM')}</span>
@@ -238,6 +238,101 @@ const Schedule = () => {
                                   {
                                     editingWeek.cafeList[cafe.name].schedule[i]
                                       .firstBarista.userName
+                                  }
+                                </option>
+                                {users
+                                  .filter((userElem) =>
+                                    user.role.isSuperadmin
+                                      ? true
+                                      : userElem.admin.email ===
+                                        user.admin.email
+                                  )
+                                  .filter((userElem) =>
+                                    checkIsBaristaAvailable(
+                                      userElem.email,
+                                      i,
+                                      editingWeek,
+                                      cafeList
+                                    )
+                                  )
+                                  .map((userElem) => {
+                                    return (
+                                      <option
+                                        key={userElem.email}
+                                        value={userElem.email}
+                                      >
+                                        {userElem.userName}
+                                      </option>
+                                    );
+                                  })}
+                              </select>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                    <div className="schedule_week-location-schedule">
+                      {editingWeek.cafeList[cafe.name].schedule.map(
+                        (day, i) => {
+                          return (
+                            <div className="schedule_week-location-day" key={i}>
+                              <select
+                                className="schedule_user-select"
+                                style={{
+                                  backgroundImage: `URL(${getAvatarByEmail(
+                                    day.secondBarista.email,
+                                    users
+                                  )})`,
+                                }}
+                                value={
+                                  editingWeek.cafeList[cafe.name].schedule[i]
+                                    .secondBarista.email
+                                }
+                                onChange={(e) => {
+                                  const updatedSchedule = editingWeek.cafeList[
+                                    cafe.name
+                                  ].schedule.map((scheduleItem, index) => {
+                                    if (index === i) {
+                                      return {
+                                        ...scheduleItem,
+                                        secondBarista: {
+                                          ...scheduleItem.secondBarista,
+                                          userName: e.target.value
+                                            ? users.find(
+                                                (elem) =>
+                                                  e.target.value === elem.email
+                                              ).userName
+                                            : '',
+                                          email: e.target.value
+                                            ? e.target.value
+                                            : '',
+                                        },
+                                      };
+                                    }
+                                    return scheduleItem;
+                                  });
+                                  setEditingWeek((editingWeek) => ({
+                                    ...editingWeek,
+                                    cafeList: {
+                                      ...editingWeek.cafeList,
+                                      [cafe.name]: {
+                                        ...editingWeek.cafeList[cafe.name],
+                                        schedule: updatedSchedule,
+                                      },
+                                    },
+                                  }));
+                                }}
+                              >
+                                <option value="">Оберіть бариста</option>
+                                <option
+                                  value={
+                                    editingWeek.cafeList[cafe.name].schedule[i]
+                                      .secondBarista.email
+                                  }
+                                >
+                                  {
+                                    editingWeek.cafeList[cafe.name].schedule[i]
+                                      .secondBarista.userName
                                   }
                                 </option>
                                 {users
