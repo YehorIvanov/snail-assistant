@@ -3,7 +3,7 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import moment from 'moment';
 import 'moment/locale/uk';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
 import { selectUsers } from '../../redux/slices/usersSlice';
 import { selectCafeList } from '../../redux/slices/cafeSlice';
@@ -12,6 +12,10 @@ import getDocFromDB from '../../utils/getDocFromDB';
 import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
 import getAvatarByEmail from '../../utils/getAvatarByEmail';
 import { FaReply } from 'react-icons/fa';
+import {
+  selectSchedule,
+  subscribeToSchedule,
+} from '../../redux/slices/scheduleSlice';
 const Schedule = () => {
   moment.locale('uk');
   const user = useSelector(selectUser);
@@ -20,17 +24,14 @@ const Schedule = () => {
   const currentDate = moment();
   const [displayedWeek, setDisplayedWeek] = useState(currentDate.clone());
   const daysOfWeek = [1, 2, 3, 4, 5, 6, 7];
-  const [schedule, setSchedule] = useState([]);
+  // const [schedule, setSchedule] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editingWeek, setEditingWeek] = useState({});
   const [renderedWeek, setRenderedWeek] = useState();
   const [display2Barista, setDisplay2Barista] = useState(false);
-  useEffect(() => {
-    getDocsColectionFromDB('schedule').then((data) => {
-      setSchedule(data);
-      console.log(data);
-    });
-  }, []);
+  const schedule = useSelector(selectSchedule);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setRenderedWeek(
       schedule.find((week) => week.docName === displayedWeek.format('YY-WW'))
@@ -119,10 +120,7 @@ const Schedule = () => {
 
   const handlerOnSaveSchedule = () => {
     setDocToDB('schedule', editingWeek.docName, editingWeek).then(
-      getDocsColectionFromDB('schedule').then((data) => {
-        setSchedule(data);
-        console.log(data);
-      })
+      dispatch(subscribeToSchedule())
     );
     setEditingWeek({});
     setEditMode(false);

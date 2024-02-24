@@ -25,6 +25,7 @@ import { setOrdersParams } from '../redux/slices/ordersSlice';
 import { setCafeParams, subscribeToCafe } from '../redux/slices/cafeSlice';
 import { subscribeToOrdersDesings } from '../redux/slices/ordersDesingsSlise';
 import CafeEdit from './User/CafeEdit';
+import { subscribeToSchedule } from '../redux/slices/scheduleSlice';
 
 const AppRouter = () => {
   const user = useSelector(selectUser);
@@ -68,7 +69,7 @@ const AppRouter = () => {
     if (user?.role.isSuperadmin) {
       dispatch(setCafeParams({ where1: '' }));
     }
-
+    dispatch(subscribeToSchedule());
     dispatch(subscribeToUsers());
     dispatch(subscribeToOrdersDesings());
     dispatch(subscribeToCafe());
