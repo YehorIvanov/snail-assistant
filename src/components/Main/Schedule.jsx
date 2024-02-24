@@ -9,13 +9,13 @@ import { selectUsers } from '../../redux/slices/usersSlice';
 import { selectCafeList } from '../../redux/slices/cafeSlice';
 import setDocToDB from '../../utils/setDocToDB';
 import getDocFromDB from '../../utils/getDocFromDB';
-import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
 import getAvatarByEmail from '../../utils/getAvatarByEmail';
 import { FaReply } from 'react-icons/fa';
 import {
   selectSchedule,
   subscribeToSchedule,
 } from '../../redux/slices/scheduleSlice';
+import SheduleUserAvatar from './SheduleUserAvatar';
 const Schedule = () => {
   moment.locale('uk');
   const user = useSelector(selectUser);
@@ -24,7 +24,6 @@ const Schedule = () => {
   const currentDate = moment();
   const [displayedWeek, setDisplayedWeek] = useState(currentDate.clone());
   const daysOfWeek = [1, 2, 3, 4, 5, 6, 7];
-  // const [schedule, setSchedule] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editingWeek, setEditingWeek] = useState({});
   const [renderedWeek, setRenderedWeek] = useState();
@@ -390,22 +389,14 @@ const Schedule = () => {
                           renderedWeek?.cafeList[cafe?.name].schedule.map(
                             (day, i) => {
                               return (
-                                <div
-                                  className="schedule_week-location-day"
-                                  key={i}
-                                >
-                                  <img
-                                    className="schedule_user-avatar"
-                                    src={getAvatarByEmail(
-                                      day.firstBarista.email,
-                                      users
-                                    )}
-                                    alt="avatar"
-                                  />
-                                  <span className="schedule_user-name">
-                                    {day.firstBarista.userName}
-                                  </span>
-                                </div>
+                                <SheduleUserAvatar
+                                  {...{
+                                    email: day.firstBarista.email,
+                                    userName: day.firstBarista.userName,
+                                    i,
+                                    users,
+                                  }}
+                                />
                               );
                             }
                           )}
@@ -418,22 +409,14 @@ const Schedule = () => {
                           renderedWeek?.cafeList[cafe?.name].schedule.map(
                             (day, i) => {
                               return (
-                                <div
-                                  className="schedule_week-location-day"
-                                  key={i}
-                                >
-                                  <img
-                                    className="schedule_user-avatar"
-                                    src={getAvatarByEmail(
-                                      day.secondBarista.email,
-                                      users
-                                    )}
-                                    alt="avatar"
-                                  />
-                                  <span className="schedule_user-name">
-                                    {day.secondBarista.userName}
-                                  </span>
-                                </div>
+                                <SheduleUserAvatar
+                                  {...{
+                                    email: day.secondBarista.email,
+                                    userName: day.secondBarista.userName,
+                                    i,
+                                    users,
+                                  }}
+                                />
                               );
                             }
                           )}
@@ -499,5 +482,4 @@ const Schedule = () => {
     </div>
   );
 };
-
 export default Schedule;
