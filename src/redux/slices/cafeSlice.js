@@ -46,19 +46,14 @@ const cafeSlice = createSlice({
       orderedBy: 'name',
     },
   },
-  //   reducers: {
-  //     clearOrdersDesigns: (state) => {
-  //       state.orders = [];
-  //     },
-  //     orderUpdated: (state, action) => {
-  //       state.orders = action.payload;
-  //     },
-  //   },
+  reducers: {
+    setCafeParams: (state, action) => {
+      state.params = { ...state.params, ...action.payload };
+    },
+  },
+
   extraReducers: (builder) => {
     builder
-      //   .addCase(subscribeToOrdersDesings.pending, (state) => {
-      //     state.status = 'loading';
-      //   })
       .addCase(subscribeToCafe.fulfilled, (state, action) => {
         if (action.payload) {
           state.cafeList = action.payload;
@@ -72,7 +67,7 @@ const cafeSlice = createSlice({
   },
 });
 
-// export const { clearOrdersDesigns, orderUpdated } = ordersDesingsSlice.actions;
 export const selectCafeList = (state) => state.cafe.cafeList;
+export const { setCafeParams } = cafeSlice.actions;
 export default cafeSlice.reducer;
 //

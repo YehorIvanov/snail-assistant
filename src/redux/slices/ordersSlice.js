@@ -63,9 +63,6 @@ const ordersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // .addCase(subscribeToOrders.pending, (state) => {
-      //   state.status = 'loading';
-      // })
       .addCase(subscribeToOrders.fulfilled, (state, action) => {
         if (action.payload) {
           state.orders = action.payload;

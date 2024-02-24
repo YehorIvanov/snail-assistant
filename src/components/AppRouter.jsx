@@ -22,7 +22,7 @@ import { subscribeToUsers } from '../redux/slices/usersSlice';
 import OrdersList from './Orders/OrdersList';
 import CafeList from './User/CafeList';
 import { setOrdersParams } from '../redux/slices/ordersSlice';
-import { subscribeToCafe } from '../redux/slices/cafeSlice';
+import { setCafeParams, subscribeToCafe } from '../redux/slices/cafeSlice';
 import { subscribeToOrdersDesings } from '../redux/slices/ordersDesingsSlise';
 import CafeEdit from './User/CafeEdit';
 
@@ -45,10 +45,6 @@ const AppRouter = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(subscribeToUsers());
-    dispatch(subscribeToOrdersDesings());
-    dispatch(subscribeToCafe());
-
     if (user?.role.isBarista) {
       dispatch(
         setOrdersParams({ where1: ['creator.email', '==', user.email] })
@@ -60,6 +56,22 @@ const AppRouter = () => {
     if (user?.role.isSuperadmin) {
       dispatch(setOrdersParams({ where1: '' }));
     }
+
+    if (user?.role.isBarista) {
+      dispatch(
+        setCafeParams({ where1: ['admin.email', '==', user.admin.email] })
+      );
+    }
+    if (user?.role.isAdmin) {
+      dispatch(setCafeParams({ where1: ['admin.email', '==', user.email] }));
+    }
+    if (user?.role.isSuperadmin) {
+      dispatch(setCafeParams({ where1: '' }));
+    }
+
+    dispatch(subscribeToUsers());
+    dispatch(subscribeToOrdersDesings());
+    dispatch(subscribeToCafe());
   }, [dispatch, user]);
 
   return !!user &&

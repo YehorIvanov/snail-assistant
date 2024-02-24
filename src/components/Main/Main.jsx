@@ -1,16 +1,9 @@
-import Shedule from './Shedule';
+import Schedule from './Schedule';
 
 const Main = () => {
   return (
     <div className="main">
-      {/* <h3>головна сторінка додатку</h3> */}
-      {/* <hr /> */}
-      <Shedule />
-      {/* <div>погода на тиждень</div> */}
-      <hr />
-      {/* <div>графік на тиждень</div> */}
-      <hr />
-      {/* <div>щось ще конче важливе</div> */}
+      <Schedule />
       <div style={{ border: '2px dashed var(--accent-color)' }}>
         сьогодні день замовлень на: макаруни молоко майяююю
       </div>

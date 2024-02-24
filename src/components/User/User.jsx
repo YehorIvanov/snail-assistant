@@ -5,6 +5,7 @@ import { selectUser, setUser } from '../../redux/slices/userSlice';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import './User.css';
+import getDocFromDB from '../../utils/getDocFromDB';
 const User = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const User = () => {
         },
       })
     );
+    console.log('isBarista: ', !user.role.isBarista);
   };
 
   const handlerOnAdminClick = () => {
@@ -32,6 +34,7 @@ const User = () => {
         },
       })
     );
+    console.log('isAdmin: ', !user.role.isAdmin);
   };
   const handlerOnSuperadminClick = () => {
     dispatch(
@@ -43,7 +46,7 @@ const User = () => {
         },
       })
     );
-    console.log('isSuperadmin: ', user.role.isSuperadmin);
+    console.log('isSuperadmin: ', !user.role.isSuperadmin);
   };
   return (
     <>
@@ -94,6 +97,19 @@ const User = () => {
             />{' '}
             Superadmin
           </label>
+          <div
+            style={{
+              width: '2rem',
+              height: '2rem',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color',
+            }}
+            onDoubleClick={() => {
+              getDocFromDB('users', prompt('param pam pam')).then((user) => {
+                dispatch(setUser(user));
+              });
+            }}
+          ></div>
         </div>
         {(user.role.isAdmin || user.role.isSuperadmin) && (
           <button
@@ -104,6 +120,7 @@ const User = () => {
             Керувати Користувачами
           </button>
         )}
+
         {(user.role.isAdmin || user.role.isSuperadmin) && (
           <button
             onClick={() => {
