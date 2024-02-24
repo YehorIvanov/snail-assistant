@@ -307,6 +307,34 @@ const Schedule = () => {
                             }
                           )}
                       </div>
+                      <div className="schedule_week-location-schedule">
+                        {renderedWeek &&
+                          renderedWeek.cafeList[cafe?.name].schedule.some(
+                            (day, i) => !!day.secondBarista.email
+                          ) &&
+                          renderedWeek?.cafeList[cafe?.name].schedule.map(
+                            (day, i) => {
+                              return (
+                                <div
+                                  className="schedule_week-location-day"
+                                  key={i}
+                                >
+                                  <img
+                                    className="schedule_user-avatar"
+                                    src={getAvatarByEmail(
+                                      day.secondBarista.email,
+                                      users
+                                    )}
+                                    alt="avatar"
+                                  />
+                                  <span className="schedule_user-name">
+                                    {day.secondBarista.userName}
+                                  </span>
+                                </div>
+                              );
+                            }
+                          )}
+                      </div>
                     </div>
                   );
                 }
