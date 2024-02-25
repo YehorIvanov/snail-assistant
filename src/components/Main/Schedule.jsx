@@ -429,8 +429,7 @@ const Schedule = () => {
         </div>
       </div>
 
-      <div
-        className="schedule_buttons-box"
+      <div className="schedule_buttons-box"
         style={!user.role.isAdmin ? { display: 'none' } : { display: 'flex' }}
       >
         <button

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import getAvatarByEmail from '../../utils/getAvatarByEmail';
 const SheduleUserAvatar = ({ email, userName, i, users }) => {
-  console.log(email, userName, i, users);
   const [showToolTip, setShowToolTip] = useState(false);
   return (
     <div

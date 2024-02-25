@@ -58,17 +58,17 @@ const AppRouter = () => {
       dispatch(setOrdersParams({ where1: '' }));
     }
 
-    if (user?.role.isBarista) {
-      dispatch(
-        setCafeParams({ where1: ['admin.email', '==', user.admin.email] })
-      );
-    }
-    if (user?.role.isAdmin) {
-      dispatch(setCafeParams({ where1: ['admin.email', '==', user.email] }));
-    }
-    if (user?.role.isSuperadmin) {
-      dispatch(setCafeParams({ where1: '' }));
-    }
+    // if (user?.role.isBarista) {
+    //   dispatch(
+    //     setCafeParams({ where1: ['admin.email', '==', user.admin.email] })
+    //   );
+    // }
+    // if (user?.role.isAdmin) {
+    //   dispatch(setCafeParams({ where1: ['admin.email', '==', user.email] }));
+    // }
+    // if (user?.role.isSuperadmin) {
+    //   dispatch(setCafeParams({ where1: '' }));
+    // }
     dispatch(subscribeToSchedule());
     dispatch(subscribeToUsers());
     dispatch(subscribeToOrdersDesings());

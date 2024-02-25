@@ -1,8 +1,10 @@
+import MySchedule from './MySchedule';
 import Schedule from './Schedule';
 
 const Main = () => {
   return (
     <div className="main">
+      <MySchedule />
       <Schedule />
       <div style={{ border: '2px dashed var(--accent-color)' }}>
         сьогодні день замовлень на: макаруни молоко майяююю
