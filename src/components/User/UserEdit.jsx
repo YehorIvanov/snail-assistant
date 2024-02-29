@@ -22,7 +22,6 @@ const UserEdit = () => {
   const [editingUser, setEditingUser] = useState(
     users.filter((user) => user.email === params.slug)[0]
   );
-  console.log(editingUser);
   const handlerOnSave = () => {
     if (editingUser.role.isAdmin && !user.role.isSuperadmin) {
       dispatch(
@@ -33,13 +32,11 @@ const UserEdit = () => {
       return;
     }
     setDocToDB('users', editingUser.email, editingUser).then(() => {
-      console.log('user saved');
       navigate('/user/users');
     });
   };
 
   const handlerOnAdminChange = (selected) => {
-    console.log(selected);
     const admin = {
       email: selected,
       userName: users.filter((elem) => elem.email === selected)[0].userName,
@@ -94,7 +91,6 @@ const UserEdit = () => {
   const handlerOnAvatarChange = (e) => {
     const photo = e.target.files[0];
     if (!photo) {
-      console.log('no file');
       return;
     }
     new Compressor(photo, {
@@ -130,11 +126,6 @@ const UserEdit = () => {
       console.log('no user');
       return;
     }
-    console.log(
-      editingUser.role.isAdmin && user.role.isSuperadmin,
-      editingUser.role.isAdmin,
-      user.role.isSuperadmin
-    );
     if (editingUser.role.isAdmin && !user.role.isSuperadmin) {
       dispatch(
         setError(

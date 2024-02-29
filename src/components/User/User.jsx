@@ -6,8 +6,11 @@ import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import './User.css';
 import getDocFromDB from '../../utils/getDocFromDB';
+import { selectUsers } from '../../redux/slices/usersSlice';
+import setDocToDB from '../../utils/setDocToDB';
 const User = () => {
   const user = useSelector(selectUser);
+  // const users = useSelector(selectUsers);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -47,6 +50,32 @@ const User = () => {
       })
     );
     console.log('isSuperadmin: ', !user.role.isSuperadmin);
+  };
+  const handleOnFakeLogin = () => {
+    const email = prompt('param pam pam');
+    if (!email) return;
+    getDocFromDB('users', email).then((user) => {
+      if (user) {
+        dispatch(setUser(user));
+      } else {
+        setDocToDB('users', email, {
+          email: email,
+          userName: '',
+          firstName: '',
+          lastName: '',
+          tel: '',
+          userPhotoURL: '',
+          lastLogin: new Date().getTime(),
+          admin: '',
+          role: {
+            isBarista: false,
+            isAdmin: false,
+            isSuperadmin: '',
+            isGuest: true,
+          },
+        });
+      }
+    });
   };
   return (
     <>
@@ -104,11 +133,7 @@ const User = () => {
               borderRadius: '50%',
               backgroundColor: 'var(--color',
             }}
-            onDoubleClick={() => {
-              getDocFromDB('users', prompt('param pam pam')).then((user) => {
-                dispatch(setUser(user));
-              });
-            }}
+            onDoubleClick={handleOnFakeLogin}
           ></div>
         </div>
         {(user.role.isAdmin || user.role.isSuperadmin) && (
