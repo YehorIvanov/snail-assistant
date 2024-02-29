@@ -82,7 +82,6 @@ const Schedule = () => {
         };
       }
     });
-    console.log(data);
     return data;
   };
 
@@ -93,6 +92,7 @@ const Schedule = () => {
     getDocFromDB('schedule', displayedWeek.format('YY-WW')).then((data) => {
       if (data) {
         setEditingWeek({ ...addNonExistentCafesToEditingWeek(data) });
+
         setEditMode(true);
         return;
       }
@@ -109,7 +109,6 @@ const Schedule = () => {
               ...addNonExistentCafesToEditingWeek(data),
             }).then((data) => {
               setEditingWeek(data);
-              console.log(data);
             });
             setEditMode(true);
           }
@@ -125,6 +124,30 @@ const Schedule = () => {
     setEditMode(false);
   };
 
+  const handlerOnCopyPreviousWeek = () => {
+    const currentWeek = { ...editingWeek };
+
+    const previousWeek = schedule?.find(
+      (week) =>
+        week.docName === displayedWeek.clone().add(-1, 'week').format('YY-WW')
+    );
+
+    const myCafes = cafeList.filter((cafe) => cafe.admin.email === user.email);
+
+    myCafes.forEach((cafe) => {
+      if (
+        currentWeek &&
+        previousWeek &&
+        previousWeek?.cafeList?.hasOwnProperty(cafe.name)
+      ) {
+        currentWeek.cafeList[cafe.name] = {
+          ...previousWeek?.cafeList[cafe.name],
+        };
+      }
+    });
+
+    if (currentWeek) setEditingWeek(currentWeek);
+  };
   return (
     <div className="schedule">
       <div className="schedule_header">
@@ -140,9 +163,9 @@ const Schedule = () => {
           <IoIosArrowBack size="3rem" />
         </div>
 
-        <h4 className="shedule_header-week">
+        <h5 className="shedule_header-week">
           {displayedWeek.format('[Графік на] wo [тиждень]')}
-        </h4>
+        </h5>
         <div
           className="shedule_header-controls"
           style={
@@ -175,7 +198,7 @@ const Schedule = () => {
                   <div key={cafe.name} className="schedule_week-location-box">
                     <div className="schedule_week-location">{cafe.name}</div>
                     <div className="schedule_week-location-schedule">
-                      {editingWeek.cafeList[cafe.name].schedule.map(
+                      {editingWeek?.cafeList[cafe.name]?.schedule?.map(
                         (day, i) => {
                           return (
                             <div className="schedule_week-location-day" key={i}>
@@ -183,18 +206,18 @@ const Schedule = () => {
                                 className="schedule_user-select"
                                 style={{
                                   backgroundImage: `URL(${getAvatarByEmail(
-                                    day.firstBarista.email,
+                                    day?.firstBarista?.email,
                                     users
                                   )})`,
                                 }}
                                 value={
-                                  editingWeek.cafeList[cafe.name].schedule[i]
-                                    .firstBarista.email
+                                  editingWeek?.cafeList[cafe.name]?.schedule[i]
+                                    .firstBarista?.email
                                 }
                                 onChange={(e) => {
-                                  const updatedSchedule = editingWeek.cafeList[
-                                    cafe.name
-                                  ].schedule.map((scheduleItem, index) => {
+                                  const updatedSchedule = editingWeek?.cafeList[
+                                    cafe?.name
+                                  ].schedule?.map((scheduleItem, index) => {
                                     if (index === i) {
                                       return {
                                         ...scheduleItem,
@@ -276,7 +299,7 @@ const Schedule = () => {
                             return (
                               <div
                                 className="schedule_week-location-day"
-                                key={i}
+                                key={`${i}2`}
                               >
                                 <select
                                   className="schedule_user-select"
@@ -386,10 +409,11 @@ const Schedule = () => {
                       <div className="schedule_week-location">{cafe?.name}</div>
                       <div className="schedule_week-location-schedule">
                         {renderedWeek &&
-                          renderedWeek?.cafeList[cafe?.name].schedule.map(
+                          renderedWeek?.cafeList[cafe?.name]?.schedule?.map(
                             (day, i) => {
                               return (
                                 <SheduleUserAvatar
+                                  key={i}
                                   {...{
                                     email: day.firstBarista.email,
                                     userName: day.firstBarista.userName,
@@ -403,13 +427,14 @@ const Schedule = () => {
                       </div>
                       <div className="schedule_week-location-schedule">
                         {renderedWeek &&
-                          renderedWeek.cafeList[cafe?.name].schedule.some(
+                          renderedWeek?.cafeList[cafe?.name]?.schedule?.some(
                             (day, i) => !!day.secondBarista.email
                           ) &&
-                          renderedWeek?.cafeList[cafe?.name].schedule.map(
+                          renderedWeek?.cafeList[cafe?.name].schedule?.map(
                             (day, i) => {
                               return (
                                 <SheduleUserAvatar
+                                  key={i}
                                   {...{
                                     email: day.secondBarista.email,
                                     userName: day.secondBarista.userName,
@@ -424,12 +449,13 @@ const Schedule = () => {
                     </div>
                   );
                 }
-                return <div></div>;
+                return <div key={cafe?.name}></div>;
               })}
         </div>
       </div>
 
-      <div className="schedule_buttons-box"
+      <div
+        className="schedule_buttons-box"
         style={!user.role.isAdmin ? { display: 'none' } : { display: 'flex' }}
       >
         <button
@@ -473,7 +499,7 @@ const Schedule = () => {
       >
         <button
           style={editMode ? { display: 'flex' } : { display: 'none' }}
-          // onClick={handlerOnSaveSchedule}
+          onClick={handlerOnCopyPreviousWeek}
         >
           копіювати попередній тиждень
         </button>

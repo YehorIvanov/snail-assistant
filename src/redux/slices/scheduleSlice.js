@@ -58,7 +58,6 @@ const scheduleSlice = createSlice({
       .addCase(subscribeToSchedule.fulfilled, (state, action) => {
         if (action.payload) {
           state.schedule = action.payload;
-          console.log(action);
           state.lastUpdate = new Date().getTime();
         }
       })

@@ -39,7 +39,6 @@ const OrdersObserver = () => {
   };
 
   if (user.role.isAdmin) {
-    console.log(ordersDesings);
     return (
       <div
         className="orders-observer"

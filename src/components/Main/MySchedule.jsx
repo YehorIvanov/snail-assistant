@@ -1,6 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
-import { selectUsers } from '../../redux/slices/usersSlice';
 import { selectCafeList } from '../../redux/slices/cafeSlice';
 import moment from 'moment';
 import 'moment/locale/uk';
