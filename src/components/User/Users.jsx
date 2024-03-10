@@ -36,7 +36,7 @@ const Users = () => {
         break;
       default:
         setFilteredUsers(users.filter((user) => user.admin.email === admin));
-        console.log(admin);
+        // console.log(admin);
         break;
     }
   };

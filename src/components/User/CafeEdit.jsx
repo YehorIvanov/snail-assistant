@@ -60,7 +60,7 @@ const CafeEdit = () => {
       },
     });
   };
-  console.log(editingCafe);
+
   return (
     <div key={editingCafe?.name} className="cafe-edit_cafe-box">
       <div className='cafe-edit_cafe-header'>
