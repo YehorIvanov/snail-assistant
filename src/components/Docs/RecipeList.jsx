@@ -6,8 +6,8 @@ import { IoAddCircleOutline } from 'react-icons/io5';
 import { CiCoffeeCup } from 'react-icons/ci';
 import { useEffect, useState } from 'react';
 import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
-import { FaPencilAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
+import { FaReply } from 'react-icons/fa';
 
 const RecipeList = () => {
   const navigate = useNavigate();
@@ -80,6 +80,14 @@ const RecipeList = () => {
         </div>
       </div>
       {/* <button onClick={handlerOnAddNewRecipe}>Нова Техкарта</button> */}
+      <button
+        //   className={user?.role?.isAdmin && 'button-round'}
+        onClick={() => {
+          navigate('/docs/recipes-list');
+        }}
+      >
+        <FaReply />
+      </button>
     </div>
   );
 };
