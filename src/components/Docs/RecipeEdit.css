@@ -1,0 +1,12 @@
+.recipe-edit {
+  padding: 1rem 1rem 7rem;
+}
+.recipe-edit__label {
+  flex-direction: column;
+  width: 100%;
+}
+
+.recipe-edit__buttons-block {
+  display: flex;
+  gap: 1rem;
+}

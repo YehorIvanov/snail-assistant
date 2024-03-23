@@ -6,7 +6,6 @@ import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import './User.css';
 import getDocFromDB from '../../utils/getDocFromDB';
-import { selectUsers } from '../../redux/slices/usersSlice';
 import setDocToDB from '../../utils/setDocToDB';
 const User = () => {
   const user = useSelector(selectUser);
@@ -52,7 +51,7 @@ const User = () => {
     console.log('isSuperadmin: ', !user.role.isSuperadmin);
   };
   const handleOnFakeLogin = () => {
-    const email = prompt('param pam pam');
+    const email = prompt('fake login email');
     if (!email) return;
     getDocFromDB('users', email).then((user) => {
       if (user) {

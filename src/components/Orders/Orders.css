@@ -20,9 +20,9 @@
 
 .orders_new-order-btn {
   background-image: url('../../img/placeholder.jpg');
-  background-size: cover;
   width: calc(50% - 1.5rem);
   height: 16rem;
+  background-size: cover;
   background-position: center;
   overflow: auto;
   color: var(--accent-color-2);

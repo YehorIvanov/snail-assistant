@@ -130,7 +130,7 @@ const Order = (props) => {
           Подати залишки
         </label>
         <button
-          className=" button-round"
+          className="button-round"
           onClick={() => {
             navigate('/orders');
           }}

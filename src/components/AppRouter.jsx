@@ -26,6 +26,9 @@ import { setCafeParams, subscribeToCafe } from '../redux/slices/cafeSlice';
 import { subscribeToOrdersDesings } from '../redux/slices/ordersDesingsSlise';
 import CafeEdit from './User/CafeEdit';
 import { subscribeToSchedule } from '../redux/slices/scheduleSlice';
+import Recipe from './Docs/Recipe';
+import RecipeList from './Docs/RecipeList';
+import RecipeEdit from './Docs/RecipeEdit';
 
 const AppRouter = () => {
   const user = useSelector(selectUser);
@@ -102,6 +105,9 @@ const AppRouter = () => {
         <Route index element={<Main />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/docs" element={<Docs />} />
+        <Route path="/docs/recipe/:slug" element={<Recipe />} />
+        <Route path="/docs/recipe-edit/:slug" element={<RecipeEdit />} />
+        <Route path="/docs/recipes-list" element={<RecipeList />} />
       </Route>
       <Route
         path="*"

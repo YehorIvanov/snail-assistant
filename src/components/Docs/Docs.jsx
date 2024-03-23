@@ -1,19 +1,26 @@
-import { useState } from 'react';
-import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/slices/userSlice';
-import { selectCafeList } from '../../redux/slices/cafeSlice';
-
+import { useNavigate } from 'react-router';
+import './Docs.css';
+import Recipe from './Recipe';
+import RecipeEdit from './RecipeEdit';
+import RecipeList from './RecipeList';
 const Docs = () => {
-  // const user = useSelector(selectUser);
-  // const cafe = useSelector(selectCafeList);
+  const navigate = useNavigate();
   return (
-    <div>
+    <div className="docs">
       <h3>Docs</h3>
       <p>Розділ з навчальними матеріалами. </p>
-      <button>FAQ (дурні запитання швидкі відповіді)</button>
-      <button>Технологічні карти</button>
-      <button>Навчальні матеріали</button>
+      <RecipeList />
+      {/* <Recipe /> */}
+      {/* <RecipeEdit /> */}
+      {/* <button>FAQ </button> */}
+      <button
+        onClick={() => {
+          navigate('/docs/recipes-list');
+        }}
+      >
+        Техкарти
+      </button>
+      {/* <button>Навчальні матеріали</button> */}
       {/* <button onClick={() => {}}>Action</button> */}
     </div>
   );

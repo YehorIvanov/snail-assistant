@@ -163,20 +163,19 @@ input[type='button'] {
   white-space: nowrap;
   cursor: pointer;
   width: 100%;
+  gap: 1rem;
 
   border-radius: var(--border-radius);
   border: 3px solid var(--blue);
   color: var(--color);
   background: var(--bg-color);
-
-  /* backdrop-filter: blur(15px); */
 }
 .button-round {
   min-width: var(--elem-height);
   width: var(--elem-height);
   padding: 0.5rem;
   height: var(--elem-height);
-  margin: 0;
+  /* margin: 0; */
 }
 .button:hover,
 button:hover,
@@ -247,9 +246,9 @@ textarea {
   appearance: none;
 }
 textarea {
-  min-height: 7rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  min-height: 10rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 input[type='email']:focus,
 input[type='number']:focus,
