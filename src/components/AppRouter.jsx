@@ -22,13 +22,14 @@ import { subscribeToUsers } from '../redux/slices/usersSlice';
 import OrdersList from './Orders/OrdersList';
 import CafeList from './User/CafeList';
 import { setOrdersParams } from '../redux/slices/ordersSlice';
-import { setCafeParams, subscribeToCafe } from '../redux/slices/cafeSlice';
+import { subscribeToCafe } from '../redux/slices/cafeSlice';
 import { subscribeToOrdersDesings } from '../redux/slices/ordersDesingsSlise';
 import CafeEdit from './User/CafeEdit';
 import { subscribeToSchedule } from '../redux/slices/scheduleSlice';
 import Recipe from './Docs/Recipe';
 import RecipeList from './Docs/RecipeList';
 import RecipeEdit from './Docs/RecipeEdit';
+import { subscribeToRecipes } from '../redux/slices/recipesSlice';
 
 const AppRouter = () => {
   const user = useSelector(selectUser);
@@ -76,6 +77,7 @@ const AppRouter = () => {
     dispatch(subscribeToUsers());
     dispatch(subscribeToOrdersDesings());
     dispatch(subscribeToCafe());
+    dispatch(subscribeToRecipes());
   }, [dispatch, user]);
 
   return !!user &&

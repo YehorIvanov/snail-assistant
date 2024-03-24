@@ -3,6 +3,7 @@ import MySchedule from './MySchedule';
 import Schedule from './Schedule';
 import { selectUser } from '../../redux/slices/userSlice';
 import { useEffect, useState } from 'react';
+import './Main.css'
 
 const Main = () => {
   const user = useSelector(selectUser);
@@ -26,7 +27,7 @@ const Main = () => {
       <div style={{ border: '2px dashed var(--accent-color)' }}>
         сьогодні день замовлень на: макаруни молоко майяююю
       </div>
-      <br />
+
       <div style={{ border: '2px dashed var(--accent-color)' }}>
         штендера ховаемо о 19-30
       </div>

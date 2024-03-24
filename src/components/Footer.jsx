@@ -19,10 +19,11 @@ function Footer() {
           className={({ isActive }) =>
             isActive ? 'footer_link__active' : 'footer_link'
           }
-          to="/docs"
+          to="/"
         >
-          <FaBook size="3rem" />
+          <FaHome size="3rem" />
         </NavLink>
+
         <NavLink
           className={({ isActive }) =>
             isActive ? 'footer_link__active' : 'footer_link'
@@ -31,21 +32,22 @@ function Footer() {
         >
           <FaShoppingCart size="3rem" />
         </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            isActive ? 'footer_link__active' : 'footer_link'
-          }
-          to="/"
-        >
-          <FaHome size="3rem" />
-        </NavLink>
-        <NavLink
+
+        {/* <NavLink
           className={({ isActive }) =>
             isActive ? 'footer_link__active' : 'footer_link'
           }
           to="/reports"
         >
           <FaClipboardCheck size="3rem" />
+        </NavLink> */}
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? 'footer_link__active' : 'footer_link'
+          }
+          to="/docs"
+        >
+          <FaBook size="3rem" />
         </NavLink>
         <NavLink
           className={({ isActive }) =>

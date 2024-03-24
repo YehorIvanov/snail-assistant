@@ -7,6 +7,7 @@ import usersReducer from './slices/usersSlice';
 import ordersFiltersReducer from './slices/ordersFiltersSlice';
 import cafeReducer from './slices/cafeSlice';
 import scheduleReducer from './slices/scheduleSlice';
+import recipesReducer from './slices/recipesSlice';
 const store = configureStore({
   reducer: {
     cafe: cafeReducer,
@@ -17,6 +18,7 @@ const store = configureStore({
     orders: ordersReducer,
     ordersFilters: ordersFiltersReducer,
     schedule: scheduleReducer,
+    recipes: recipesReducer,
   },
 });
 

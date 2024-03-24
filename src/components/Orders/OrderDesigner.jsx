@@ -11,6 +11,7 @@ import deleteFileFromStorage from '../../utils/deleteFileFromStorage';
 import deleteDocFromDB from '../../utils/deleteDocFromDB';
 import getDocFromDB from '../../utils/getDocFromDB';
 import './OrderDesinger.css';
+import { FaReply, FaTrash } from 'react-icons/fa';
 const OrderDesigner = () => {
   const user = useSelector(selectUser);
   const params = useParams();
@@ -225,10 +226,10 @@ const OrderDesigner = () => {
         rows="10"
       ></textarea>
       <hr />
-      <div>
+      <div className="order-designer__products-wrapper ">
         {orderDesigner?.products.map((product, index) => {
           return (
-            <div className="order-designer_product" key={index}>
+            <div className="order-designer__product" key={index}>
               <div className="photo-picker">
                 <label
                   className="photo-picker_label"
@@ -306,25 +307,22 @@ const OrderDesigner = () => {
           );
         })}
       </div>
-
-      <button
-        className="order-design_controll-button"
-        onClick={handlerAddOneMoreProduct}
-      >
-        Додати новий продукт
-      </button>
-      <button
-        className="order-design_controll-button"
-        onClick={handlerSaveChangesToOrder}
-      >
-        Зберегти зміни
-      </button>
-      <button
-        className="order-design_controll-button"
-        onClick={handlerDeletOrderDesing}
-      >
-        Видалити Шаблон
-      </button>
+      <hr />
+      <button onClick={handlerAddOneMoreProduct}>Додати новий продукт</button>
+      <div className="order-design_controlls">
+        <button className="button-round" onClick={handlerDeletOrderDesing}>
+          <FaTrash />
+        </button>
+        <button onClick={handlerSaveChangesToOrder}>Зберегти зміни</button>
+        <button
+          className="button-round"
+          onClick={() => {
+            navigate('/orders/desing-list');
+          }}
+        >
+          <FaReply />
+        </button>
+      </div>
     </div>
   );
 };

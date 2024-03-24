@@ -1,25 +1,31 @@
-
 .order-designer {
-    overflow-y: auto;
-    padding: 1rem 1rem 6rem;
-  }
-  .order-designer_top-section {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-  }
-  .order-designer_params {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .order-designer_product {
-    display: flex;
-    gap: 1rem;
-  }
-  .order-designer_title {
-  }
-  .order-designer_input {
-    width: 100%;
-  }
+  overflow-y: auto;
+  padding: 1rem 1rem 6rem;
+}
+.order-designer_top-section {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.order-designer_params {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.order-designer__products-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.order-designer__product {
+  display: flex;
+  gap: 1rem;
+}
+
+.order-designer_input {
+  width: 100%;
+}
+.order-design_controlls {
+  display: flex;
+  gap: 1rem;
+}

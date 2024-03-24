@@ -63,34 +63,32 @@ const OrdersList = () => {
       <div className="orders-list_orders-container">
         {filteredOrdersList.map((elem, i) => {
           return (
-            <div
-              className="orders-list_order-box"
-              key={i}
-              style={{
-                backgroundImage: `url(${elem.photo}), linear-gradient(45deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4))`,
-              }}
-            >
-              <Link
-                className="orders-list_order-name"
-                to={`/orders/viev/${elem.docName}`}
+            <div className="orders-list_order-box" key={i}>
+              <div
+                className="orders-list__order-photo"
+                style={{
+                  backgroundImage: `url(${elem.photo})`,
+                  backgroundSize: 'cover',
+                  backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                }}
               >
-                {elem.name}
-              </Link>
-              <div className="orders-list_order-top">
                 <span className="orders-list_order-status">{elem.status}</span>
+              </div>
+              <div className="orders-list_order-top">
+                <Link
+                  className="orders-list_order-name"
+                  to={`/orders/viev/${elem.docName}`}
+                >
+                  {elem.name}
+                </Link>
                 <span className="orders-list_order-cafe">
                   {elem?.cafe ? elem.cafe : 'Назва Локації'}
                 </span>
-              </div>
-              <div>
+                <span className="orders-list_order-date">
+                  {timestampToTimestring(elem.lastUpdate)}
+                </span>
                 <div className="orders-list_order-bottom">
                   <UserLabel {...elem?.creator} />
-                  <span
-                    className="orders-list_order-date"
-                    style={{ fontSize: '1.2rem' }}
-                  >
-                    {timestampToTimestring(elem.lastUpdate)}
-                  </span>
                 </div>
               </div>
             </div>

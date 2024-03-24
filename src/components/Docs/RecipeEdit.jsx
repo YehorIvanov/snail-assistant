@@ -1,26 +1,33 @@
 import { useEffect, useState } from 'react';
 import './RecipeEdit.css';
-import { FaInfoCircle, FaReply, FaTrash, FaPlus, FaCopy } from 'react-icons/fa';
-import getDocFromDB from '../../utils/getDocFromDB';
+import { FaInfoCircle, FaReply, FaTrash, FaPlus } from 'react-icons/fa';
 import setDocToDB from '../../utils/setDocToDB';
 import deleteDocFromDB from '../../utils/deleteDocFromDB';
 import getNewFileNameByUser from '../../utils/getNewFileNameByUser';
 import uploadFileToStorage from '../../utils/uploadFileToStorage';
 import deleteFileFromStorage from '../../utils/deleteFileFromStorage';
 import Compressor from 'compressorjs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slices/userSlice';
 import { useNavigate, useParams } from 'react-router';
+import {
+  selectRecipesList,
+  subscribeToRecipes,
+} from '../../redux/slices/recipesSlice';
 const RecipeEdit = () => {
   const params = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
+  const recipes = useSelector(selectRecipesList);
   const [recipe, setRecipe] = useState({});
   useEffect(() => {
-    getDocFromDB('recipes', params.slug).then((data) => setRecipe(data));
-    console.log(recipe);
-  }, []);
-
+    setRecipe(
+      recipes?.filter((elem) => {
+        return elem.name === params.slug;
+      })[0]
+    );
+  }, [recipes, params.slug]);
   const handlerOnFieldChange = (e, fieldName) => {
     console.log(e.target.value, recipe[fieldName]);
     setRecipe({ ...recipe, [fieldName]: e.target.value });
@@ -39,11 +46,15 @@ const RecipeEdit = () => {
   };
   const handlerOnDeleteRecipe = () => {
     deleteDocFromDB('recipes', recipe.name);
+    deleteFileFromStorage(recipe.photoURL);
+    dispatch(subscribeToRecipes());
+    navigate('/docs/recipes-list');
   };
   const handlerOnSaveRecipe = () => {
-    setDocToDB('recipes', recipe.name, { ...recipe }).then(
-      navigate('/docs/recipes-list')
-    );
+    setDocToDB('recipes', recipe.name, { ...recipe }).then(() => {
+      dispatch(subscribeToRecipes());
+      navigate('/docs/recipes-list');
+    });
   };
 
   const handlerOnRecipePhotoChange = (e) => {
@@ -80,26 +91,13 @@ const RecipeEdit = () => {
   return (
     <div className="recipe-edit">
       <h4>Редагування техкарти</h4>
-
-      <label className="recipe-edit__label ">
-        Назва напою
-        <input
-          onChange={(e) => {
-            handlerOnFieldChange(e, 'name');
-          }}
-          value={recipe?.name}
-          type="text"
-          placeholder="Назва напою"
-        />
-      </label>
-
       <label className="recipe-edit__label">
         Опис напою
         <textarea
           onChange={(e) => {
             handlerOnFieldChange(e, 'description');
           }}
-          value={recipe?.description}
+          value={recipe.description}
           placeholder="Опис напою"
           cols="30"
           rows="50"
@@ -125,7 +123,7 @@ const RecipeEdit = () => {
       <label className="recipe-edit__label">
         Опис приготування
         <textarea
-          value={recipe?.descriptionOfPreparation}
+          value={recipe.descriptionOfPreparation}
           onChange={(e) => {
             handlerOnFieldChange(e, 'descriptionOfPreparation');
           }}
@@ -141,11 +139,33 @@ const RecipeEdit = () => {
         </span>
         <input
           type="url"
+          placeholder="Встав сюди посилання на відео"
+          value={recipe.videoURL || ''}
           onChange={(e) => {
-            handlerOnFieldChange(e, 'videoURL');
+            const link = e.target.value;
+            const videoId = link.substring(
+              link.lastIndexOf('/') + 1,
+              link.indexOf('?')
+            );
+            const newLink =
+              'https://www.youtube.com/embed/' +
+              videoId +
+              link.substring(link.indexOf('?'));
+            console.log(newLink);
+            setRecipe({
+              ...recipe,
+              videoURL2: newLink,
+              videoURL: e.target.value,
+            });
           }}
-          placeholder="https://www.youtube.com/embed/8mQrudgO2l8"
-          value={recipe?.videoURL}
+        />
+        <input
+          type="url"
+          onChange={(e) => {
+            handlerOnFieldChange(e, 'videoURL2');
+          }}
+          placeholder="Тут нічого не чіпай)"
+          value={recipe.videoURL2 || ''}
         />
       </label>
       {recipe?.ingredients?.map((elem, i) => {
@@ -155,7 +175,7 @@ const RecipeEdit = () => {
             <input
               type="text"
               placeholder="Назва інгрідіенту"
-              value={elem?.name}
+              value={elem.name}
               onChange={(e) => {
                 handlerOnIngredientNameChange(e, i);
               }}
@@ -166,7 +186,7 @@ const RecipeEdit = () => {
               }}
               type="text"
               placeholder="Кількість"
-              value={elem?.quantity}
+              value={elem.quantity}
             />
           </label>
         );

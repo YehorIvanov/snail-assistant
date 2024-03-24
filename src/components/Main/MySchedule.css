@@ -1,11 +1,9 @@
 .my-schedule {
   display: flex;
   flex-direction: column;
-  /* gap: 0.5rem; */
   padding: 1rem;
   border: 1px solid;
   border-radius: 1rem;
-  margin: 1rem;
 }
 .my-schedule_header {
   display: flex;

@@ -1,6 +1,6 @@
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaReply } from 'react-icons/fa';
 import NewOrderDesing from './NewOrderDesing';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectOrdersDesigns,
@@ -9,6 +9,7 @@ import {
 import { useEffect } from 'react';
 
 const OrderDesingList = () => {
+  const navigate = useNavigate();
   const ordersDesings = useSelector(selectOrdersDesigns);
   const dispatch = useDispatch();
 
@@ -19,7 +20,7 @@ const OrderDesingList = () => {
   return (
     <div className="order-deing-list" style={{ padding: '1rem' }}>
       <h3>Шаблони замовлень</h3>
-      <table style={{ width: '95%' }} >
+      <table style={{ width: '95%' }}>
         <tbody>
           {ordersDesings.map((elem, i) => (
             <tr key={i}>
@@ -37,6 +38,13 @@ const OrderDesingList = () => {
         </tbody>
       </table>
       <NewOrderDesing />
+      <button
+        onClick={() => {
+          navigate('/orders');
+        }}
+      >
+        <FaReply />
+      </button>
     </div>
   );
 };

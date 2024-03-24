@@ -1,24 +1,21 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './RecipeList.css';
 import { selectUser } from '../../redux/slices/userSlice';
 import setDocToDB from '../../utils/setDocToDB';
 import { IoAddCircleOutline } from 'react-icons/io5';
 import { CiCoffeeCup } from 'react-icons/ci';
-import { useEffect, useState } from 'react';
-import getDocsColectionFromDB from '../../utils/getDocsColectionFromDB';
 import { useNavigate } from 'react-router';
 import { FaReply } from 'react-icons/fa';
+import {
+  selectRecipesList,
+  subscribeToRecipes,
+} from '../../redux/slices/recipesSlice';
 
 const RecipeList = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
-  const [recipes, setRecipes] = useState([]);
-  useEffect(() => {
-    getDocsColectionFromDB('recipes').then((data) => {
-      setRecipes(data);
-    });
-  }, []);
-  console.log(recipes);
+  const recipes = useSelector(selectRecipesList);
   const handlerOnAddNewRecipe = () => {
     const name = prompt('Вкажіть назву нового напою');
     const newRecipe = {
@@ -28,11 +25,13 @@ const RecipeList = () => {
       descriptionOfPreparation: '',
       photoURL: '',
       videoURL: '',
+      videoURL2: '',
       ingredients: [],
       editedBy: { userName: user.userName, email: user.email },
     };
-    console.log(newRecipe, user);
-    setDocToDB('recipes', newRecipe.docName, newRecipe);
+    setDocToDB('recipes', newRecipe.docName, newRecipe).then(
+      dispatch(subscribeToRecipes())
+    );
   };
   return (
     <div className="recipe-list ">
@@ -40,7 +39,7 @@ const RecipeList = () => {
       <div className="recipe-list__wraper ">
         {recipes?.map((recipe, i) => {
           return (
-            <div className="recipe-list__item">
+            <div key={i} className="recipe-list__item">
               {recipe?.photoURL ? (
                 <div
                   className="recipe-list__item-photo"
@@ -79,11 +78,9 @@ const RecipeList = () => {
           <h6 className=".recipe-list__recipe-name">Нова Техкарта</h6>
         </div>
       </div>
-      {/* <button onClick={handlerOnAddNewRecipe}>Нова Техкарта</button> */}
       <button
-        //   className={user?.role?.isAdmin && 'button-round'}
         onClick={() => {
-          navigate('/docs/recipes-list');
+          navigate('/docs');
         }}
       >
         <FaReply />

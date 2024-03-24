@@ -4,11 +4,11 @@
   gap: 1rem;
   padding: 1rem;
   border-radius: 1rem;
-  /* border: 1px solid; */
   background-color: var(--glas);
 }
 .recipe-random__all-recipes {
   text-align: right;
+  cursor: pointer;
 }
 .recipe-random__photo {
   width: 100%;
