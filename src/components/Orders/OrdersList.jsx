@@ -62,6 +62,21 @@ const OrdersList = () => {
       {user.role.isAdmin && <OrdersFilters />}
       <div className="orders-list_orders-container">
         {filteredOrdersList.map((elem, i) => {
+          let opacity;
+          switch (elem.status) {
+            case 'NEW':
+              opacity = '0';
+              break;
+            case 'ПРИЙНЯТО':
+              opacity = '0.3';
+              break;
+            case 'ЗАМОВЛЕНО':
+              opacity = '0.6';
+              break;
+
+            default:
+              break;
+          }
           return (
             <div className="orders-list_order-box" key={i}>
               <div
@@ -69,7 +84,7 @@ const OrdersList = () => {
                 style={{
                   backgroundImage: `url(${elem.photo})`,
                   backgroundSize: 'cover',
-                  backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                  backgroundColor: `rgba(255, 255, 255, ${opacity})`,
                 }}
               >
                 <span className="orders-list_order-status">{elem.status}</span>
