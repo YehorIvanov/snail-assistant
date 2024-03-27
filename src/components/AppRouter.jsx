@@ -30,6 +30,9 @@ import Recipe from './Docs/Recipe';
 import RecipeList from './Docs/RecipeList';
 import RecipeEdit from './Docs/RecipeEdit';
 import { subscribeToRecipes } from '../redux/slices/recipesSlice';
+import ArticlesList from './Docs/ArticlesList';
+import ArticleEditor from './Docs/ArticleEditor';
+import Article from './Docs/Article';
 
 const AppRouter = () => {
   const user = useSelector(selectUser);
@@ -106,10 +109,15 @@ const AppRouter = () => {
         />
         <Route index element={<Main />} />
         <Route path="/reports" element={<Reports />} />
+
         <Route path="/docs" element={<Docs />} />
         <Route path="/docs/recipe/:slug" element={<Recipe />} />
         <Route path="/docs/recipe-edit/:slug" element={<RecipeEdit />} />
         <Route path="/docs/recipes-list" element={<RecipeList />} />
+
+        <Route path="/docs/article" element={<Article />} />
+        <Route path="/docs/article-edit" element={<ArticleEditor />} />
+        <Route path="/docs/articles-list" element={<ArticlesList />} />
       </Route>
       <Route
         path="*"

@@ -133,6 +133,7 @@ h6 {
 
 p {
   margin-top: 0;
+  text-align: left;
 }
 
 a {
@@ -310,21 +311,24 @@ ol ul {
 }
 li {
   margin-bottom: 1rem;
+  text-align: left;
 }
 
 code {
   padding: 0.2rem 0.5rem;
   margin: 0 0.2rem;
   font-size: 90%;
-  white-space: nowrap;
-  background: var(--bg-color);
-  border: var(--border);
-  border-radius: var(--border-radius);
+  font-weight: 400;
+  font-style: italic;
+  text-align: left;
+  /* background: var(--bg-color); */
+  border-left: var(--border);
+  /* background-color: var(--accent-color); */
 }
 pre > code {
   display: block;
   padding: 1rem 1.5rem;
-  white-space: pre;
+  white-space: wrap;
 }
 
 th,
